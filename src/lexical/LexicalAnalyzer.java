@@ -54,7 +54,11 @@ public class LexicalAnalyzer {
                 updateLexemeAndCurrentChar();
                 return e1ExclamationMark();
             case '<':
+                updateLexemeAndCurrentChar();
+                return e1Lower();
             case '>':
+                updateLexemeAndCurrentChar();
+                return e1Higher();
             default:
                 if(Character.isLetter(currentChar)) {
                     updateLexemeAndCurrentChar();
@@ -108,16 +112,36 @@ public class LexicalAnalyzer {
         }
         return new Token(0, lexeme, sourceManager.getLineNumber());
     }
-    private Token e1NonEqual() {return null;}
+    private Token e1NonEqual() {
+        return new Token(0, lexeme, sourceManager.getLineNumber());
+    }
     private Token e1ExclamationMark() {
         if(currentChar == '=') {
             updateLexemeAndCurrentChar();
-            return new Token(0, lexeme, sourceManager.getLineNumber());
+            return e1NonEqual();
         }
         return null; // Exception
     }
-    private Token e1Lower() {return null;}
-    private Token e1Higher() {return null;}
+    private Token e1Lower() {
+        if(currentChar == '=') {
+            updateLexemeAndCurrentChar();
+            return e2Lower();
+        }
+        return new Token(0, lexeme, sourceManager.getLineNumber());
+    }
+    private Token e2Lower() {
+        return new Token(0, lexeme, sourceManager.getLineNumber());
+    }
+    private Token e1Higher() {
+        if(currentChar == '=') {
+            updateLexemeAndCurrentChar();
+            return e2Higher();
+        }
+        return new Token(0, lexeme, sourceManager.getLineNumber());
+    }
+    private Token e2Higher() {
+        return new Token(0, lexeme, sourceManager.getLineNumber());
+    }
     private Token e1Add() {return null;}
     private Token e1Sub() {return null;}
     private Token e1Mul() {return null;}
