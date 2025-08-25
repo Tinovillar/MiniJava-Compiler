@@ -69,6 +69,13 @@ public class LexicalAnalyzer {
             case '*':
                 updateLexemeAndCurrentChar();
                 return e1Mul();
+            case '&':
+                updateLexemeAndCurrentChar();
+                return e1And();
+            case '|':
+                updateLexemeAndCurrentChar();
+                return e1Or();
+            // PUNTUACTION
             default:
                 if(Character.isLetter(currentChar)) {
                     updateLexemeAndCurrentChar();
@@ -186,8 +193,26 @@ public class LexicalAnalyzer {
             return new Token(0, lexeme, sourceManager.getLineNumber());
         }
     }
-    private Token e1And() {return null;}
-    private Token e1Or() {return null;}
+    private Token e1And() {
+        if(currentChar == '&') {
+            updateLexemeAndCurrentChar();
+            return e2And();
+        }
+        return null; // ERROR
+    }
+    private Token e2And() {
+        return new Token(0, lexeme, sourceManager.getLineNumber());
+    }
+    private Token e1Or() {
+        if(currentChar == '|') {
+            updateLexemeAndCurrentChar();
+            return e2Or();
+        }
+        return null; // ERROR
+    }
+    private Token e2Or() {
+        return new Token(0, lexeme, sourceManager.getLineNumber());
+    }
     private Token e1Parenthesis() {return null;}
     private Token e1Bracket1() {return null;}
     private Token e1Bracket2() {return null;}
