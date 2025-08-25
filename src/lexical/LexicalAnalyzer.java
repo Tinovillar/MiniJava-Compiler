@@ -35,6 +35,9 @@ public class LexicalAnalyzer {
         updateLexeme();
         updateCurrentChar();
     }
+    private Token tokenToReturn(int id) {
+        return new Token(id, lexeme, sourceManager.getLineNumber());
+    }
 
     private Token e0() {
         switch(currentChar) {
@@ -75,7 +78,7 @@ public class LexicalAnalyzer {
             case '|':
                 updateLexemeAndCurrentChar();
                 return e1Or();
-            // PUNTUACTION
+            // PUNCTUATION
             case '(':
                 updateLexemeAndCurrentChar();
                 return e1OpenParenthesis();
@@ -123,15 +126,15 @@ public class LexicalAnalyzer {
             updateLexemeAndCurrentChar();
             return e1Digit();
         } else {
-            return new Token(0, lexeme, sourceManager.getLineNumber());
+            return tokenToReturn(0);
         }
     }
     private Token e1Letter() {
         if(Character.isLetterOrDigit(currentChar)) {
             updateLexemeAndCurrentChar();
-            return new Token(0, lexeme, sourceManager.getLineNumber());
+            return tokenToReturn(0);
         }
-        return new Token(0, lexeme, sourceManager.getLineNumber());
+        return tokenToReturn(0);
     }
     private Token e1SimpleComment() {
         while(currentChar != '\n') {
@@ -157,10 +160,10 @@ public class LexicalAnalyzer {
         if(currentChar == '=') {
             updateLexemeAndCurrentChar();
         }
-        return new Token(0, lexeme, sourceManager.getLineNumber());
+        return tokenToReturn(0);
     }
     private Token e1NonEqual() {
-        return new Token(0, lexeme, sourceManager.getLineNumber());
+        return tokenToReturn(0);
     }
     private Token e1ExclamationMark() {
         if(currentChar == '=') {
@@ -174,43 +177,43 @@ public class LexicalAnalyzer {
             updateLexemeAndCurrentChar();
             return e2Lower();
         }
-        return new Token(0, lexeme, sourceManager.getLineNumber());
+        return tokenToReturn(0);
     }
     private Token e2Lower() {
-        return new Token(0, lexeme, sourceManager.getLineNumber());
+        return tokenToReturn(0);
     }
     private Token e1Higher() {
         if(currentChar == '=') {
             updateLexemeAndCurrentChar();
             return e2Higher();
         }
-        return new Token(0, lexeme, sourceManager.getLineNumber());
+        return tokenToReturn(0);
     }
     private Token e2Higher() {
-        return new Token(0, lexeme, sourceManager.getLineNumber());
+        return tokenToReturn(0);
     }
     private Token e1Add() {
         if(currentChar == '+') {
             updateLexemeAndCurrentChar();
             return e2Add();
         }
-        return new Token(0, lexeme, sourceManager.getLineNumber());
+        return tokenToReturn(0);
     }
     private Token e2Add() {
-        return new Token(0, lexeme, sourceManager.getLineNumber());
+        return tokenToReturn(0);
     }
     private Token e1Sub() {
         if(currentChar == '-') {
             updateLexemeAndCurrentChar();
             return e2Sub();
         }
-        return new Token(0, lexeme, sourceManager.getLineNumber());
+        return tokenToReturn(0);
     }
     private Token e2Sub() {
-        return new Token(0, lexeme, sourceManager.getLineNumber());
+        return tokenToReturn(0);
     }
     private Token e1Mul() {
-        return new Token(0, lexeme, sourceManager.getLineNumber());
+        return tokenToReturn(0);
     }
     private Token e1Slash() {
         if(currentChar == '/') {
@@ -220,7 +223,7 @@ public class LexicalAnalyzer {
             updateCurrentChar();
             return e1MultipleComment();
         } else {
-            return new Token(0, lexeme, sourceManager.getLineNumber());
+            return tokenToReturn(0);
         }
     }
     private Token e1And() {
@@ -231,7 +234,7 @@ public class LexicalAnalyzer {
         return null; // ERROR
     }
     private Token e2And() {
-        return new Token(0, lexeme, sourceManager.getLineNumber());
+        return tokenToReturn(0);
     }
     private Token e1Or() {
         if(currentChar == '|') {
@@ -241,36 +244,36 @@ public class LexicalAnalyzer {
         return null; // ERROR
     }
     private Token e2Or() {
-        return new Token(0, lexeme, sourceManager.getLineNumber());
+        return tokenToReturn(0);
     }
     private Token e1OpenParenthesis() {
-        return new Token(0, lexeme, sourceManager.getLineNumber());
+        return tokenToReturn(0);
     }
     private Token e1CloseParenthesis() {
-        return new Token(0, lexeme, sourceManager.getLineNumber());
+        return tokenToReturn(0);
     }
     private Token e1OpenBracket1() {
-        return new Token(0, lexeme, sourceManager.getLineNumber());
+        return tokenToReturn(0);
     }
     private Token e1CloseBracket1() {
-        return new Token(0, lexeme, sourceManager.getLineNumber());
+        return tokenToReturn(0);
     }
     private Token e1OpenBracket2() {
-        return new Token(0, lexeme, sourceManager.getLineNumber());
+        return tokenToReturn(0);
     }
     private Token e1CloseBracket2() {
-        return new Token(0, lexeme, sourceManager.getLineNumber());
+        return tokenToReturn(0);
     }
     private Token e1Dot() {
-        return new Token(0, lexeme, sourceManager.getLineNumber());
+        return tokenToReturn(0);
     }
     private Token e1Comma() {
-        return new Token(0, lexeme, sourceManager.getLineNumber());
+        return tokenToReturn(0);
     }
     private Token e1Colon() {
-        return new Token(0, lexeme, sourceManager.getLineNumber());
+        return tokenToReturn(0);
     }
     private Token e1SemiColon() {
-        return new Token(0, lexeme, sourceManager.getLineNumber());
+        return tokenToReturn(0);
     }
 }
