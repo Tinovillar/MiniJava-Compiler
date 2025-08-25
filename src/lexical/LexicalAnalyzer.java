@@ -75,7 +75,13 @@ public class LexicalAnalyzer {
             return new Token(0, lexeme, sourceManager.getLineNumber());
         }
     }
-    private Token e1Letter() {return null;}
+    private Token e1Letter() {
+        if(Character.isLetterOrDigit(currentChar)) {
+            updateLexemeAndCurrentChar();
+            return new Token(0, lexeme, sourceManager.getLineNumber());
+        }
+        return new Token(0, lexeme, sourceManager.getLineNumber());
+    }
     private Token e1SimpleComment() {
         while(currentChar != '\n') {
             updateCurrentChar();
