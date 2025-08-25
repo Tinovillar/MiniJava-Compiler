@@ -76,6 +76,36 @@ public class LexicalAnalyzer {
                 updateLexemeAndCurrentChar();
                 return e1Or();
             // PUNTUACTION
+            case '(':
+                updateLexemeAndCurrentChar();
+                return e1OpenParenthesis();
+            case ')':
+                updateLexemeAndCurrentChar();
+                return e1CloseParenthesis();
+            case '{':
+                updateLexemeAndCurrentChar();
+                return e1OpenBracket1();
+            case '}':
+                updateLexemeAndCurrentChar();
+                return e1CloseBracket1();
+            case '[':
+                updateLexemeAndCurrentChar();
+                return e1OpenBracket2();
+            case ']':
+                updateLexemeAndCurrentChar();
+                return e1CloseBracket2();
+            case '.':
+                updateLexemeAndCurrentChar();
+                return e1Dot();
+            case ',':
+                updateLexemeAndCurrentChar();
+                return e1Comma();
+            case ':':
+                updateLexemeAndCurrentChar();
+                return e1Colon();
+            case ';':
+                updateLexemeAndCurrentChar();
+                return e1SemiColon();
             default:
                 if(Character.isLetter(currentChar)) {
                     updateLexemeAndCurrentChar();
@@ -213,11 +243,34 @@ public class LexicalAnalyzer {
     private Token e2Or() {
         return new Token(0, lexeme, sourceManager.getLineNumber());
     }
-    private Token e1Parenthesis() {return null;}
-    private Token e1Bracket1() {return null;}
-    private Token e1Bracket2() {return null;}
-    private Token e1Dot() {return null;}
-    private Token e1Comma() {return null;}
-    private Token e1Colon() {return null;}
-    private Token e1SemiColon() {return null;}
+    private Token e1OpenParenthesis() {
+        return new Token(0, lexeme, sourceManager.getLineNumber());
+    }
+    private Token e1CloseParenthesis() {
+        return new Token(0, lexeme, sourceManager.getLineNumber());
+    }
+    private Token e1OpenBracket1() {
+        return new Token(0, lexeme, sourceManager.getLineNumber());
+    }
+    private Token e1CloseBracket1() {
+        return new Token(0, lexeme, sourceManager.getLineNumber());
+    }
+    private Token e1OpenBracket2() {
+        return new Token(0, lexeme, sourceManager.getLineNumber());
+    }
+    private Token e1CloseBracket2() {
+        return new Token(0, lexeme, sourceManager.getLineNumber());
+    }
+    private Token e1Dot() {
+        return new Token(0, lexeme, sourceManager.getLineNumber());
+    }
+    private Token e1Comma() {
+        return new Token(0, lexeme, sourceManager.getLineNumber());
+    }
+    private Token e1Colon() {
+        return new Token(0, lexeme, sourceManager.getLineNumber());
+    }
+    private Token e1SemiColon() {
+        return new Token(0, lexeme, sourceManager.getLineNumber());
+    }
 }
