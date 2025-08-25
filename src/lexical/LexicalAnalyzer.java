@@ -14,6 +14,7 @@ public class LexicalAnalyzer {
         this.lexeme = "";
         this.currentChar = ' ';
         this.sourceManager = sourceManager;
+        updateCurrentChar();
     }
 
     public Token getNextToken() {
@@ -36,8 +37,6 @@ public class LexicalAnalyzer {
     }
 
     private Token e0() {
-        updateCurrentChar();
-
         switch(currentChar) {
             // BLANK
             case ' ':
