@@ -66,6 +66,9 @@ public class LexicalAnalyzer {
             case '-':
                 updateLexemeAndCurrentChar();
                 return e1Sub();
+            case '*':
+                updateLexemeAndCurrentChar();
+                return e1Mul();
             default:
                 if(Character.isLetter(currentChar)) {
                     updateLexemeAndCurrentChar();
@@ -169,7 +172,9 @@ public class LexicalAnalyzer {
     private Token e2Sub() {
         return new Token(0, lexeme, sourceManager.getLineNumber());
     }
-    private Token e1Mul() {return null;}
+    private Token e1Mul() {
+        return new Token(0, lexeme, sourceManager.getLineNumber());
+    }
     private Token e1Slash() {
         if(currentChar == '/') {
             updateCurrentChar();
