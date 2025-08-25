@@ -40,8 +40,9 @@ public class LexicalAnalyzer {
         switch(currentChar) {
             // BLANK
             case ' ':
-            case '\n':
             case '\t':
+            case '\r':
+            case '\n':
                 e0();
                 break;
             // COMMENTS OR DIVISION
@@ -59,6 +60,12 @@ public class LexicalAnalyzer {
             case '>':
                 updateLexemeAndCurrentChar();
                 return e1Higher();
+            case '+':
+                updateLexemeAndCurrentChar();
+                return e1Add();
+            case '-':
+                updateLexemeAndCurrentChar();
+                return e1Sub();
             default:
                 if(Character.isLetter(currentChar)) {
                     updateLexemeAndCurrentChar();
@@ -142,8 +149,26 @@ public class LexicalAnalyzer {
     private Token e2Higher() {
         return new Token(0, lexeme, sourceManager.getLineNumber());
     }
-    private Token e1Add() {return null;}
-    private Token e1Sub() {return null;}
+    private Token e1Add() {
+        if(currentChar == '+') {
+            updateLexemeAndCurrentChar();
+            return e2Add();
+        }
+        return new Token(0, lexeme, sourceManager.getLineNumber());
+    }
+    private Token e2Add() {
+        return new Token(0, lexeme, sourceManager.getLineNumber());
+    }
+    private Token e1Sub() {
+        if(currentChar == '-') {
+            updateLexemeAndCurrentChar();
+            return e2Sub();
+        }
+        return new Token(0, lexeme, sourceManager.getLineNumber());
+    }
+    private Token e2Sub() {
+        return new Token(0, lexeme, sourceManager.getLineNumber());
+    }
     private Token e1Mul() {return null;}
     private Token e1Slash() {
         if(currentChar == '/') {
