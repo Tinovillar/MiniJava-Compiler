@@ -96,7 +96,12 @@ public class LexicalAnalyzer {
         lexeme = "";
         return e0();
     }
-    private Token e1Equal() {return null;}
+    private Token e1Equal() {
+        if(currentChar == '=') {
+            updateLexemeAndCurrentChar();
+        }
+        return new Token(0, lexeme, sourceManager.getLineNumber());
+    }
     private Token e1NonEqual() {return null;}
     private Token e1ExclamationMark() {
         if(currentChar == '=') {
