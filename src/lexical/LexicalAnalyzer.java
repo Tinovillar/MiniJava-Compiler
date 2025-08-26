@@ -109,6 +109,9 @@ public class LexicalAnalyzer {
             case ';':
                 updateLexemeAndCurrentChar();
                 return e1SemiColon();
+            // TEXT
+            case '\'':
+            case '"':
             default:
                 if(Character.isLetter(currentChar)) {
                     updateLexemeAndCurrentChar();
