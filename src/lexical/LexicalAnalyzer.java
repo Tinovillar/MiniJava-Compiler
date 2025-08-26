@@ -40,14 +40,17 @@ public class LexicalAnalyzer {
     }
 
     private Token e0() {
+        if(Character.isLetter(currentChar)) {
+            updateLexemeAndCurrentChar();
+            return e1Letter();
+        } else if(Character.isDigit(currentChar)) {
+            updateLexemeAndCurrentChar();
+            return e1Digit();
+        } else if(Character.isWhitespace(currentChar)) {
+            return e0();
+        }
+
         switch(currentChar) {
-            // BLANK
-            case ' ':
-            case '\t':
-            case '\r':
-            case '\n':
-                e0();
-                break;
             // COMMENTS OR DIVISION
             case '/':
             // OPERATORS
@@ -113,15 +116,8 @@ public class LexicalAnalyzer {
             case '\'':
             case '"':
             default:
-                if(Character.isLetter(currentChar)) {
-                    updateLexemeAndCurrentChar();
-                    return e1Letter();
-                } else if(Character.isDigit(currentChar)) {
-                    updateLexemeAndCurrentChar();
-                    return e1Digit();
-                }
+                return null;
         }
-        return null;
     }
 
     private Token e1Digit() {
