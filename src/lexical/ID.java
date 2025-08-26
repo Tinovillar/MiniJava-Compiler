@@ -1,0 +1,33 @@
+package lexical;
+
+public enum ID {
+    op_equal,
+    op_not_equal,
+    op_greater_than,
+    op_greater_than_equal,
+    op_less_than,
+    op_less_than_equal,
+    op_plus,
+    op_plus_plus,
+    op_minus,
+    op_minus_minus,
+    op_multiplication,
+    op_division,
+    op_and,
+    op_or,
+    p_o_parenthesis,
+    p_c_parenthesis,
+    p_o_bracket1,
+    p_c_bracket1,
+    p_o_bracket2,
+    p_c_bracket2,
+    p_dot,
+    p_comma,
+    p_colon,
+    p_semicolon,
+    t_char,
+    t_string,
+    integer,
+    identifier,
+    EOF
+}

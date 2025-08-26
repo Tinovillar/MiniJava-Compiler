@@ -1,17 +1,17 @@
 package lexical;
 
 public class Token {
-    private int id;
+    private ID id;
     private String lexeme;
     private int lineNumber;
 
-    public Token(int id, String lexeme, int lineNumber) {
+    public Token(ID id, String lexeme, int lineNumber) {
         this.id = id;
         this.lexeme = lexeme;
         this.lineNumber = lineNumber;
     }
 
-    public int getId() {
+    public ID getId() {
         return id;
     }
 
@@ -25,6 +25,6 @@ public class Token {
 
     @Override
     public String toString() {
-        return " - ("+ this.id +", " + this.lexeme + ", " + this.lineNumber + ") - ";
+        return " - ("+ this.id.toString() +", " + this.lexeme + ", " + this.lineNumber + ") - ";
     }
 }

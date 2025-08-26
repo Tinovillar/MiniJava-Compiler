@@ -35,7 +35,7 @@ public class LexicalAnalyzer {
         updateLexeme();
         updateCurrentChar();
     }
-    private Token tokenToReturn(int id) {
+    private Token tokenToReturn(ID id) {
         return new Token(id, lexeme, sourceManager.getLineNumber());
     }
 
@@ -62,10 +62,10 @@ public class LexicalAnalyzer {
                 return e1ExclamationMark();
             case '<':
                 updateLexemeAndCurrentChar();
-                return e1Lower();
+                return e1LessThan();
             case '>':
                 updateLexemeAndCurrentChar();
-                return e1Higher();
+                return e1GreaterThan();
             case '+':
                 updateLexemeAndCurrentChar();
                 return e1Add();
@@ -125,15 +125,15 @@ public class LexicalAnalyzer {
             updateLexemeAndCurrentChar();
             return e1Digit();
         } else {
-            return tokenToReturn(0);
+            return tokenToReturn(ID.integer);
         }
     }
     private Token e1Letter() {
-        if(Character.isLetterOrDigit(currentChar)) {
+        if(Character.isLetterOrDigit(currentChar) || currentChar == '_') {
             updateLexemeAndCurrentChar();
-            return tokenToReturn(0);
+            return e1Letter();
         }
-        return tokenToReturn(0);
+        return tokenToReturn(ID.identifier);
     }
     private Token e1SimpleComment() {
         while(currentChar != '\n') {
@@ -159,60 +159,60 @@ public class LexicalAnalyzer {
         if(currentChar == '=') {
             updateLexemeAndCurrentChar();
         }
-        return tokenToReturn(0);
+        return tokenToReturn(ID.op_equal);
     }
-    private Token e1NonEqual() {
-        return tokenToReturn(0);
+    private Token e1NotEqual() {
+        return tokenToReturn(ID.op_not_equal);
     }
     private Token e1ExclamationMark() {
         if(currentChar == '=') {
             updateLexemeAndCurrentChar();
-            return e1NonEqual();
+            return e1NotEqual();
         }
         return null; // Exception
     }
-    private Token e1Lower() {
+    private Token e1LessThan() {
         if(currentChar == '=') {
             updateLexemeAndCurrentChar();
-            return e2Lower();
+            return e2LessThan();
         }
-        return tokenToReturn(0);
+        return tokenToReturn(ID.op_less_than);
     }
-    private Token e2Lower() {
-        return tokenToReturn(0);
+    private Token e2LessThan() {
+        return tokenToReturn(ID.op_less_than_equal);
     }
-    private Token e1Higher() {
+    private Token e1GreaterThan() {
         if(currentChar == '=') {
             updateLexemeAndCurrentChar();
-            return e2Higher();
+            return e2GreaterThan();
         }
-        return tokenToReturn(0);
+        return tokenToReturn(ID.op_greater_than);
     }
-    private Token e2Higher() {
-        return tokenToReturn(0);
+    private Token e2GreaterThan() {
+        return tokenToReturn(ID.op_greater_than_equal);
     }
     private Token e1Add() {
         if(currentChar == '+') {
             updateLexemeAndCurrentChar();
             return e2Add();
         }
-        return tokenToReturn(0);
+        return tokenToReturn(ID.op_plus);
     }
     private Token e2Add() {
-        return tokenToReturn(0);
+        return tokenToReturn(ID.op_plus_plus);
     }
     private Token e1Sub() {
         if(currentChar == '-') {
             updateLexemeAndCurrentChar();
             return e2Sub();
         }
-        return tokenToReturn(0);
+        return tokenToReturn(ID.op_minus);
     }
     private Token e2Sub() {
-        return tokenToReturn(0);
+        return tokenToReturn(ID.op_minus_minus);
     }
     private Token e1Mul() {
-        return tokenToReturn(0);
+        return tokenToReturn(ID.op_multiplication);
     }
     private Token e1Slash() {
         if(currentChar == '/') {
@@ -222,7 +222,7 @@ public class LexicalAnalyzer {
             updateCurrentChar();
             return e1MultipleComment();
         } else {
-            return tokenToReturn(0);
+            return tokenToReturn(ID.op_division);
         }
     }
     private Token e1And() {
@@ -233,7 +233,7 @@ public class LexicalAnalyzer {
         return null; // ERROR
     }
     private Token e2And() {
-        return tokenToReturn(0);
+        return tokenToReturn(ID.op_and);
     }
     private Token e1Or() {
         if(currentChar == '|') {
@@ -243,36 +243,36 @@ public class LexicalAnalyzer {
         return null; // ERROR
     }
     private Token e2Or() {
-        return tokenToReturn(0);
+        return tokenToReturn(ID.op_or);
     }
     private Token e1OpenParenthesis() {
-        return tokenToReturn(0);
+        return tokenToReturn(ID.p_o_parenthesis);
     }
     private Token e1CloseParenthesis() {
-        return tokenToReturn(0);
+        return tokenToReturn(ID.p_c_parenthesis);
     }
     private Token e1OpenBracket1() {
-        return tokenToReturn(0);
+        return tokenToReturn(ID.p_o_bracket1);
     }
     private Token e1CloseBracket1() {
-        return tokenToReturn(0);
+        return tokenToReturn(ID.p_c_bracket1);
     }
     private Token e1OpenBracket2() {
-        return tokenToReturn(0);
+        return tokenToReturn(ID.p_o_bracket2);
     }
     private Token e1CloseBracket2() {
-        return tokenToReturn(0);
+        return tokenToReturn(ID.p_c_bracket2);
     }
     private Token e1Dot() {
-        return tokenToReturn(0);
+        return tokenToReturn(ID.p_dot);
     }
     private Token e1Comma() {
-        return tokenToReturn(0);
+        return tokenToReturn(ID.p_comma);
     }
     private Token e1Colon() {
-        return tokenToReturn(0);
+        return tokenToReturn(ID.p_colon);
     }
     private Token e1SemiColon() {
-        return tokenToReturn(0);
+        return tokenToReturn(ID.p_semicolon);
     }
 }
