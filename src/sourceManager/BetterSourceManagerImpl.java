@@ -5,12 +5,14 @@ import java.nio.charset.StandardCharsets;
 
 public class BetterSourceManagerImpl implements SourceManager {
     private BufferedReader reader;
+    String currentLine;
     private int lineNumber;
     private int lineIndexNumber;
 
     public BetterSourceManagerImpl() {
-        lineNumber = 0;
+        lineNumber = 1;
         lineIndexNumber = 0;
+        currentLine = "";
     }
 
     @Override
@@ -39,7 +41,9 @@ public class BetterSourceManagerImpl implements SourceManager {
         if (currentChar == '\n') {
             lineNumber++;
             lineIndexNumber = 0;
+            currentLine = "";
         } else {
+            currentLine += currentChar;
             lineIndexNumber++;
         }
 
@@ -49,5 +53,15 @@ public class BetterSourceManagerImpl implements SourceManager {
     @Override
     public int getLineNumber() {
         return lineNumber;
+    }
+
+    @Override
+    public int getColumnNumber() {
+        return lineIndexNumber;
+    }
+
+    @Override
+    public String getCurrentLine() {
+        return currentLine;
     }
 }
