@@ -3,6 +3,7 @@ package lexical;
 public enum ID {
     op_equal,
     op_not_equal,
+    op_not,
     op_greater_than,
     op_greater_than_equal,
     op_less_than,
