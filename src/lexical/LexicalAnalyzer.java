@@ -1,5 +1,6 @@
 package lexical;
 
+import exceptions.LexicalException;
 import sourceManager.SourceManager;
 
 import java.io.IOException;
@@ -17,7 +18,7 @@ public class LexicalAnalyzer {
         updateCurrentChar();
     }
 
-    public Token getNextToken() {
+    public Token getNextToken() throws LexicalException {
         lexeme = "";
         return e0();
     }
@@ -39,7 +40,7 @@ public class LexicalAnalyzer {
         return new Token(id, lexeme, sourceManager.getLineNumber());
     }
 
-    private Token e0() {
+    private Token e0() throws LexicalException {
         if(Character.isLetter(currentChar)) {
             updateLexemeAndCurrentChar();
             return e1Letter();
@@ -47,12 +48,15 @@ public class LexicalAnalyzer {
             updateLexemeAndCurrentChar();
             return e1Digit();
         } else if(Character.isWhitespace(currentChar)) {
+            updateCurrentChar();
             return e0();
         }
 
         switch(currentChar) {
             // COMMENTS OR DIVISION
             case '/':
+                updateLexemeAndCurrentChar();
+                return e1Slash();
             // OPERATORS
             case '=':
                 updateLexemeAndCurrentChar();
@@ -114,9 +118,18 @@ public class LexicalAnalyzer {
                 return e1SemiColon();
             // TEXT
             case '\'':
+                updateLexemeAndCurrentChar();
+                return e1SingleQuote();
             case '"':
+                updateLexemeAndCurrentChar();
+                return e1DoubleQuote();
+            // EOF
+            case SourceManager.END_OF_FILE:
+                updateLexemeAndCurrentChar();
+                return new Token(ID.EOF, lexeme, sourceManager.getLineNumber());
             default:
-                return null;
+                updateLexemeAndCurrentChar();
+                throw new LexicalException(sourceManager.getCurrentLine(), sourceManager.getLineNumber(), sourceManager.getColumnNumber());
         }
     }
 
@@ -135,25 +148,42 @@ public class LexicalAnalyzer {
         }
         return tokenToReturn(ID.identifier);
     }
-    private Token e1SimpleComment() {
-        while(currentChar != '\n') {
+    private Token e1SingleQuote() throws LexicalException {
+        if(Character.isWhitespace(currentChar) || Character.isLetter(currentChar) || Character.isDigit(currentChar)) {
+            updateLexemeAndCurrentChar();
+            return e2SingleQuote();
+        }
+        throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber());
+    }
+    private Token e2SingleQuote() throws LexicalException {
+        if(currentChar == '\'') {
+            return tokenToReturn(ID.t_char);
+        }
+        throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber());
+    }
+
+    private Token e1DoubleQuote() {
+        return null;
+    }
+    private Token e1SimpleComment() throws LexicalException {
+        if(currentChar != '\n' && currentChar != SourceManager.END_OF_FILE) {
             updateCurrentChar();
+            return e1SimpleComment();
         }
         lexeme = "";
         return e0();
     }
-    private Token e1MultipleComment() {
-        while(true) {
-            if(currentChar == '*') {
+    private Token e1MultipleComment() throws LexicalException {
+        if(currentChar == '*') {
+            updateCurrentChar();
+            if (currentChar == '/') {
                 updateCurrentChar();
-                if(currentChar == '/')
-                    break;
-            } else {
-                updateCurrentChar();
+                lexeme = "";
+                return e0();
             }
         }
-        lexeme = "";
-        return e0();
+        updateCurrentChar();
+        return e1MultipleComment();
     }
     private Token e1Equal() {
         if(currentChar == '=') {
@@ -164,12 +194,12 @@ public class LexicalAnalyzer {
     private Token e1NotEqual() {
         return tokenToReturn(ID.op_not_equal);
     }
-    private Token e1ExclamationMark() {
+    private Token e1ExclamationMark() throws LexicalException {
         if(currentChar == '=') {
             updateLexemeAndCurrentChar();
             return e1NotEqual();
         }
-        return null; // Exception
+        return tokenToReturn(ID.op_not);
     }
     private Token e1LessThan() {
         if(currentChar == '=') {
@@ -214,7 +244,7 @@ public class LexicalAnalyzer {
     private Token e1Mul() {
         return tokenToReturn(ID.op_multiplication);
     }
-    private Token e1Slash() {
+    private Token e1Slash() throws LexicalException {
         if(currentChar == '/') {
             updateCurrentChar();
             return e1SimpleComment();
@@ -225,22 +255,22 @@ public class LexicalAnalyzer {
             return tokenToReturn(ID.op_division);
         }
     }
-    private Token e1And() {
+    private Token e1And() throws LexicalException {
         if(currentChar == '&') {
             updateLexemeAndCurrentChar();
             return e2And();
         }
-        return null; // ERROR
+        throw new LexicalException(sourceManager.getCurrentLine(), sourceManager.getLineNumber(), sourceManager.getColumnNumber());
     }
     private Token e2And() {
         return tokenToReturn(ID.op_and);
     }
-    private Token e1Or() {
+    private Token e1Or() throws LexicalException {
         if(currentChar == '|') {
             updateLexemeAndCurrentChar();
             return e2Or();
         }
-        return null; // ERROR
+        throw new LexicalException(sourceManager.getCurrentLine(), sourceManager.getLineNumber(), sourceManager.getColumnNumber());
     }
     private Token e2Or() {
         return tokenToReturn(ID.op_or);
