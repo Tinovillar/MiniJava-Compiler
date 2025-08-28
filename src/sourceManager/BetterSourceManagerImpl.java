@@ -62,10 +62,13 @@ public class BetterSourceManagerImpl implements SourceManager {
 
     @Override
     public String getCurrentLine() {
-        String toReturn = "";
+        String toReturn = currentLine;
         try {
-            reader.mark(0);
-            toReturn = currentLine + reader.readLine();
+            reader.mark(1000);
+            String readLine = reader.readLine();
+            if(readLine != null) {
+                toReturn += readLine;
+            }
             reader.reset();
         } catch (Exception e) {
             e.printStackTrace();

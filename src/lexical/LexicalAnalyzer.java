@@ -149,16 +149,19 @@ public class LexicalAnalyzer {
         return tokenToReturn(ID.identifier);
     }
     private Token e1SingleQuote() throws LexicalException {
-        if(Character.isWhitespace(currentChar) || Character.isLetter(currentChar) || Character.isDigit(currentChar)) {
+        if(currentChar != '\'' || currentChar != SourceManager.END_OF_FILE || currentChar != '\\') {
             updateLexemeAndCurrentChar();
             return e2SingleQuote();
         }
+        updateCurrentChar();
         throw new LexicalException(sourceManager.getCurrentLine(), sourceManager.getLineNumber(), sourceManager.getColumnNumber());
     }
     private Token e2SingleQuote() throws LexicalException {
         if(currentChar == '\'') {
+            updateLexemeAndCurrentChar();
             return tokenToReturn(ID.t_char);
         }
+        updateCurrentChar();
         throw new LexicalException(sourceManager.getCurrentLine(), sourceManager.getLineNumber(), sourceManager.getColumnNumber());
     }
 
@@ -194,7 +197,7 @@ public class LexicalAnalyzer {
     private Token e1NotEqual() {
         return tokenToReturn(ID.op_not_equal);
     }
-    private Token e1ExclamationMark() throws LexicalException {
+    private Token e1ExclamationMark() {
         if(currentChar == '=') {
             updateLexemeAndCurrentChar();
             return e1NotEqual();

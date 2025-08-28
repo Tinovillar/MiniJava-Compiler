@@ -12,7 +12,7 @@ public class Main {
     public static void main(String[] args) {
         try {
             SourceManager sourceManager = new BetterSourceManagerImpl();
-            sourceManager.open("C:\\Users\\valen\\Desktop\\compilador\\compilador\\resource\\test1.java");
+            sourceManager.open("C:\\Users\\valen\\Desktop\\compilador\\compilador\\resource\\test2.java");
 
             Token currentToken = null;
             LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(sourceManager);
@@ -24,7 +24,7 @@ public class Main {
                 } catch (LexicalException e) {
                     e.printStackTrace();
                 }
-            } while(currentToken.getId() != ID.EOF);
+            } while(currentToken == null || currentToken.getId() != ID.EOF);
 
             sourceManager.close();
         } catch (FileNotFoundException e) {
