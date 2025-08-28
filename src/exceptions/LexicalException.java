@@ -13,11 +13,12 @@ public class LexicalException extends Exception {
 
     @Override
     public void printStackTrace() {
-        System.out.println("Error ==> Lexeme: \"" + currentLine + "\" - Line number: " + line);
-        for (int i = 0; i < 18 + column; i++) {
+        System.out.println("[Error in line " + line + ", column " + column + "]");
+        System.out.print("Lexeme: ");
+        System.out.println(currentLine);
+        for (int i = 0; i < 6 + column; i++) {
             System.out.print(" ");
         }
-        System.out.print("^");
-        System.out.println();
+        System.out.println("^");
     }
 }
