@@ -153,13 +153,13 @@ public class LexicalAnalyzer {
             updateLexemeAndCurrentChar();
             return e2SingleQuote();
         }
-        throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber());
+        throw new LexicalException(sourceManager.getCurrentLine(), sourceManager.getLineNumber(), sourceManager.getColumnNumber());
     }
     private Token e2SingleQuote() throws LexicalException {
         if(currentChar == '\'') {
             return tokenToReturn(ID.t_char);
         }
-        throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber());
+        throw new LexicalException(sourceManager.getCurrentLine(), sourceManager.getLineNumber(), sourceManager.getColumnNumber());
     }
 
     private Token e1DoubleQuote() {
