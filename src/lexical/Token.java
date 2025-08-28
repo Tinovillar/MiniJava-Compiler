@@ -25,6 +25,6 @@ public class Token {
 
     @Override
     public String toString() {
-        return " - ("+ this.id.toString() +", " + this.lexeme + ", " + this.lineNumber + ") - ";
+        return " > ("+ this.id.toString() +", " + this.lexeme + ", " + this.lineNumber + ")";
     }
 }
