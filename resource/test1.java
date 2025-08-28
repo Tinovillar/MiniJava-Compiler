@@ -1,6 +1,6 @@
 // [Hola pedazo de sapo]
 test + hola
-class       ?
+class   ?
 /*
 
 commentario
