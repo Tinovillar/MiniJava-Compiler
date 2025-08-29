@@ -129,13 +129,14 @@ public class LexicalAnalyzer {
                 return new Token(ID.EOF, lexeme, sourceManager.getLineNumber());
             default:
                 updateLexemeAndCurrentChar();
-                throw new LexicalException(sourceManager.getCurrentLine(), sourceManager.getLineNumber(), sourceManager.getColumnNumber());
+                throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber());
         }
     }
 
-    private Token e1Digit() {
+    private Token e1Digit() throws LexicalException {
         if(Character.isDigit(currentChar)) {
             updateLexemeAndCurrentChar();
+            if(lexeme.length() < 9) throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber());
             return e1Digit();
         } else {
             return tokenToReturn(ID.integer);
@@ -149,24 +150,41 @@ public class LexicalAnalyzer {
         return tokenToReturn(ID.identifier);
     }
     private Token e1SingleQuote() throws LexicalException {
-        if(currentChar != '\'' || currentChar != SourceManager.END_OF_FILE || currentChar != '\\') {
+        if(currentChar != '\\') {
+            updateLexemeAndCurrentChar();
+            return e3SingleQuote();
+        } else if(currentChar != '\'' && currentChar != SourceManager.END_OF_FILE && currentChar != '\n') {
             updateLexemeAndCurrentChar();
             return e2SingleQuote();
         }
         updateCurrentChar();
-        throw new LexicalException(sourceManager.getCurrentLine(), sourceManager.getLineNumber(), sourceManager.getColumnNumber());
+        throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber());
     }
     private Token e2SingleQuote() throws LexicalException {
         if(currentChar == '\'') {
             updateLexemeAndCurrentChar();
             return tokenToReturn(ID.t_char);
         }
-        updateCurrentChar();
-        throw new LexicalException(sourceManager.getCurrentLine(), sourceManager.getLineNumber(), sourceManager.getColumnNumber());
+        while (currentChar != '\'' && currentChar != SourceManager.END_OF_FILE && currentChar != '\n') {
+            updateLexemeAndCurrentChar();
+            if(currentChar == '\'') updateLexemeAndCurrentChar();
+        }
+        throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber());
     }
-
-    private Token e1DoubleQuote() {
-        return null;
+    private Token e3SingleQuote() throws LexicalException {
+        updateLexemeAndCurrentChar();
+        return e2SingleQuote();
+    }
+    private Token e1DoubleQuote() throws LexicalException {
+        if(currentChar != '"' && currentChar != SourceManager.END_OF_FILE && currentChar != '\n') {
+            updateLexemeAndCurrentChar();
+            return e1DoubleQuote();
+        } else if(currentChar == '"') {
+            updateLexemeAndCurrentChar();
+            return tokenToReturn(ID.t_string);
+        }
+        System.out.println(lexeme);
+        throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber());
     }
     private Token e1SimpleComment() throws LexicalException {
         if(currentChar != '\n' && currentChar != SourceManager.END_OF_FILE) {
@@ -263,7 +281,7 @@ public class LexicalAnalyzer {
             updateLexemeAndCurrentChar();
             return e2And();
         }
-        throw new LexicalException(sourceManager.getCurrentLine(), sourceManager.getLineNumber(), sourceManager.getColumnNumber());
+        throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber());
     }
     private Token e2And() {
         return tokenToReturn(ID.op_and);
@@ -273,7 +291,7 @@ public class LexicalAnalyzer {
             updateLexemeAndCurrentChar();
             return e2Or();
         }
-        throw new LexicalException(sourceManager.getCurrentLine(), sourceManager.getLineNumber(), sourceManager.getColumnNumber());
+        throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber());
     }
     private Token e2Or() {
         return tokenToReturn(ID.op_or);

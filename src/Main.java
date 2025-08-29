@@ -11,8 +11,10 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) {
         try {
+            boolean errors = false;
+
             SourceManager sourceManager = new BetterSourceManagerImpl();
-            sourceManager.open("C:\\Users\\valen\\Desktop\\compilador\\compilador\\resource\\test2.java");
+            sourceManager.open(args[0]);
 
             Token currentToken = null;
             LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(sourceManager);
@@ -22,9 +24,12 @@ public class Main {
                     currentToken = lexicalAnalyzer.getNextToken();
                     System.out.println(currentToken.toString());
                 } catch (LexicalException e) {
+                    errors = true;
                     e.printStackTrace();
                 }
             } while(currentToken == null || currentToken.getId() != ID.EOF);
+
+            if (!errors) System.out.println("[SinErrores]");
 
             sourceManager.close();
         } catch (FileNotFoundException e) {

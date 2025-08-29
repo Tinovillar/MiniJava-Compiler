@@ -8,11 +8,13 @@ public class BetterSourceManagerImpl implements SourceManager {
     String currentLine;
     private int lineNumber;
     private int lineIndexNumber;
+    private boolean toUpdate;
 
     public BetterSourceManagerImpl() {
         lineNumber = 1;
         lineIndexNumber = 0;
         currentLine = "";
+        toUpdate = false;
     }
 
     @Override
@@ -38,15 +40,19 @@ public class BetterSourceManagerImpl implements SourceManager {
 
         char currentChar = (char) readCode;
 
-        if (currentChar == '\n') {
+        if(currentChar == '\r')
+            currentChar = (char) reader.read();
+
+        if (toUpdate) {
             lineNumber++;
             lineIndexNumber = 0;
             currentLine = "";
-        } else {
+        } else if(currentChar == '\n'){
             currentLine += currentChar;
             lineIndexNumber++;
         }
 
+        toUpdate = currentChar == '\n';
         return currentChar;
     }
 
@@ -63,6 +69,7 @@ public class BetterSourceManagerImpl implements SourceManager {
     @Override
     public String getCurrentLine() {
         String toReturn = currentLine;
+        if(toUpdate) return toReturn;
         try {
             reader.mark(1000);
             String readLine = reader.readLine();
