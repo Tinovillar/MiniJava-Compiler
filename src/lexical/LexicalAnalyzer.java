@@ -142,9 +142,10 @@ public class LexicalAnalyzer {
             return tokenToReturn(ID.integer);
         }
     }
-    private Token e1Letter() {
+    private Token e1Letter() throws LexicalException {
         if(Character.isLetterOrDigit(currentChar) || currentChar == '_') {
             updateLexemeAndCurrentChar();
+            if(lexeme.length() < 9) throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber());
             return e1Letter();
         }
         return tokenToReturn(ID.identifier);
