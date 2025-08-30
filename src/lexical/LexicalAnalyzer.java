@@ -10,17 +10,22 @@ public class LexicalAnalyzer {
     String lexeme;
     char currentChar;
     SourceManager sourceManager;
+    boolean hasNext;
 
     public LexicalAnalyzer(SourceManager sourceManager) {
         this.lexeme = "";
         this.currentChar = ' ';
         this.sourceManager = sourceManager;
+        this.hasNext = true;
         updateCurrentChar();
     }
 
     public Token getNextToken() throws LexicalException {
         lexeme = "";
         return e0();
+    }
+    public boolean hasNext() {
+        return hasNext;
     }
     private void updateLexeme() {
         lexeme = lexeme + currentChar;
@@ -126,6 +131,7 @@ public class LexicalAnalyzer {
             // EOF
             case SourceManager.END_OF_FILE:
                 updateLexemeAndCurrentChar();
+                hasNext = false;
                 return new Token(ID.EOF, lexeme, sourceManager.getLineNumber());
             default:
                 updateLexemeAndCurrentChar();
@@ -136,8 +142,8 @@ public class LexicalAnalyzer {
     private Token e1Digit() throws LexicalException {
         if(Character.isDigit(currentChar)) {
             updateLexemeAndCurrentChar();
-            if(lexeme.length() < 9) throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber());
-            return e1Digit();
+            if(lexeme.length() < 9) return e1Digit();
+            throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber());
         } else {
             return tokenToReturn(ID.integer);
         }
@@ -145,20 +151,22 @@ public class LexicalAnalyzer {
     private Token e1Letter() throws LexicalException {
         if(Character.isLetterOrDigit(currentChar) || currentChar == '_') {
             updateLexemeAndCurrentChar();
-            if(lexeme.length() < 9) throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber());
-            return e1Letter();
+            if(lexeme.length() < 9) return e1Letter();
+            throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber());
         }
         return tokenToReturn(ID.identifier);
     }
     private Token e1SingleQuote() throws LexicalException {
-        if(currentChar != '\\') {
+        if(currentChar == '\\') {
             updateLexemeAndCurrentChar();
             return e3SingleQuote();
         } else if(currentChar != '\'' && currentChar != SourceManager.END_OF_FILE && currentChar != '\n') {
             updateLexemeAndCurrentChar();
             return e2SingleQuote();
         }
-        updateCurrentChar();
+        if(currentChar == '\'') {
+            updateLexemeAndCurrentChar();
+        }
         throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber());
     }
     private Token e2SingleQuote() throws LexicalException {
@@ -184,7 +192,6 @@ public class LexicalAnalyzer {
             updateLexemeAndCurrentChar();
             return tokenToReturn(ID.t_string);
         }
-        System.out.println(lexeme);
         throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber());
     }
     private Token e1SimpleComment() throws LexicalException {
