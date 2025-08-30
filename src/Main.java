@@ -13,6 +13,11 @@ public class Main {
         try {
             boolean errors = false;
 
+            if(args.length != 1) {
+                System.out.println("ERROR: Need ONE and only ONE argument");
+                return;
+            }
+
             SourceManager sourceManager = new BetterSourceManagerImpl();
             sourceManager.open(args[0]);
 
@@ -22,12 +27,12 @@ public class Main {
             do {
                 try {
                     currentToken = lexicalAnalyzer.getNextToken();
-                    System.out.println(currentToken.toString());
+                    if(currentToken.getId() != ID.EOF) System.out.println(currentToken);
                 } catch (LexicalException e) {
                     errors = true;
                     e.printStackTrace();
                 }
-            } while(currentToken == null || currentToken.getId() != ID.EOF);
+            } while(lexicalAnalyzer.hasNext());
 
             if (!errors) System.out.println("[SinErrores]");
 
