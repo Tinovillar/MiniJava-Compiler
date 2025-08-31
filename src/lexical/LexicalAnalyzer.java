@@ -28,7 +28,15 @@ public class LexicalAnalyzer {
         return hasNext;
     }
     private void updateLexeme() {
-        lexeme = lexeme + currentChar;
+        switch (currentChar) {
+            case '\n':
+                lexeme += "\\" + "n";
+                break;
+            case '\r':
+                lexeme += "\\" + "r";
+            default:
+                lexeme = lexeme + currentChar;
+        }
     }
     private void updateCurrentChar() {
         try {
@@ -152,16 +160,14 @@ public class LexicalAnalyzer {
     private Token e1LetterUpperCase() throws LexicalException {
         if(Character.isLetterOrDigit(currentChar) || currentChar == '_') {
             updateLexemeAndCurrentChar();
-            if(lexeme.length() < 9) return e1LetterUpperCase();
-            throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber(), "The Class Name is too long.");
+            return e1LetterUpperCase();
         }
         return tokenToReturn(ID.id_class);
     }
     private Token e1LetterLowerCase() throws LexicalException {
         if(Character.isLetterOrDigit(currentChar) || currentChar == '_') {
             updateLexemeAndCurrentChar();
-            if(lexeme.length() < 9) return e1LetterLowerCase();
-            throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber(), "The Method/Variable is too long.");
+            return e1LetterLowerCase();
         }
         return tokenToReturn(LexemeTable.getToken(lexeme));
     }
@@ -175,8 +181,6 @@ public class LexicalAnalyzer {
         }
         if(currentChar == '\'') {
             updateLexemeAndCurrentChar();
-        }
-        if(currentChar == '\'') {
             throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber(), "Empty character literal.");
         } else if(currentChar == '\n') {
             throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber(), "Literal character must be closed in the same line.");
@@ -218,6 +222,17 @@ public class LexicalAnalyzer {
         }
         throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber(), "Double quote were not closed");
     }
+    private Token e1Slash() throws LexicalException {
+        if(currentChar == '/') {
+            updateCurrentChar();
+            return e1SimpleComment();
+        } else if(currentChar == '*') {
+            updateLexemeAndCurrentChar();
+            return e1MultipleComment();
+        } else {
+            return tokenToReturn(ID.op_division);
+        }
+    }
     private Token e1SimpleComment() throws LexicalException {
         if(currentChar != '\n' && currentChar != SourceManager.END_OF_FILE) {
             updateCurrentChar();
@@ -235,7 +250,10 @@ public class LexicalAnalyzer {
                 return e0();
             }
         }
-        updateCurrentChar();
+        if(currentChar == SourceManager.END_OF_FILE) {
+            throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber(), "EOF found. Multiple comment must be closed.");
+        }
+        updateLexemeAndCurrentChar();
         return e1MultipleComment();
     }
     private Token e1Equal() {
@@ -296,17 +314,6 @@ public class LexicalAnalyzer {
     }
     private Token e1Mul() {
         return tokenToReturn(ID.op_multiplication);
-    }
-    private Token e1Slash() throws LexicalException {
-        if(currentChar == '/') {
-            updateCurrentChar();
-            return e1SimpleComment();
-        } else if(currentChar == '*') {
-            updateCurrentChar();
-            return e1MultipleComment();
-        } else {
-            return tokenToReturn(ID.op_division);
-        }
     }
     private Token e1And() throws LexicalException {
         if(currentChar == '&') {
