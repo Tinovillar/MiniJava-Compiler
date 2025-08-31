@@ -48,7 +48,8 @@ public class LexicalAnalyzer {
     private Token e0() throws LexicalException {
         if(Character.isLetter(currentChar)) {
             updateLexemeAndCurrentChar();
-            return e1Letter();
+            if(Character.isLowerCase(currentChar)) return e1LetterLowerCase();
+            return e1LetterUpperCase();
         } else if(Character.isDigit(currentChar)) {
             updateLexemeAndCurrentChar();
             return e1Digit();
@@ -135,7 +136,7 @@ public class LexicalAnalyzer {
                 return new Token(ID.EOF, lexeme, sourceManager.getLineNumber());
             default:
                 updateLexemeAndCurrentChar();
-                throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber());
+                throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber(), "The program cannot recognize the current char.");
         }
     }
 
@@ -143,18 +144,26 @@ public class LexicalAnalyzer {
         if(Character.isDigit(currentChar)) {
             updateLexemeAndCurrentChar();
             if(lexeme.length() < 9) return e1Digit();
-            throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber());
+            throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber(), "The number is too long.");
         } else {
             return tokenToReturn(ID.integer);
         }
     }
-    private Token e1Letter() throws LexicalException {
+    private Token e1LetterUpperCase() throws LexicalException {
         if(Character.isLetterOrDigit(currentChar) || currentChar == '_') {
             updateLexemeAndCurrentChar();
-            if(lexeme.length() < 9) return e1Letter();
-            throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber());
+            if(lexeme.length() < 9) return e1LetterUpperCase();
+            throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber(), "The Class Name is too long.");
         }
-        return tokenToReturn(ID.identifier);
+        return tokenToReturn(ID.id_class);
+    }
+    private Token e1LetterLowerCase() throws LexicalException {
+        if(Character.isLetterOrDigit(currentChar) || currentChar == '_') {
+            updateLexemeAndCurrentChar();
+            if(lexeme.length() < 9) return e1LetterLowerCase();
+            throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber(), "The Method/Variable is too long.");
+        }
+        return tokenToReturn(ID.id_met_or_var);
     }
     private Token e1SingleQuote() throws LexicalException {
         if(currentChar == '\\') {
@@ -167,7 +176,12 @@ public class LexicalAnalyzer {
         if(currentChar == '\'') {
             updateLexemeAndCurrentChar();
         }
-        throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber());
+        if(currentChar == '\'') {
+            throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber(), "Empty character literal.");
+        } else if(currentChar == '\n') {
+            throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber(), "Literal character must be closed in the same line.");
+        }
+        throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber(), "Reaching EOF before closing single quote.");
     }
     private Token e2SingleQuote() throws LexicalException {
         if(currentChar == '\'') {
@@ -176,9 +190,14 @@ public class LexicalAnalyzer {
         }
         while (currentChar != '\'' && currentChar != SourceManager.END_OF_FILE && currentChar != '\n') {
             updateLexemeAndCurrentChar();
-            if(currentChar == '\'') updateLexemeAndCurrentChar();
         }
-        throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber());
+        if(currentChar == '\'') {
+            updateLexemeAndCurrentChar();
+            throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber(), "A literal character must contain ONLY ONE character.");
+        } else if(currentChar == '\n') {
+            throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber(), "Literal character must be closed in the same line.");
+        }
+        throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber(), "Reaching EOF before closing single quote.");
     }
     private Token e3SingleQuote() throws LexicalException {
         updateLexemeAndCurrentChar();
@@ -192,7 +211,12 @@ public class LexicalAnalyzer {
             updateLexemeAndCurrentChar();
             return tokenToReturn(ID.t_string);
         }
-        throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber());
+        if(currentChar == '\n') {
+            throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber(), "Literal string must be closed in the same line.");
+        } else if(currentChar == SourceManager.END_OF_FILE) {
+            throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber(), "Reaching EOF before closing double quote.");
+        }
+        throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber(), "Double quote were not closed");
     }
     private Token e1SimpleComment() throws LexicalException {
         if(currentChar != '\n' && currentChar != SourceManager.END_OF_FILE) {
@@ -289,7 +313,7 @@ public class LexicalAnalyzer {
             updateLexemeAndCurrentChar();
             return e2And();
         }
-        throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber());
+        throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber(), "The & operator is not supported. Must be &&.");
     }
     private Token e2And() {
         return tokenToReturn(ID.op_and);
@@ -299,7 +323,7 @@ public class LexicalAnalyzer {
             updateLexemeAndCurrentChar();
             return e2Or();
         }
-        throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber());
+        throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber(), "The | operator is not supported. Must be ||.");
     }
     private Token e2Or() {
         return tokenToReturn(ID.op_or);
