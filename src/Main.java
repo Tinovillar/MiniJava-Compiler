@@ -27,7 +27,7 @@ public class Main {
             do {
                 try {
                     currentToken = lexicalAnalyzer.getNextToken();
-                    if(currentToken.getId() != ID.EOF) System.out.println(currentToken);
+                    System.out.println(currentToken);
                 } catch (LexicalException e) {
                     errors = true;
                     e.printStackTrace();

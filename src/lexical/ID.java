@@ -1,6 +1,27 @@
 package lexical;
 
 public enum ID {
+    kw_class,
+    kw_extends,
+    kw_public,
+    kw_static,
+    kw_void,
+    kw_boolean,
+    kw_char,
+    kw_int,
+    kw_abstract,
+    kw_final,
+    kw_if,
+    kw_else,
+    kw_while,
+    kw_return,
+    kw_var,
+    kw_this,
+    kw_new,
+    kw_null,
+    kw_true,
+    kw_false,
+
     op_equal,
     op_not_equal,
     op_not,
@@ -29,6 +50,7 @@ public enum ID {
     t_char,
     t_string,
     integer,
-    identifier,
+    id_met_or_var,
+    id_class,
     EOF
 }
