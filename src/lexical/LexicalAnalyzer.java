@@ -163,7 +163,7 @@ public class LexicalAnalyzer {
             if(lexeme.length() < 9) return e1LetterLowerCase();
             throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber(), "The Method/Variable is too long.");
         }
-        return tokenToReturn(ID.id_met_or_var);
+        return tokenToReturn(LexemeTable.getToken(lexeme));
     }
     private Token e1SingleQuote() throws LexicalException {
         if(currentChar == '\\') {
