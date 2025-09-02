@@ -154,7 +154,7 @@ public class LexicalAnalyzer {
             if(lexeme.length() < 9) return e1Digit();
             throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber(), "The number is too long.");
         } else {
-            return tokenToReturn(ID.integer);
+            return tokenToReturn(ID.literal_integer);
         }
     }
     private Token e1LetterUpperCase() throws LexicalException {
@@ -190,7 +190,7 @@ public class LexicalAnalyzer {
     private Token e2SingleQuote() throws LexicalException {
         if(currentChar == '\'') {
             updateLexemeAndCurrentChar();
-            return tokenToReturn(ID.t_char);
+            return tokenToReturn(ID.literal_char);
         }
         while (currentChar != '\'' && currentChar != SourceManager.END_OF_FILE && currentChar != '\n') {
             updateLexemeAndCurrentChar();
@@ -208,12 +208,16 @@ public class LexicalAnalyzer {
         return e2SingleQuote();
     }
     private Token e1DoubleQuote() throws LexicalException {
-        if(currentChar != '"' && currentChar != SourceManager.END_OF_FILE && currentChar != '\n') {
+        if(currentChar == '\\') {
+            updateLexemeAndCurrentChar();
+            if (currentChar == '"') updateLexemeAndCurrentChar();
+            return e1DoubleQuote();
+        } else if(currentChar != '"' && currentChar != SourceManager.END_OF_FILE && currentChar != '\n') {
             updateLexemeAndCurrentChar();
             return e1DoubleQuote();
         } else if(currentChar == '"') {
             updateLexemeAndCurrentChar();
-            return tokenToReturn(ID.t_string);
+            return tokenToReturn(ID.literal_string);
         }
         if(currentChar == '\n') {
             throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber(), "Literal string must be closed in the same line.");

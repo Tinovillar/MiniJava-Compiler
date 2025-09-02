@@ -47,9 +47,9 @@ public enum ID {
     p_comma,
     p_colon,
     p_semicolon,
-    t_char,
-    t_string,
-    integer,
+    literal_char,
+    literal_string,
+    literal_integer,
     id_met_or_var,
     id_class,
     EOF
