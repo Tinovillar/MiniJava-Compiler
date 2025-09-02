@@ -143,15 +143,16 @@ public class LexicalAnalyzer {
                 hasNext = false;
                 return new Token(ID.EOF, lexeme, sourceManager.getLineNumber());
             default:
+                int column = sourceManager.getColumnNumber();
                 updateLexemeAndCurrentChar();
-                throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber(), "The program cannot recognize the current char.");
+                throw new LexicalException(lexeme, sourceManager.getLineNumber(), column, "The program cannot recognize the current char.");
         }
     }
 
     private Token e1Digit() throws LexicalException {
         if(Character.isDigit(currentChar)) {
             updateLexemeAndCurrentChar();
-            if(lexeme.length() < 9) return e1Digit();
+            if(lexeme.length() <= 9) return e1Digit();
             throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber(), "The number is too long.");
         } else {
             return tokenToReturn(ID.literal_integer);

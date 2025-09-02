@@ -47,7 +47,8 @@ public class BetterSourceManagerImpl implements SourceManager {
             lineNumber++;
             lineIndexNumber = 0;
             currentLine = "";
-        } else if(currentChar == '\n'){
+        }
+        if(currentChar != '\n'){
             currentLine += currentChar;
             lineIndexNumber++;
         }
