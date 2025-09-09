@@ -1,0 +1,191 @@
+####### ELIMINAR RECURSION A IZQUIERDA ########
+
+<Inicial> ::= <ListaClases> eof
+<ListaClases> ::= <Clase> <ListaClases> | €
+<Clase> ::= <ModificadorOpcional> class idClase <HerenciaOpcional> { <ListaMiembros> }
+<ModificadorOpcional> ::= abstract | static | final | €
+<HerenciaOpcional> ::= extends idClase | €
+<ListaMiembros> ::= <Miembro> <ListaMiembros> | €
+<Miembro> ::= <Atributo> | <Metodo> | <Constructor>
+<Atributo> ::= <Tipo> idMetVar ;
+<Metodo> ::= <ModificadorOpcional> <TipoMetodo> idMetVar <ArgsFormales> <BloqueOpcional>
+<Constructor> ::= public idClase <ArgsFormales> <Bloque>
+<TipoMetodo> ::= <Tipo> | void
+<Tipo> ::= <TipoPrimitivo> | idClase
+<TipoPrimitivo> ::= boolean | char | int
+<ArgsFormales> ::= ( <ListaArgsFormalesOpcional> )
+<ListaArgsFormalesOpcional> ::= <ListaArgsFormales> | €
+
+===> PREGUNTAR <===
+-- <ListaArgsFormales> ::= <ArgFormal>
+-- <ListaArgsFormales> ::= <ListaArgsFormales> , <ArgFormal>
+++ <ListaArgsFormales> ::= <ArgFormal> <ListaArgsFormalesResto>
+++ <ListaArgsFormalesResto> ::= , <ArgFormal> <ListaArgsFormalesResto> | €
+===> puedo? xq no? <===
+++ <ListaArgsFormales> ::= <ArgFormal>
+++ <ListaArgsFormales> ::= <ArgFormal> , <ListaArgsFormales> | €
+
+<ArgFormal> ::= <Tipo> idMetVar
+<BloqueOpcional> ::= <Bloque> | €
+<Bloque> ::= { <ListaSentencias> }
+<ListaSentencias> ::= <Sentencia> <ListaSentencias> | €
+<Sentencia> ::= ;
+<Sentencia> ::= <Asignacion> ;
+<Sentencia> ::= <Llamada> ;
+<Sentencia> ::= <VarLocal> ;
+<Sentencia> ::= <Return> ;
+<Sentencia> ::= <If>
+<Sentencia> ::= <While>
+<Sentencia> ::= <Bloque>
+<Asignacion> ::= <Expresion>
+<Llamada> ::= <Expresion>
+<VarLocal> ::= var idMetVar = <ExpresionCompuesta>
+<Return> ::= return <ExpresionOpcional>
+<ExpresionOpcional> ::= <Expresion> | €
+<If> ::= if ( <Expresion> ) <Sentencia>
+<If> ::= if ( <Expresion> ) <Sentencia> else <Sentencia>
+<While> ::= while ( <Expresion> ) <Sentencia>
+<Expresion> ::= <ExpresionCompuesta> <OperadorAsignacion> <ExpresionCompuesta>
+<Expresion> ::= <ExpresionCompuesta>
+<OperadorAsignacion> ::= = | += | -=
+
+===> PREGUNTAR <===
+-- <ExpresionCompuesta> ::= <ExpresionBasica>
+-- <ExpresionCompuesta> ::= <ExpresionCompuesta> <OperadorBinario> <ExpresionBasica>
+++ <ExpresionCompuesta> ::= <ExpresionBasica> <ExpresionCompuestaResto>
+++ <ExpresionCompuestaResto> ::= <ExpresionBasica> <OperadorBinario> <ExpresionCompuestaResto> | €
+
+<OperadorBinario> ::= || | && | == | != | < | > | <= | >= | + | - | * | / | %
+<ExpresionBasica> ::= <OperadorUnario> <Operando>
+<ExpresionBasica> ::= <Operando>
+
+===> PREGUNTA <===
+el '+' y el '-' son operadores unarios?????
+
+<OperadorUnario> ::= + | ++ | − | −− | !
+<Operando> ::= <Primitvo>
+<Operando> ::= <Referencia>
+<Primitivo> ::= true | false | intLiteral | charLiteral | null
+
+===> PREGUNTAR <===
+-- <Referencia> ::= <Primario>
+-- <Referencia> ::= <Referencia> <VarEncadenada>
+-- <Referencia> ::= <Referencia> <MetodoEncadenado>
+++ <Referencia> ::= <Primario> <ReferenciaResto>
+++ <ReferenciaResto> ::= <VarEncadenada> <ReferenciaResto> | <MetodoEncadenado> <ReferenciaResto> | €
+
+<Primario> ::= this
+<Primario> ::= stringLiteral
+<Primario> ::= <AccesoVar>
+<Primario> ::= <LlamadaConstructor>
+<Primario> ::= <LlamadaMetodo>
+<Primario> ::= <LlamadaMetodoEstatico>
+<Primario> ::= <ExpresionParentizada>
+<AccesoVar> ::= idMetVar
+<LlamadaConstructor> ::= new idClase <ArgsActuales>
+<ExpresionParentizada> ::= ( <Expresion> )
+<LlamadaMetodo> ::= idMetVar <ArgsActuales>
+<LlamadaMetodoEstatico> ::= idClase . idMetVar <ArgsActuales>
+<ArgsActuales> ::= ( <ListaExpsOpcional> )
+<ListaExpsOpcional> ::= <ListaExps> | €
+<ListaExps> ::= <Expresion>
+<ListaExps> ::= <Expresion> , <ListaExps>
+<VarEncadenada> ::= . idMetVar
+<MetodoEncadenado> ::= . idMetVar <ArgsActuales>
+
+
+
+####### FACTORIZAR A IZQUIERDA ########
+
+
+
+<Inicial> ::= <ListaClases> eof
+<ListaClases> ::= <Clase> <ListaClases> | €
+<Clase> ::= <ModificadorOpcional> class idClase <HerenciaOpcional> { <ListaMiembros> }
+<ModificadorOpcional> ::= abstract | static | final | €
+<HerenciaOpcional> ::= extends idClase | €
+<ListaMiembros> ::= <Miembro> <ListaMiembros> | €
+<Miembro> ::= <Atributo> | <Metodo> | <Constructor>
+<Atributo> ::= <Tipo> idMetVar ;
+<Metodo> ::= <ModificadorOpcional> <TipoMetodo> idMetVar <ArgsFormales> <BloqueOpcional>
+<Constructor> ::= public idClase <ArgsFormales> <Bloque>
+<TipoMetodo> ::= <Tipo> | void
+<Tipo> ::= <TipoPrimitivo> | idClase
+<TipoPrimitivo> ::= boolean | char | int
+<ArgsFormales> ::= ( <ListaArgsFormalesOpcional> )
+<ListaArgsFormalesOpcional> ::= <ListaArgsFormales> | €
+<ListaArgsFormales> ::= <ArgFormal> <ListaArgsFormalesResto>
+<ListaArgsFormalesResto> ::= , <ArgFormal> <ListaArgsFormalesResto> | €
+<ArgFormal> ::= <Tipo> idMetVar
+<BloqueOpcional> ::= <Bloque> | €
+<Bloque> ::= { <ListaSentencias> }
+<ListaSentencias> ::= <Sentencia> <ListaSentencias> | €
+
+<Sentencia> ::= ;
+<Sentencia> ::= <VarLocal> ;
+<Sentencia> ::= <Return> ;
+<Sentencia> ::= <If>
+<Sentencia> ::= <While>
+<Sentencia> ::= <Bloque>
+
+===> PREGUNTA <===
+ta bien? o unifico ambos en una sentencia?
+-- <Sentencia> ::= <Asignacion> ;
+-- <Sentencia> ::= <Llamada> ;
+++ <Sentencia> ::= <Expresion> ;
+-- <Asignacion> ::= <Expresion>
+-- <Llamada> ::= <Expresion>
+
+<VarLocal> ::= var idMetVar = <ExpresionCompuesta>
+<Return> ::= return <ExpresionOpcional>
+<ExpresionOpcional> ::= <Expresion> | €
+
+===> PREGUNTA <===
+-- <If> ::= if ( <Expresion> ) <Sentencia>
+-- <If> ::= if ( <Expresion> ) <Sentencia> else <Sentencia>
+++ <If> ::= if ( <Expresion> ) <Sentencia> <Else>
+++ <Else> ::= else <Sentencia> | €
+
+<While> ::= while ( <Expresion> ) <Sentencia>
+
+===> PREGUNTAR <===
+-- <Expresion> ::= <ExpresionCompuesta> <OperadorAsignacion> <ExpresionCompuesta>
+-- <Expresion> ::= <ExpresionCompuesta>
+++ <Expresion> ::= <ExpresionCompuesta> <ExpresionResto>
+++ <ExpresionResto> ::= <OperadorAsignacion> <ExpresionCompuesta> | €
+
+<OperadorAsignacion> ::= = | += | -=
+<ExpresionCompuesta> ::= <ExpresionBasica> <ExpresionCompuestaResto>
+<ExpresionCompuestaResto> ::= <ExpresionBasica> <OperadorBinario> <ExpresionCompuestaResto> | €
+<OperadorBinario> ::= || | && | == | != | < | > | <= | >= | + | - | * | / | %
+<ExpresionBasica> ::= <OperadorUnario> <Operando>
+<ExpresionBasica> ::= <Operando>
+<OperadorUnario> ::= + | ++ | − | −− | !
+<Operando> ::= <Primitvo>
+<Operando> ::= <Referencia>
+<Primitivo> ::= true | false | intLiteral | charLiteral | null
+<Referencia> ::= <Primario> <ReferenciaResto>
+<ReferenciaResto> ::= <VarEncadenada> <ReferenciaResto> | <MetodoEncadenado> <ReferenciaResto> | €
+<Primario> ::= this
+<Primario> ::= stringLiteral
+<Primario> ::= <AccesoVar>
+<Primario> ::= <LlamadaConstructor>
+<Primario> ::= <LlamadaMetodo>
+<Primario> ::= <LlamadaMetodoEstatico>
+<Primario> ::= <ExpresionParentizada>
+<AccesoVar> ::= idMetVar
+<LlamadaConstructor> ::= new idClase <ArgsActuales>
+<ExpresionParentizada> ::= ( <Expresion> )
+<LlamadaMetodo> ::= idMetVar <ArgsActuales>
+<LlamadaMetodoEstatico> ::= idClase . idMetVar <ArgsActuales>
+<ArgsActuales> ::= ( <ListaExpsOpcional> )
+<ListaExpsOpcional> ::= <ListaExps> | €
+
+===> PREGUNTAR <===
+-- <ListaExps> ::= <Expresion>
+-- <ListaExps> ::= <Expresion> , <ListaExps>
+++ <ListaExps> ::= <Expresion> <ListaExpsResto>
+++ <ListaExps> ::= , <Expresion> <ListaExpsResto> | €
+
+<VarEncadenada> ::= . idMetVar
+<MetodoEncadenado> ::= . idMetVar <ArgsActuales>
