@@ -21,9 +21,6 @@
 -- <ListaArgsFormales> ::= <ListaArgsFormales> , <ArgFormal>
 ++ <ListaArgsFormales> ::= <ArgFormal> <ListaArgsFormalesResto>
 ++ <ListaArgsFormalesResto> ::= , <ArgFormal> <ListaArgsFormalesResto> | €
-===> puedo? xq no? <===
-++ <ListaArgsFormales> ::= <ArgFormal>
-++ <ListaArgsFormales> ::= <ArgFormal> , <ListaArgsFormales> | €
 
 <ArgFormal> ::= <Tipo> idMetVar
 <BloqueOpcional> ::= <Bloque> | €
@@ -58,10 +55,6 @@
 <OperadorBinario> ::= || | && | == | != | < | > | <= | >= | + | - | * | / | %
 <ExpresionBasica> ::= <OperadorUnario> <Operando>
 <ExpresionBasica> ::= <Operando>
-
-===> PREGUNTA <===
-el '+' y el '-' son operadores unarios?????
-
 <OperadorUnario> ::= + | ++ | − | −− | !
 <Operando> ::= <Primitvo>
 <Operando> ::= <Referencia>
@@ -105,7 +98,11 @@ el '+' y el '-' son operadores unarios?????
 <ModificadorOpcional> ::= abstract | static | final | €
 <HerenciaOpcional> ::= extends idClase | €
 <ListaMiembros> ::= <Miembro> <ListaMiembros> | €
+
+===> HACER LO DEL EJEMPLO <===
+
 <Miembro> ::= <Atributo> | <Metodo> | <Constructor>
+
 <Atributo> ::= <Tipo> idMetVar ;
 <Metodo> ::= <ModificadorOpcional> <TipoMetodo> idMetVar <ArgsFormales> <BloqueOpcional>
 <Constructor> ::= public idClase <ArgsFormales> <Bloque>
