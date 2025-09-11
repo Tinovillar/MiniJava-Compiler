@@ -99,12 +99,15 @@
 <HerenciaOpcional> ::= extends idClase | €
 <ListaMiembros> ::= <Miembro> <ListaMiembros> | €
 
-===> HACER LO DEL EJEMPLO <===
+-- <Miembro> ::= <Atributo> | <Metodo> | <Constructor>
+-- <Atributo> ::= <Tipo> idMetVar ;
+-- <Metodo> ::= <ModificadorOpcional> <TipoMetodo> idMetVar <ArgsFormales> <BloqueOpcional>
+++ <Miembro> ::= <Tipo> idMetVar <Metodo> ;
+++ <Miembro> ::= <ModificadorMiembro> <TipoMetodo> idMetVar <Metodo>
+++ <ModificadorMiembro> ::= abstract | static | final
+++ <Metodo> ::= <ArgsFormales> <BloqueOpcional> | €
+++ <Miembro> ::= <Constructor>
 
-<Miembro> ::= <Atributo> | <Metodo> | <Constructor>
-
-<Atributo> ::= <Tipo> idMetVar ;
-<Metodo> ::= <ModificadorOpcional> <TipoMetodo> idMetVar <ArgsFormales> <BloqueOpcional>
 <Constructor> ::= public idClase <ArgsFormales> <Bloque>
 <TipoMetodo> ::= <Tipo> | void
 <Tipo> ::= <TipoPrimitivo> | idClase
@@ -125,8 +128,6 @@
 <Sentencia> ::= <While>
 <Sentencia> ::= <Bloque>
 
-===> PREGUNTA <===
-ta bien? o unifico ambos en una sentencia?
 -- <Sentencia> ::= <Asignacion> ;
 -- <Sentencia> ::= <Llamada> ;
 ++ <Sentencia> ::= <Expresion> ;
@@ -137,7 +138,6 @@ ta bien? o unifico ambos en una sentencia?
 <Return> ::= return <ExpresionOpcional>
 <ExpresionOpcional> ::= <Expresion> | €
 
-===> PREGUNTA <===
 -- <If> ::= if ( <Expresion> ) <Sentencia>
 -- <If> ::= if ( <Expresion> ) <Sentencia> else <Sentencia>
 ++ <If> ::= if ( <Expresion> ) <Sentencia> <Else>
@@ -178,7 +178,6 @@ ta bien? o unifico ambos en una sentencia?
 <ArgsActuales> ::= ( <ListaExpsOpcional> )
 <ListaExpsOpcional> ::= <ListaExps> | €
 
-===> PREGUNTAR <===
 -- <ListaExps> ::= <Expresion>
 -- <ListaExps> ::= <Expresion> , <ListaExps>
 ++ <ListaExps> ::= <Expresion> <ListaExpsResto>
