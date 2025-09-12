@@ -103,9 +103,11 @@
 -- <Atributo> ::= <Tipo> idMetVar ;
 -- <Metodo> ::= <ModificadorOpcional> <TipoMetodo> idMetVar <ArgsFormales> <BloqueOpcional>
 ++ <Miembro> ::= <Tipo> idMetVar <Metodo> ;
-++ <Miembro> ::= <ModificadorMiembro> <TipoMetodo> idMetVar <Metodo>
+++ <Miembro> ::= <ModificadorMiembro> <DeclaracionMetodo>
+++ <Miembro> ::= void <DeclaracionMetodo>
 ++ <ModificadorMiembro> ::= abstract | static | final
-++ <Metodo> ::= <ArgsFormales> <BloqueOpcional> | €
+++ <Metodo> ::= <ArgsFormales> <BloqueOpcional> | = <ExpresionCompuesta> | €
+++ <DeclaracionMetodo> ::= <TipoMetodo> idMetVar <Metodo>
 ++ <Miembro> ::= <Constructor>
 
 <Constructor> ::= public idClase <ArgsFormales> <Bloque>
