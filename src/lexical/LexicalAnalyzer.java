@@ -96,6 +96,9 @@ public class LexicalAnalyzer {
             case '&':
                 updateLexemeAndCurrentChar();
                 return e1And();
+            case '%':
+                updateLexemeAndCurrentChar();
+                return e1Mod();
             case '|':
                 updateLexemeAndCurrentChar();
                 return e1Or();
@@ -330,6 +333,7 @@ public class LexicalAnalyzer {
     private Token e2And() {
         return tokenToReturn(ID.op_and);
     }
+    private Token e1Mod() { return tokenToReturn(ID.op_mod); }
     private Token e1Or() throws LexicalException {
         if(currentChar == '|') {
             updateLexemeAndCurrentChar();

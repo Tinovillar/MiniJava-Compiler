@@ -37,6 +37,7 @@ public enum ID {
     op_division,
     op_and,
     op_or,
+    op_mod,
     p_o_parenthesis,
     p_c_parenthesis,
     p_o_bracket1,
