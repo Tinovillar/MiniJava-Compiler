@@ -28,20 +28,41 @@ public class Primeros {
         primeros.put("OperadorBinario", Set.of("||", "&&", "==", "!=", "<", ">", "<=", ">=", "+", "-", "*", "/", "%"));
         primeros.put("Primitivo", Set.of("true", "false", "intLiteral", "charLiteral", "null"));
         primeros.put("ModificadorMiembro", Set.of("abstract", "static", "final"));
-        primeros.put("ModificadorOpcional", Set.of("abstract", "static", "final", "€")); // Usar el de arriba.
+        primeros.put("ModificadorOpcional",
+                union(Set.of("€"),
+                primeros.get("ModificadorMiembro")
+        ));
         primeros.put("HerenciaOpcional", Set.of("extends", "€"));
         primeros.put("DeclaracionVariable", Set.of("=", "€"));
         primeros.put("TipoPrimitivo", Set.of("boolean", "char", "int"));
-        primeros.put("Tipo", union(Set.of("idClase"), primeros.get("TipoPrimitivo")));
-        primeros.put("TipoMetodo", union(Set.of("void"), primeros.get("Tipo")));
+        primeros.put("Tipo", union(
+                Set.of("idClase"),
+                primeros.get("TipoPrimitivo")
+        ));
+        primeros.put("TipoMetodo", union(
+                Set.of("void"),
+                primeros.get("Tipo")
+        ));
         primeros.put("ArgFormal", primeros.get("Tipo"));
         primeros.put("ListaArgsFormales", primeros.get("ArgFormal"));
-        primeros.put("ListaArgsFormalesOpcional", union(Set.of("€"), primeros.get("ListaArgsFormales")));
+        primeros.put("ListaArgsFormalesOpcional", union(
+                Set.of("€"),
+                primeros.get("ListaArgsFormales")
+        ));
         primeros.put("ListaArgsFormalesResto", Set.of(",", "€"));
         primeros.put("Constructor", Set.of("public"));
-        primeros.put("Clase", union(Set.of("class"), primeros.get("ModificadorOpcional")));
-        primeros.put("ListaClases", union(Set.of("€"), primeros.get("Clase")));
-        primeros.put("Inicial", union(Set.of("EOF"), primeros.get("Clase")));
+        primeros.put("Clase", union(
+                Set.of("class"),
+                primeros.get("ModificadorOpcional")
+        ));
+        primeros.put("ListaClases", union(
+                Set.of("€"),
+                primeros.get("Clase")
+        ));
+        primeros.put("Inicial", union(
+                Set.of("EOF"),
+                primeros.get("Clase")
+        ));
         primeros.put("Primario", union(
                 Set.of("this", "stringLiteral"),
                 primeros.get("AccesoVar"),
@@ -55,20 +76,6 @@ public class Primeros {
                 primeros.get("Primitivo"),
                 primeros.get("Referencia")
         ));
-
-        // Expresión compuesta
-        primeros.put("ExpresionCompuesta", primeros.get("ExpresionBasica"));
-
-        // Expresión
-        primeros.put("Expresion", primeros.get("ExpresionCompuesta"));
-
-        // Miembro
-        primeros.put("Miembro", Set.of("void", "abstract", "static", "final", "public", "boolean", "char", "int", "idClase"));
-
-        // Mostrar
-        for (var entry : primeros.entrySet()) {
-            System.out.println(entry.getKey() + " → " + entry.getValue());
-        }
     }
 
     @SafeVarargs
