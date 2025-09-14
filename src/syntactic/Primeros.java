@@ -1,5 +1,7 @@
 package syntactic;
 
+import lexical.ID;
+
 import java.util.*;
 
 public class Primeros {
@@ -142,6 +144,9 @@ public class Primeros {
             }
         }
         return result;
+    }
+    public static boolean isFirstOf(String currentState, ID tokenID) {
+        return primeros.get(currentState).contains(tokenID);
     }
 }
 
