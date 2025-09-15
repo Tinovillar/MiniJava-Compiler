@@ -23,6 +23,7 @@ public enum ID {
     kw_false,
 
     op_equal,
+    op_equal_equal,
     op_not_equal,
     op_not,
     op_greater_than,

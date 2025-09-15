@@ -267,8 +267,12 @@ public class LexicalAnalyzer {
     private Token e1Equal() {
         if(currentChar == '=') {
             updateLexemeAndCurrentChar();
+            return e2Equal();
         }
         return tokenToReturn(ID.op_equal);
+    }
+    private Token e2Equal() {
+        return tokenToReturn(ID.op_equal_equal);
     }
     private Token e1NotEqual() {
         return tokenToReturn(ID.op_not_equal);
