@@ -1,4 +1,5 @@
 import exceptions.LexicalException;
+import exceptions.SyntacticException;
 import lexical.ID;
 import lexical.LexicalAnalyzer;
 import lexical.Token;
@@ -36,6 +37,8 @@ public class Main {
             throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } catch (SyntacticException e) {
+            e.printStackTrace();
         }
     }
 }

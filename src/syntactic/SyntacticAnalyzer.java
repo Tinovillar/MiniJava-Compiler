@@ -1,6 +1,7 @@
 package syntactic;
 
 import exceptions.LexicalException;
+import exceptions.SyntacticException;
 import lexical.ID;
 import lexical.LexicalAnalyzer;
 import lexical.Token;
@@ -11,7 +12,7 @@ public class SyntacticAnalyzer {
     public SyntacticAnalyzer(LexicalAnalyzer lexicalAnalyzer) {
         this.lexicalAnalyzer = lexicalAnalyzer;
     }
-    private void match(ID tokenID) {
+    private void match(ID tokenID) throws SyntacticException {
         if(tokenID.equals(currentToken.getId())) {
             try {
                 currentToken = lexicalAnalyzer.getNextToken();
@@ -19,13 +20,13 @@ public class SyntacticAnalyzer {
                 e.printStackTrace();
             }
         } else {
-            // EXCEPTION
+            throw new SyntacticException(currentToken, "Error.");
         }
     }
     private boolean isFirstOf(String state) {
         return Primeros.isFirstOf(state, currentToken.getId());
     }
-    public void startAnalysis() {
+    public void startAnalysis() throws SyntacticException {
         try {
             currentToken = lexicalAnalyzer.getNextToken();
         } catch (LexicalException e) {
@@ -33,17 +34,17 @@ public class SyntacticAnalyzer {
         }
         Inicial();
     }
-    private void Inicial() {
+    private void Inicial() throws SyntacticException {
         ListaClases();
         match(ID.EOF);
     }
-    private void ListaClases() {
+    private void ListaClases() throws SyntacticException {
         if(Primeros.isFirstOf("Clase", currentToken.getId())) {
             Clase();
             ListaClases();
         }
     }
-    private void Clase() {
+    private void Clase() throws SyntacticException {
         ModificadorOpcional();
         match(ID.kw_class);
         match(ID.id_met_or_var);
@@ -52,24 +53,24 @@ public class SyntacticAnalyzer {
         ListaMiembros();
         match(ID.p_c_bracket1);
     }
-    private void ModificadorOpcional() {
+    private void ModificadorOpcional() throws SyntacticException {
         if(Primeros.isFirstOf("ModificadorOpcional", currentToken.getId())) {
             match(currentToken.getId());
         }
     }
-    private void HerenciaOpcional() {
+    private void HerenciaOpcional() throws SyntacticException {
         if(Primeros.isFirstOf("HerenciaOpcional", currentToken.getId())) {
             match(ID.kw_extends);
             match(ID.id_class);
         }
     }
-    private void ListaMiembros() {
+    private void ListaMiembros() throws SyntacticException {
         if(Primeros.isFirstOf("ListaMiembros", currentToken.getId())) {
             Miembro();
             ListaMiembros();
         }
     }
-    private void Miembro() {
+    private void Miembro() throws SyntacticException {
         if(Primeros.isFirstOf("Constructor", currentToken.getId())) {
             Constructor();
         } else if(Primeros.isFirstOf("Tipo", currentToken.getId())) {
@@ -86,111 +87,111 @@ public class SyntacticAnalyzer {
             match(ID.id_met_or_var);
             DeclaracionMetodo();
         } else {
-            // EXCEPTION
+            throw new SyntacticException(currentToken, "Error.");
         }
     }
-    private void ModificadorMiembro() {
+    private void ModificadorMiembro() throws SyntacticException {
         if(Primeros.isFirstOf("ModificadorMiembro", currentToken.getId())) {
             match(currentToken.getId());
         } else {
-            // EXCEPTION
+            throw new SyntacticException(currentToken, "Error.");
         }
     }
-    private void MetodoVariable() {
+    private void MetodoVariable() throws SyntacticException {
         if(Primeros.isFirstOf("DeclaracionMetodo", currentToken.getId())) {
             DeclaracionMetodo();
         } else if(Primeros.isFirstOf("DeclaracionVariable", currentToken.getId())) {
             DeclaracionVariable();
         } else {
-            // EXCEPTION
+            throw new SyntacticException(currentToken, "Error.");
         }
     }
-    private void DeclaracionVariable() {
+    private void DeclaracionVariable() throws SyntacticException {
         if(Primeros.isFirstOf("ExpresionCompuesta", currentToken.getId())) {
             ExpresionCompuesta();
         }
     }
-    private void DeclaracionMetodo() {
+    private void DeclaracionMetodo() throws SyntacticException {
         ArgsFormales();
         BloqueOpcional();
     }
-    private void Constructor() {
+    private void Constructor() throws SyntacticException {
         match(ID.kw_public);
         match(ID.id_class);
         ArgsFormales();
         Bloque();
     }
-    private void TipoMetodo() {
+    private void TipoMetodo() throws SyntacticException {
         if(Primeros.isFirstOf("Tipo", currentToken.getId())) {
             Tipo();
         } else if(ID.kw_void.equals(currentToken.getId())) {
             match(ID.kw_void);
         } else {
-            // EXCEPTION
+            throw new SyntacticException(currentToken, "Error.");
         }
     }
-    private void Tipo() {
+    private void Tipo() throws SyntacticException {
         if(Primeros.isFirstOf("TipoPrimitivo", currentToken.getId())) {
             TipoPrimitivo();
         } else if(ID.id_class.equals(currentToken.getId())) {
             match(ID.id_class);
         } else {
-            // EXCEPTION
+            throw new SyntacticException(currentToken, "Error.");
         }
     }
-    private void TipoPrimitivo() {
+    private void TipoPrimitivo() throws SyntacticException {
         if(Primeros.isFirstOf("TipoPrimitivo", currentToken.getId())) {
             match(currentToken.getId());
         } else {
-            // EXCEPTION
+            throw new SyntacticException(currentToken, "Error.");
         }
     }
-    private void ArgsFormales() {
+    private void ArgsFormales() throws SyntacticException {
         match(ID.p_o_parenthesis);
         ListaArgsFormalesOpcional();
         match(ID.p_c_parenthesis);
     }
-    private void ListaArgsFormalesOpcional() {
+    private void ListaArgsFormalesOpcional() throws SyntacticException {
         if(Primeros.isFirstOf("ListaArgsFormales", currentToken.getId())) {
             ListaArgsFormales();
         }
     }
-    private void ListaArgsFormales() {
+    private void ListaArgsFormales() throws SyntacticException {
         ArgFormal();
         ListaArgsFormalesResto();
     }
-    private void ListaArgsFormalesResto() {
+    private void ListaArgsFormalesResto() throws SyntacticException {
         if(ID.p_comma.equals(currentToken.getId())) {
             match(ID.p_comma);
             ArgFormal();
             ListaArgsFormalesResto();
         }
     }
-    private void ArgFormal() {
+    private void ArgFormal() throws SyntacticException {
         Tipo();
         match(ID.id_met_or_var);
     }
-    private void BloqueOpcional() {
+    private void BloqueOpcional() throws SyntacticException {
         if(Primeros.isFirstOf("Bloque", currentToken.getId())) {
             Bloque();
         } else if(ID.p_semicolon.equals(currentToken.getId())) {
             match(ID.p_semicolon);
         } else {
-            // EXCEPTION
+            throw new SyntacticException(currentToken, "Error.");
         }
     }
-    private void Bloque() {
+    private void Bloque() throws SyntacticException {
         match(ID.p_o_bracket1);
         ListaSentencias();
         match(ID.p_c_bracket1);
     }
-    private void ListaSentencias() {
+    private void ListaSentencias() throws SyntacticException {
         if(Primeros.isFirstOf("ListaSentencias", currentToken.getId())) {
             Sentencia();
             ListaSentencias();
         }
     }
-    private void Sentencia() {
+    private void Sentencia() throws SyntacticException {
         if(isFirstOf("VarLocal")) {
             VarLocal();
             match(ID.p_semicolon);
@@ -209,25 +210,25 @@ public class SyntacticAnalyzer {
         } else if(ID.p_semicolon.equals(currentToken.getId())) {
             match(ID.p_semicolon);
         } else {
-            // EXCEPTION
+            throw new SyntacticException(currentToken, "Error.");
         }
     }
-    private void VarLocal() {
+    private void VarLocal() throws SyntacticException {
         match(ID.kw_var);
         match(ID.id_met_or_var);
         match(ID.op_equal);
         ExpresionCompuesta();
     }
-    private void Return_() {
+    private void Return_() throws SyntacticException {
         match(ID.kw_return);
         ExpresionOpcional();
     }
-    private void ExpresionOpcional() {
+    private void ExpresionOpcional() throws SyntacticException {
         if(isFirstOf("Expresion")) {
             Expresion();
         }
     }
-    private void If_() {
+    private void If_() throws SyntacticException {
         match(ID.kw_if);
         match(ID.p_o_parenthesis);
         Expresion();
@@ -235,84 +236,84 @@ public class SyntacticAnalyzer {
         Sentencia();
         Else_();
     }
-    private void Else_() {
+    private void Else_() throws SyntacticException {
         if(ID.kw_else.equals(currentToken.getId())) {
             match(ID.kw_else);
             Sentencia();
         }
     }
-    private void While_() {
+    private void While_() throws SyntacticException {
         match(ID.kw_while);
         match(ID.p_o_parenthesis);
         Expresion();
         match(ID.p_c_parenthesis);
         Sentencia();
     }
-    private void Expresion() {
+    private void Expresion() throws SyntacticException {
         ExpresionCompuesta();
         ExpresionResto();
     }
-    private void ExpresionResto() {
+    private void ExpresionResto() throws SyntacticException {
         if(isFirstOf("OperadorAsignacion")) {
             OperadorAsignacion();
             ExpresionCompuesta();
         }
     }
-    private void OperadorAsignacion() {
+    private void OperadorAsignacion() throws SyntacticException {
         match(ID.op_equal);
     }
-    private void ExpresionCompuesta() {
+    private void ExpresionCompuesta() throws SyntacticException {
         ExpresionBasica();
         ExpresionCompuestaResto();
     }
-    private void ExpresionCompuestaResto() {
+    private void ExpresionCompuestaResto() throws SyntacticException {
         if(isFirstOf("ExpresionBasica")) {
             ExpresionBasica();
             OperadorBinario();
             ExpresionCompuestaResto();
         }
     }
-    private void OperadorBinario() {
+    private void OperadorBinario() throws SyntacticException {
         if(isFirstOf("OperadorBinario")) {
             match(currentToken.getId());
         } else {
-            // EXCEPTION
+            throw new SyntacticException(currentToken, "Error.");
         }
     }
-    private void ExpresionBasica() {
+    private void ExpresionBasica() throws SyntacticException {
         if(isFirstOf("OperadorUnario")) {
             OperadorUnario();
             Operando();
         } else if(isFirstOf("Operando")) {
             Operando();
         } else {
-            // EXCEPTION
+            throw new SyntacticException(currentToken, "Error.");
         }
     }
-    private void OperadorUnario() {
+    private void OperadorUnario() throws SyntacticException {
         if(isFirstOf("OperadorUnario")) {
             match(currentToken.getId());
         } else {
-            // EXCEPTION
+            throw new SyntacticException(currentToken, "Error.");
         }
     }
-    private void Operando() {
+    private void Operando() throws SyntacticException {
         if(isFirstOf("Primitivo")) {
             Primitivo();
         } else if(isFirstOf("Referencia")) {
             Referencia();
         }
     }
-    private void Primitivo() {
+    private void Primitivo() throws SyntacticException {
         if(isFirstOf("Primitivo")) {
             match(currentToken.getId());
         }
     }
-    private void Referencia() {
+    private void Referencia() throws SyntacticException {
         Primario();
         ReferenciaResto();
     }
-    private void ReferenciaResto() {
+    private void ReferenciaResto() throws SyntacticException {
         if(isFirstOf("VarEncadenada")) {
             VarEncadenada();
             ReferenciaResto();
@@ -321,7 +322,7 @@ public class SyntacticAnalyzer {
             ReferenciaResto();
         }
     }
-    private void Primario() {
+    private void Primario() throws SyntacticException {
         if (ID.kw_this.equals(currentToken.getId())) {
             match(ID.kw_this);
         } else if (ID.literal_string.equals(currentToken.getId())) {
@@ -337,58 +338,58 @@ public class SyntacticAnalyzer {
         } else if(isFirstOf("ExpresionParentizada")) {
             ExpresionParentizada();
         } else {
-            // EXCEPTION
+            throw new SyntacticException(currentToken, "Error.");
         }
     }
-    private void AccesoVar() {
+    private void AccesoVar() throws SyntacticException {
         match(ID.id_met_or_var);
     }
-    private void LlamadaConstructor() {
+    private void LlamadaConstructor() throws SyntacticException {
         match(ID.kw_new);
         match(ID.id_class);
         ArgsActuales();
     }
-    private void ExpresionParentizada() {
+    private void ExpresionParentizada() throws SyntacticException {
         match(ID.p_o_parenthesis);
         Expresion();
         match(ID.p_c_parenthesis);
     }
-    private void LlamadaMetodo() {
+    private void LlamadaMetodo() throws SyntacticException {
         match(ID.id_met_or_var);
         ArgsActuales();
     }
-    private void LlamadaMetodoEstatico() {
+    private void LlamadaMetodoEstatico() throws SyntacticException {
         match(ID.id_class);
         match(ID.p_dot);
         match(ID.id_met_or_var);
         ArgsActuales();
     }
-    private void ArgsActuales() {
+    private void ArgsActuales() throws SyntacticException {
         match(ID.p_o_parenthesis);
         ListaExpsOpcional();
         match(ID.p_c_parenthesis);
     }
-    private void ListaExpsOpcional() {
+    private void ListaExpsOpcional() throws SyntacticException {
         if(isFirstOf("ListaExps")) {
             ListaExps();
         }
     }
-    private void ListaExps() {
+    private void ListaExps() throws SyntacticException {
         Expresion();
         ListaExpsResto();
     }
-    private void ListaExpsResto() {
+    private void ListaExpsResto() throws SyntacticException {
         if(ID.p_comma.equals(currentToken.getId())) {
             match(ID.p_comma);
             Expresion();
             ListaExpsResto();
         }
     }
-    private void VarEncadenada() {
+    private void VarEncadenada() throws SyntacticException {
         match(ID.p_dot);
         match(ID.id_met_or_var);
     }
-    private void MetodoEncadenado() {
+    private void MetodoEncadenado() throws SyntacticException {
         match(ID.p_dot);
         match(ID.id_met_or_var);
         ArgsActuales();
