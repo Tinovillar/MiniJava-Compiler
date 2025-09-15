@@ -76,7 +76,7 @@ public class Primeros {
                 primeros.get("OperadorUnario"),
                 primeros.get("Operando")
         ));
-        primeros.put("ExpresionCompuestaResto", union(primeros.get("ExpresionBasica")));
+        primeros.put("ExpresionCompuestaResto", union(primeros.get("OperadorBinario"))); // "€"
         primeros.put("ExpresionCompuesta", union(primeros.get("ExpresionBasica")));
         primeros.put("ExpresionResto", union(primeros.get("OperadorAsignacion")));
         primeros.put("Expresion", union(primeros.get("ExpresionCompuesta")));

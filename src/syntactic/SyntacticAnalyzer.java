@@ -47,7 +47,7 @@ public class SyntacticAnalyzer {
     private void Clase() throws SyntacticException {
         ModificadorOpcional();
         match(ID.kw_class);
-        match(ID.id_met_or_var);
+        match(ID.id_class);
         HerenciaOpcional();
         match(ID.p_o_bracket1);
         ListaMiembros();
@@ -112,6 +112,7 @@ public class SyntacticAnalyzer {
         }
     }
     private void DeclaracionMetodo() throws SyntacticException {
+        match(ID.id_met_or_var);
         ArgsFormales();
         BloqueOpcional();
     }
@@ -267,9 +268,9 @@ public class SyntacticAnalyzer {
         ExpresionCompuestaResto();
     }
     private void ExpresionCompuestaResto() throws SyntacticException {
-        if(isFirstOf("ExpresionBasica")) {
-            ExpresionBasica();
+        if(isFirstOf("OperadorBinario")) {
             OperadorBinario();
+            ExpresionBasica();
             ExpresionCompuestaResto();
         }
     }

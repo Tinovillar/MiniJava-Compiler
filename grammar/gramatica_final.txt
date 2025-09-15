@@ -238,7 +238,7 @@
 <ExpresionResto> ::= <OperadorAsignacion> <ExpresionCompuesta> | €
 <OperadorAsignacion> ::= =
 <ExpresionCompuesta> ::= <ExpresionBasica> <ExpresionCompuestaResto>
-<ExpresionCompuestaResto> ::= <ExpresionBasica> <OperadorBinario> <ExpresionCompuestaResto> | €
+<ExpresionCompuestaResto> ::= <OperadorBinario> <ExpresionBasica> <ExpresionCompuestaResto> | €
 <OperadorBinario> ::= || | && | == | != | < | > | <= | >= | + | - | * | / | %
 <ExpresionBasica> ::= <OperadorUnario> <Operando>
 <ExpresionBasica> ::= <Operando>
