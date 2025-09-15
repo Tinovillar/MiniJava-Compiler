@@ -4,6 +4,7 @@ import lexical.LexicalAnalyzer;
 import lexical.Token;
 import sourceManager.BetterSourceManagerImpl;
 import sourceManager.SourceManager;
+import syntactic.SyntacticAnalyzer;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -21,20 +22,14 @@ public class Main {
             SourceManager sourceManager = new BetterSourceManagerImpl();
             sourceManager.open(args[0]);
 
-            Token currentToken = null;
             LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(sourceManager);
+            SyntacticAnalyzer syntacticAnalyzer = new SyntacticAnalyzer(lexicalAnalyzer);
 
-            do {
-                try {
-                    currentToken = lexicalAnalyzer.getNextToken();
-                    System.out.println(currentToken);
-                } catch (LexicalException e) {
-                    errors = true;
-                    e.printStackTrace();
-                }
-            } while(lexicalAnalyzer.hasNext());
+            syntacticAnalyzer.startAnalysis();
 
-            if (!errors) System.out.println("[SinErrores]");
+            if(!errors) {
+                System.out.println("[SinErrores]");
+            }
 
             sourceManager.close();
         } catch (FileNotFoundException e) {
