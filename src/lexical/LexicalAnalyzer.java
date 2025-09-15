@@ -55,8 +55,9 @@ public class LexicalAnalyzer {
 
     private Token e0() throws LexicalException {
         if(Character.isLetter(currentChar)) {
+            char c = currentChar;
             updateLexemeAndCurrentChar();
-            if(Character.isLowerCase(currentChar)) return e1LetterLowerCase();
+            if(Character.isLowerCase(c)) return e1LetterLowerCase();
             return e1LetterUpperCase();
         } else if(Character.isDigit(currentChar)) {
             updateLexemeAndCurrentChar();
