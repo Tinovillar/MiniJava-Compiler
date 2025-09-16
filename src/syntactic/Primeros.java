@@ -31,7 +31,7 @@ public class Primeros {
         primeros.put("ModificadorMiembro", Set.of(ID.kw_abstract, ID.kw_static, ID.kw_final));
         primeros.put("ModificadorOpcional", union(primeros.get("ModificadorMiembro"))); // "€"
         primeros.put("HerenciaOpcional", Set.of(ID.kw_extends)); // "€"
-        primeros.put("DeclaracionVariable", Set.of(ID.op_equal)); // "€"
+        primeros.put("DeclaracionVariable", Set.of(ID.op_equal, ID.p_semicolon)); // "€"
         primeros.put("TipoPrimitivo", Set.of(ID.kw_boolean, ID.kw_char, ID.kw_int));
         primeros.put("Tipo", union(
                 Set.of(ID.id_class),

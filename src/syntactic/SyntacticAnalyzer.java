@@ -77,10 +77,10 @@ public class SyntacticAnalyzer {
             Tipo();
             match(ID.id_met_or_var);
             MetodoVariable();
-            match(ID.p_semicolon);
         } else if(Primeros.isFirstOf("ModificadorMiembro", currentToken.getId())) {
             ModificadorMiembro();
             TipoMetodo();
+            match(ID.id_met_or_var);
             DeclaracionMetodo();
         } else if(currentToken.getId().equals(ID.kw_void)) {
             match(ID.kw_void);
@@ -110,9 +110,9 @@ public class SyntacticAnalyzer {
         if(Primeros.isFirstOf("ExpresionCompuesta", currentToken.getId())) {
             ExpresionCompuesta();
         }
+        match(ID.p_semicolon);
     }
     private void DeclaracionMetodo() throws SyntacticException {
-        match(ID.id_met_or_var);
         ArgsFormales();
         BloqueOpcional();
     }
