@@ -327,22 +327,17 @@ public class SyntacticAnalyzer {
             match(ID.kw_this);
         } else if (ID.literal_string.equals(currentToken.getId())) {
             match(ID.literal_string);
-        } else if (isFirstOf("AccesoVar")) {
-            AccesoVar();
+        } else if (isFirstOf("LlamadaMetOrVar")) {
+            LlamadaMetOrVar();
         } else if (isFirstOf("LlamadaConstructor")) {
             LlamadaConstructor();
-        } else if(isFirstOf("LlamadaMetodo")) {
-            LlamadaMetodo();
-        }else if(isFirstOf("LlamadaMetodoEstatico")) {
+        } else if(isFirstOf("LlamadaMetodoEstatico")) {
             LlamadaMetodoEstatico();
         } else if(isFirstOf("ExpresionParentizada")) {
             ExpresionParentizada();
         } else {
             throw new SyntacticException(currentToken, "Error.");
         }
-    }
-    private void AccesoVar() throws SyntacticException {
-        match(ID.id_met_or_var);
     }
     private void LlamadaConstructor() throws SyntacticException {
         match(ID.kw_new);
@@ -354,9 +349,11 @@ public class SyntacticAnalyzer {
         Expresion();
         match(ID.p_c_parenthesis);
     }
-    private void LlamadaMetodo() throws SyntacticException {
+    private void LlamadaMetOrVar() throws SyntacticException {
         match(ID.id_met_or_var);
-        ArgsActuales();
+        if(isFirstOf("ArgsActuales")) {
+            ArgsActuales();
+        }
     }
     private void LlamadaMetodoEstatico() throws SyntacticException {
         match(ID.id_class);

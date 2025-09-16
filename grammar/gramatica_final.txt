@@ -251,15 +251,13 @@
 <VarMetEncadenada> ::= <ArgsActuales> | €
 <Primario> ::= this
 <Primario> ::= stringLiteral
-<Primario> ::= <AccesoVar>
 <Primario> ::= <LlamadaConstructor>
-<Primario> ::= <LlamadaMetodo>
+<Primario> ::= idMetVar <LlamadaMetOrVar>
 <Primario> ::= <LlamadaMetodoEstatico>
 <Primario> ::= <ExpresionParentizada>
-<AccesoVar> ::= idMetVar
 <LlamadaConstructor> ::= new idClase <ArgsActuales>
 <ExpresionParentizada> ::= ( <Expresion> )
-<LlamadaMetodo> ::= idMetVar <ArgsActuales>
+<LlamadaMetOrVar> ::= idMetVar <ArgsActuales>
 <LlamadaMetodoEstatico> ::= idClase . idMetVar <ArgsActuales>
 <ArgsActuales> ::= ( <ListaExpsOpcional> )
 <ListaExpsOpcional> ::= <ListaExps> | €

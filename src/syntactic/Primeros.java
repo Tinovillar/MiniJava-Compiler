@@ -14,8 +14,9 @@ public class Primeros {
         primeros.put("ExpresionParentizada", Set.of(ID.p_o_parenthesis));
         primeros.put("LlamadaConstructor", Set.of(ID.kw_new));
         primeros.put("LlamadaMetodoEstatico", Set.of(ID.id_class));
-        primeros.put("LlamadaMetodo", Set.of(ID.id_met_or_var));
-        primeros.put("AccesoVar", Set.of(ID.id_met_or_var));
+        primeros.put("LlamadaMetOrVar", Set.of(ID.id_met_or_var));
+//        primeros.put("LlamadaMetodo", Set.of(ID.id_met_or_var));
+//        primeros.put("AccesoVar", Set.of(ID.id_met_or_var));
         primeros.put("VarLocal", Set.of(ID.kw_var));
         primeros.put("Return", Set.of(ID.kw_return));
         primeros.put("If", Set.of(ID.kw_if));
@@ -56,9 +57,9 @@ public class Primeros {
         ));
         primeros.put("Primario", union(
                 Set.of(ID.kw_this, ID.literal_string),
-                primeros.get("AccesoVar"),
+                primeros.get("LlamadaMetOrVar"),
                 primeros.get("LlamadaConstructor"),
-                primeros.get("LlamadaMetodo"),
+//                primeros.get("LlamadaMetodo"),
                 primeros.get("LlamadaMetodoEstatico"),
                 primeros.get("ExpresionParentizada")
         ));
