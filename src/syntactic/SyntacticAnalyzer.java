@@ -315,11 +315,10 @@ public class SyntacticAnalyzer {
         ReferenciaResto();
     }
     private void ReferenciaResto() throws SyntacticException {
-        if(isFirstOf("VarEncadenada")) {
-            VarEncadenada();
-            ReferenciaResto();
-        } else if(isFirstOf("MetodoEncadenado")) {
-            MetodoEncadenado();
+        if(ID.p_dot.equals(currentToken.getId())) {
+            match(ID.p_dot);
+            match(ID.id_met_or_var);
+            VarMetEncadenada();
             ReferenciaResto();
         }
     }
@@ -386,13 +385,9 @@ public class SyntacticAnalyzer {
             ListaExpsResto();
         }
     }
-    private void VarEncadenada() throws SyntacticException {
-        match(ID.p_dot);
-        match(ID.id_met_or_var);
-    }
-    private void MetodoEncadenado() throws SyntacticException {
-        match(ID.p_dot);
-        match(ID.id_met_or_var);
-        ArgsActuales();
+    private void VarMetEncadenada() throws SyntacticException {
+        if(isFirstOf("VarMetEncadenada")) {
+            ArgsActuales();
+        }
     }
 }

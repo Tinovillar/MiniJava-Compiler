@@ -7,11 +7,10 @@ import java.util.*;
 public class Primeros {
     private static final Map<String, Set<ID>> primeros = new HashMap<>();
     static {
-        primeros.put("MetodoEncadenado", Set.of(ID.p_dot));
-        primeros.put("VarEncadenada", Set.of(ID.p_dot));
         primeros.put("ListaExpsResto", Set.of(ID.p_comma)); // "€"
         primeros.put("ArgsActuales", Set.of(ID.p_o_parenthesis));
         primeros.put("ArgsFormales", Set.of(ID.p_o_parenthesis));
+        primeros.put("VarMetEncadenada", primeros.get("ArgsActuales"));
         primeros.put("ExpresionParentizada", Set.of(ID.p_o_parenthesis));
         primeros.put("LlamadaConstructor", Set.of(ID.kw_new));
         primeros.put("LlamadaMetodoEstatico", Set.of(ID.id_class));
@@ -65,8 +64,7 @@ public class Primeros {
         ));
         primeros.put("Referencia", primeros.get("Primario"));
         primeros.put("ReferenciaResto", union( // "€"
-                primeros.get("VarEncadenada"),
-                primeros.get("MetodoEncadenado")
+                Set.of(ID.p_dot)
         ));
         primeros.put("Operando", union(
                 primeros.get("Primitivo"),

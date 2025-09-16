@@ -247,7 +247,8 @@
 <Operando> ::= <Referencia>
 <Primitivo> ::= true | false | intLiteral | charLiteral | null
 <Referencia> ::= <Primario> <ReferenciaResto>
-<ReferenciaResto> ::= <VarEncadenada> <ReferenciaResto> | <MetodoEncadenado> <ReferenciaResto> | €
+<ReferenciaResto> ::= . idMetVar <VarMetEncadenada> <ReferenciaResto> | €
+<VarMetEncadenada> ::= <ArgsActuales> | €
 <Primario> ::= this
 <Primario> ::= stringLiteral
 <Primario> ::= <AccesoVar>
@@ -264,5 +265,3 @@
 <ListaExpsOpcional> ::= <ListaExps> | €
 <ListaExps> ::= <Expresion> <ListaExpsResto>
 <ListaExpsResto> ::= , <Expresion> <ListaExpsResto> | €
-<VarEncadenada> ::= . idMetVar
-<MetodoEncadenado> ::= . idMetVar <ArgsActuales>
