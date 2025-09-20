@@ -207,7 +207,7 @@
 <Miembro> ::= void idMetVar <DeclaracionMetodo>
 <ModificadorMiembro> ::= abstract | static | final
 <MetodoVariable> ::= <DeclaracionMetodo> | <DeclaracionVariable>
-<DeclaracionVariable> ::= = <Primitivo> ; | ;
+<DeclaracionVariable> ::= = <ExpresionCompuesta> ; | ;
 <DeclaracionMetodo> ::= <ArgsFormales> <BloqueOpcional>
 <Constructor> ::= public idClase <ArgsFormales> <Bloque>
 <TipoMetodo> ::= <Tipo> | void
