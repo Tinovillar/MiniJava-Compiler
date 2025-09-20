@@ -208,7 +208,9 @@ public class SyntacticAnalyzer {
         } else if(isFirstOf("Expresion")) {
             Expresion();
             match(ID.p_semicolon);
-        } else if(ID.p_semicolon.equals(currentToken.getId())) {
+        } else if(isFirstOf("For")) {
+            For();
+        }else if(ID.p_semicolon.equals(currentToken.getId())) {
             match(ID.p_semicolon);
         } else {
             throw new SyntacticException(currentToken, "Error.");
@@ -250,6 +252,43 @@ public class SyntacticAnalyzer {
         match(ID.p_c_parenthesis);
         Sentencia();
     }
+    private void For() throws SyntacticException {
+        match(ID.kw_for);
+        match(ID.p_o_parenthesis);
+        ForArgs();
+        match(ID.p_c_parenthesis);
+        Sentencia();
+    }
+    private void ForArgs() throws SyntacticException {
+        if(isFirstOf("VarLocal")) {
+            VarLocal();
+            ForInstancia();
+        } else if(isFirstOf("Expresion")) {
+            Expresion();
+            ForExpresion();
+        } else {
+            throw new SyntacticException(currentToken, "Error.");
+        }
+    }
+    private void ForInstancia() throws SyntacticException {
+        if(isFirstOf("ForIterador")) {
+            ForIterador();
+        } else if(isFirstOf("ForExpresion")) {
+            ForExpresion();
+        } else {
+            throw new SyntacticException(currentToken, "Error.");
+        }
+    }
+    private void ForIterador() throws SyntacticException {
+        match(ID.p_colon);
+        match(ID.id_met_or_var);
+    }
+    private void ForExpresion() throws SyntacticException {
+        match(ID.p_semicolon);
+        Expresion();
+        match(ID.p_semicolon);
+        Expresion();
+    }
     private void Expresion() throws SyntacticException {
         ExpresionCompuesta();
         ExpresionResto();
@@ -264,14 +303,23 @@ public class SyntacticAnalyzer {
         match(ID.op_equal);
     }
     private void ExpresionCompuesta() throws SyntacticException {
-        ExpresionBasica();
-        ExpresionCompuestaResto();
+        if (isFirstOf("ExpresionBasica")) {
+            ExpresionBasica();
+            ExpresionCompuestaResto();
+        } else {
+            throw new SyntacticException(currentToken, "Error.");
+        }
     }
     private void ExpresionCompuestaResto() throws SyntacticException {
         if(isFirstOf("OperadorBinario")) {
             OperadorBinario();
             ExpresionBasica();
             ExpresionCompuestaResto();
+        } else if (currentToken.getId().equals(ID.p_question_mark)) {
+            match(ID.p_question_mark);
+            ExpresionCompuesta();
+            match(ID.p_colon);
+            ExpresionCompuesta();
         }
     }
     private void OperadorBinario() throws SyntacticException {

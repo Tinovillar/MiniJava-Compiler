@@ -104,6 +104,9 @@ public class LexicalAnalyzer {
                 updateLexemeAndCurrentChar();
                 return e1Or();
             // PUNCTUATION
+            case '?':
+                updateLexemeAndCurrentChar();
+                return e1QuestionMark();
             case '(':
                 updateLexemeAndCurrentChar();
                 return e1OpenParenthesis();
@@ -345,6 +348,9 @@ public class LexicalAnalyzer {
             return e2Or();
         }
         throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber(), "The | operator is not supported. Must be ||.");
+    }
+    private Token e1QuestionMark() {
+        return tokenToReturn(ID.p_question_mark);
     }
     private Token e2Or() {
         return tokenToReturn(ID.op_or);

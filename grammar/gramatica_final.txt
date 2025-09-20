@@ -226,6 +226,7 @@
 <Sentencia> ::= <Return> ;
 <Sentencia> ::= <If>
 <Sentencia> ::= <While>
+<Sentencia> ::= <For>
 <Sentencia> ::= <Bloque>
 <Sentencia> ::= <Expresion> ;
 <VarLocal> ::= var idMetVar = <ExpresionCompuesta>
@@ -234,10 +235,16 @@
 <If> ::= if ( <Expresion> ) <Sentencia> <Else>
 <Else> ::= else <Sentencia> | €
 <While> ::= while ( <Expresion> ) <Sentencia>
+<For> ::= for ( <ForArgs> ) <Sentencia>
+<ForArgs> ::= <VarLocal> <ForInstancia> | <Expresion> <ForExpresion>
+<ForExpresion> ::= ; <Expresion> ; <Expresion>
+<ForInstancia> ::= <ForIterador> | <ForExpresion>
+<ForIterador> ::= : idMetVar
 <Expresion> ::= <ExpresionCompuesta> <ExpresionResto>
 <ExpresionResto> ::= <OperadorAsignacion> <ExpresionCompuesta> | €
 <OperadorAsignacion> ::= =
 <ExpresionCompuesta> ::= <ExpresionBasica> <ExpresionCompuestaResto>
+<ExpresionCompuestaResto> ::= ? <ExpresionCompuesta> : <ExpresionCompuesta>
 <ExpresionCompuestaResto> ::= <OperadorBinario> <ExpresionBasica> <ExpresionCompuestaResto> | €
 <OperadorBinario> ::= || | && | == | != | < | > | <= | >= | + | - | * | / | %
 <ExpresionBasica> ::= <OperadorUnario> <Operando>

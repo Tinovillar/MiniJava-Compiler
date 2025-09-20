@@ -75,17 +75,34 @@ public class Primeros {
                 primeros.get("OperadorUnario"),
                 primeros.get("Operando")
         ));
-        primeros.put("ExpresionCompuestaResto", union(primeros.get("OperadorBinario"))); // "€"
-        primeros.put("ExpresionCompuesta", union(primeros.get("ExpresionBasica")));
+        primeros.put("ExpresionCompuestaResto", union(
+                Set.of(ID.p_question_mark),
+                primeros.get("OperadorBinario")
+        )); // "€"
+        primeros.put("ExpresionCompuesta", union(
+                primeros.get("ExpresionBasica")
+        ));
         primeros.put("ExpresionResto", union(primeros.get("OperadorAsignacion")));
         primeros.put("Expresion", union(primeros.get("ExpresionCompuesta")));
         primeros.put("ExpresionOpcional", union(primeros.get("Expresion"))); // "€"
+        primeros.put("ForIterador", Set.of(ID.p_colon));
+        primeros.put("ForExpresion", Set.of(ID.p_semicolon));
+        primeros.put("ForInstancia", union(
+                primeros.get("ForIterador"),
+                primeros.get("ForExpresion")
+        ));
+        primeros.put("ForArgs", union(
+                primeros.get("VarLocal"),
+                primeros.get("Expresion")
+        ));
+        primeros.put("For", Set.of(ID.kw_for));
         primeros.put("Sentencia", union(
                 Set.of(ID.p_semicolon),
                 primeros.get("VarLocal"),
                 primeros.get("Return"),
                 primeros.get("If"),
                 primeros.get("While"),
+                primeros.get("For"),
                 primeros.get("Bloque"),
                 primeros.get("Expresion")
         ));
