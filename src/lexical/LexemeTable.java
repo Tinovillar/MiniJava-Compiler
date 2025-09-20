@@ -21,6 +21,7 @@ public class LexemeTable {
         keywords.put("if", ID.kw_if);
         keywords.put("else", ID.kw_else);
         keywords.put("while", ID.kw_while);
+        keywords.put("for", ID.kw_for);
         keywords.put("return", ID.kw_return);
         keywords.put("var", ID.kw_var);
         keywords.put("this", ID.kw_this);
