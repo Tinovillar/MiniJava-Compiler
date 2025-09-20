@@ -202,12 +202,12 @@
 <HerenciaOpcional> ::= extends idClase | €
 <ListaMiembros> ::= <Miembro> <ListaMiembros> | €
 <Miembro> ::= <Constructor>
-<Miembro> ::= <Tipo> idMetVar <MetodoVariable> ;
+<Miembro> ::= <Tipo> idMetVar <MetodoVariable>
 <Miembro> ::= <ModificadorMiembro> <TipoMetodo> <DeclaracionMetodo>
 <Miembro> ::= void idMetVar <DeclaracionMetodo>
 <ModificadorMiembro> ::= abstract | static | final
 <MetodoVariable> ::= <DeclaracionMetodo> | <DeclaracionVariable>
-<DeclaracionVariable> ::= = <ExpresionCompuesta> | €
+<DeclaracionVariable> ::= = <Primitivo> ; | ;
 <DeclaracionMetodo> ::= <ArgsFormales> <BloqueOpcional>
 <Constructor> ::= public idClase <ArgsFormales> <Bloque>
 <TipoMetodo> ::= <Tipo> | void

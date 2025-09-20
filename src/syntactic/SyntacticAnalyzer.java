@@ -107,8 +107,9 @@ public class SyntacticAnalyzer {
         }
     }
     private void DeclaracionVariable() throws SyntacticException {
-        if(Primeros.isFirstOf("ExpresionCompuesta", currentToken.getId())) {
-            ExpresionCompuesta();
+        if(currentToken.getId().equals(ID.op_equal)) {
+            match(ID.op_equal);
+            Primitivo();
         }
         match(ID.p_semicolon);
     }
