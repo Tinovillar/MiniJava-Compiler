@@ -92,7 +92,7 @@ public class Primeros {
                 primeros.get("ForExpresion")
         ));
         primeros.put("ForArgs", union(
-                primeros.get("VarLocal"),
+                Set.of(ID.kw_var),
                 primeros.get("Expresion")
         ));
         primeros.put("For", Set.of(ID.kw_for));
@@ -135,6 +135,9 @@ public class Primeros {
     }
     public static boolean isFirstOf(String currentState, ID tokenID) {
         return primeros.get(currentState).contains(tokenID);
+    }
+    public static Set<ID> getFirsts(String currentState) {
+        return primeros.get(currentState);
     }
 }
 

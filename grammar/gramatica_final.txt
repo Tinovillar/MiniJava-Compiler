@@ -16,7 +16,6 @@
 <ArgsFormales> ::= ( <ListaArgsFormalesOpcional> )
 <ListaArgsFormalesOpcional> ::= <ListaArgsFormales> | €
 
-===> PREGUNTAR <===
 -- <ListaArgsFormales> ::= <ArgFormal>
 -- <ListaArgsFormales> ::= <ListaArgsFormales> , <ArgFormal>
 ++ <ListaArgsFormales> ::= <ArgFormal> <ListaArgsFormalesResto>
@@ -46,7 +45,6 @@
 <Expresion> ::= <ExpresionCompuesta>
 <OperadorAsignacion> ::= = | += | -=
 
-===> PREGUNTAR <===
 -- <ExpresionCompuesta> ::= <ExpresionBasica>
 -- <ExpresionCompuesta> ::= <ExpresionCompuesta> <OperadorBinario> <ExpresionBasica>
 ++ <ExpresionCompuesta> ::= <ExpresionBasica> <ExpresionCompuestaResto>
@@ -60,7 +58,6 @@
 <Operando> ::= <Referencia>
 <Primitivo> ::= true | false | intLiteral | charLiteral | null
 
-===> PREGUNTAR <===
 -- <Referencia> ::= <Primario>
 -- <Referencia> ::= <Referencia> <VarEncadenada>
 -- <Referencia> ::= <Referencia> <MetodoEncadenado>
@@ -236,13 +233,12 @@
 <Else> ::= else <Sentencia> | €
 <While> ::= while ( <Expresion> ) <Sentencia>
 <For> ::= for ( <ForArgs> ) <Sentencia>
-<ForArgs> ::= <VarLocal> <ForInstancia> | <Expresion> <ForExpresion>
+<ForArgs> ::= var idMetVar <ForInstancia> | <Expresion> <ForExpresion>
 <ForExpresion> ::= ; <Expresion> ; <Expresion>
-<ForInstancia> ::= <ForIterador> | <ForExpresion>
+<ForInstancia> ::= <ForIterador> | = <ExpresionCompuesta> <ForExpresion>
 <ForIterador> ::= : idMetVar
 <Expresion> ::= <ExpresionCompuesta> <ExpresionResto>
-<ExpresionResto> ::= <OperadorAsignacion> <ExpresionCompuesta> | €
-<OperadorAsignacion> ::= =
+<ExpresionResto> ::= = <ExpresionCompuesta> | €
 <ExpresionCompuesta> ::= <ExpresionBasica> <ExpresionCompuestaResto>
 <ExpresionCompuestaResto> ::= ? <ExpresionCompuesta> : <ExpresionCompuesta>
 <ExpresionCompuestaResto> ::= <OperadorBinario> <ExpresionBasica> <ExpresionCompuestaResto> | €
