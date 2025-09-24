@@ -1,126 +1,122 @@
 package syntactic;
 
-import lexical.ID;
+import lexical.lexID;
 
 import java.util.*;
 
 public class Primeros {
-    private static final Map<String, Set<ID>> primeros = new HashMap<>();
+    private static final Map<synID, Set<lexID>> primeros = new HashMap<>();
     static {
-        primeros.put("ListaExpsResto", Set.of(ID.p_comma)); // "€"
-        primeros.put("ArgsActuales", Set.of(ID.p_o_parenthesis));
-        primeros.put("ArgsFormales", Set.of(ID.p_o_parenthesis));
-        primeros.put("VarMetEncadenada", primeros.get("ArgsActuales"));
-        primeros.put("ExpresionParentizada", Set.of(ID.p_o_parenthesis));
-        primeros.put("LlamadaConstructor", Set.of(ID.kw_new));
-        primeros.put("LlamadaMetodoEstatico", Set.of(ID.id_class));
-        primeros.put("LlamadaMetOrVar", Set.of(ID.id_met_or_var));
-//        primeros.put("LlamadaMetodo", Set.of(ID.id_met_or_var));
-//        primeros.put("AccesoVar", Set.of(ID.id_met_or_var));
-        primeros.put("VarLocal", Set.of(ID.kw_var));
-        primeros.put("Return", Set.of(ID.kw_return));
-        primeros.put("If", Set.of(ID.kw_if));
-        primeros.put("Else", Set.of(ID.kw_else));
-        primeros.put("While", Set.of(ID.kw_while));
-        primeros.put("Bloque", Set.of(ID.p_o_bracket1));
-        primeros.put("BloqueOpcional", Set.of(ID.p_o_bracket1)); // "€"
-        primeros.put("OperadorAsignacion", Set.of(ID.op_equal));
-        primeros.put("OperadorUnario", Set.of(ID.op_plus, ID.op_minus, ID.op_plus_plus, ID.op_minus_minus, ID.op_not));
-        primeros.put("OperadorBinario", Set.of(ID.op_or, ID.op_and, ID.op_equal_equal, ID.op_not_equal, ID.op_less_than, ID.op_greater_than, ID.op_less_than_equal, ID.op_greater_than_equal, ID.op_plus, ID.op_minus, ID.op_multiplication, ID.op_division, ID.op_mod));
-        primeros.put("Primitivo", Set.of(ID.kw_true, ID.kw_false, ID.literal_integer, ID.literal_char, ID.kw_null));
-        primeros.put("ModificadorMiembro", Set.of(ID.kw_abstract, ID.kw_static, ID.kw_final));
-        primeros.put("ModificadorOpcional", union(primeros.get("ModificadorMiembro"))); // "€"
-        primeros.put("HerenciaOpcional", Set.of(ID.kw_extends)); // "€"
-        primeros.put("DeclaracionVariable", Set.of(ID.op_equal, ID.p_semicolon)); // "€"
-        primeros.put("TipoPrimitivo", Set.of(ID.kw_boolean, ID.kw_char, ID.kw_int));
-        primeros.put("Tipo", union(
-                Set.of(ID.id_class),
-                primeros.get("TipoPrimitivo")
+        primeros.put(synID.listaExpsResto, Set.of(lexID.p_comma)); // "€"
+        primeros.put(synID.argsActuales, Set.of(lexID.p_o_parenthesis));
+        primeros.put(synID.argsFormales, Set.of(lexID.p_o_parenthesis));
+        primeros.put(synID.varMetEncadenada, primeros.get(synID.argsActuales));
+        primeros.put(synID.expresionParentizada, Set.of(lexID.p_o_parenthesis));
+        primeros.put(synID.llamadaConstructor, Set.of(lexID.kw_new));
+        primeros.put(synID.llamadaMetodoEstatico, Set.of(lexID.id_class));
+        primeros.put(synID.llamadaMetOrVar, Set.of(lexID.id_met_or_var));
+        primeros.put(synID.varLocal, Set.of(lexID.kw_var));
+        primeros.put(synID.return_, Set.of(lexID.kw_return));
+        primeros.put(synID.if_, Set.of(lexID.kw_if));
+        primeros.put(synID.else_, Set.of(lexID.kw_else));
+        primeros.put(synID.while_, Set.of(lexID.kw_while));
+        primeros.put(synID.bloque, Set.of(lexID.p_o_bracket1));
+        primeros.put(synID.bloqueOpcional, Set.of(lexID.p_o_bracket1)); // "€"
+        primeros.put(synID.operadorUnario, Set.of(lexID.op_plus, lexID.op_minus, lexID.op_plus_plus, lexID.op_minus_minus, lexID.op_not));
+        primeros.put(synID.operadorBinario, Set.of(lexID.op_or, lexID.op_and, lexID.op_equal_equal, lexID.op_not_equal, lexID.op_less_than, lexID.op_greater_than, lexID.op_less_than_equal, lexID.op_greater_than_equal, lexID.op_plus, lexID.op_minus, lexID.op_multiplication, lexID.op_division, lexID.op_mod));
+        primeros.put(synID.primitivo, Set.of(lexID.kw_true, lexID.kw_false, lexID.literal_integer, lexID.literal_char, lexID.kw_null));
+        primeros.put(synID.modificadorMiembro, Set.of(lexID.kw_abstract, lexID.kw_static, lexID.kw_final));
+        primeros.put(synID.modificadorOpcional, union(primeros.get(synID.modificadorMiembro))); // "€"
+        primeros.put(synID.herenciaOpcional, Set.of(lexID.kw_extends)); // "€"
+        primeros.put(synID.declaracionVariable, Set.of(lexID.op_equal, lexID.p_semicolon)); // "€"
+        primeros.put(synID.tipoPrimitivo, Set.of(lexID.kw_boolean, lexID.kw_char, lexID.kw_int));
+        primeros.put(synID.tipo, union(
+                Set.of(lexID.id_class),
+                primeros.get(synID.tipoPrimitivo)
         ));
-        primeros.put("TipoMetodo", union(
-                Set.of(ID.kw_void),
-                primeros.get("Tipo")
+        primeros.put(synID.tipoMetodo, union(
+                Set.of(lexID.kw_void),
+                primeros.get(synID.tipo)
         ));
-        primeros.put("ArgFormal", primeros.get("Tipo"));
-        primeros.put("ListaArgsFormales", primeros.get("ArgFormal"));
-        primeros.put("ListaArgsFormalesOpcional", union(primeros.get("ListaArgsFormales"))); // "€"
-        primeros.put("ListaArgsFormalesResto", Set.of(ID.p_comma)); // "€"
-        primeros.put("Constructor", Set.of(ID.kw_public));
-        primeros.put("Clase", union(
-                Set.of(ID.kw_class),
-                primeros.get("ModificadorOpcional")
+        primeros.put(synID.argFormal, primeros.get(synID.tipo));
+        primeros.put(synID.listaArgsFormales, primeros.get(synID.argFormal));
+        primeros.put(synID.listaArgsFormalesOpcional, union(primeros.get(synID.listaArgsFormales))); // "€"
+        primeros.put(synID.listaArgsFormalesResto, Set.of(lexID.p_comma)); // "€"
+        primeros.put(synID.constructor, Set.of(lexID.kw_public));
+        primeros.put(synID.clase, union(
+                Set.of(lexID.kw_class),
+                primeros.get(synID.modificadorOpcional)
         ));
-        primeros.put("ListaClases", union(primeros.get("Clase"))); // "€"
-        primeros.put("Inicial", union(
-                Set.of(ID.EOF),
-                primeros.get("Clase")
+        primeros.put(synID.listaClases, union(primeros.get(synID.clase))); // "€"
+        primeros.put(synID.inicial, union(
+                Set.of(lexID.EOF),
+                primeros.get(synID.clase)
         ));
-        primeros.put("Primario", union(
-                Set.of(ID.kw_this, ID.literal_string),
-                primeros.get("LlamadaMetOrVar"),
-                primeros.get("LlamadaConstructor"),
-//                primeros.get("LlamadaMetodo"),
-                primeros.get("LlamadaMetodoEstatico"),
-                primeros.get("ExpresionParentizada")
+        primeros.put(synID.primario, union(
+                Set.of(lexID.kw_this, lexID.literal_string),
+                primeros.get(synID.llamadaMetOrVar),
+                primeros.get(synID.llamadaConstructor),
+                primeros.get(synID.llamadaMetodoEstatico),
+                primeros.get(synID.expresionParentizada)
         ));
-        primeros.put("Referencia", primeros.get("Primario"));
-        primeros.put("ReferenciaResto", union( // "€"
-                Set.of(ID.p_dot)
+        primeros.put(synID.referencia, primeros.get(synID.primario));
+        primeros.put(synID.referenciaResto, union( // "€"
+                Set.of(lexID.p_dot)
         ));
-        primeros.put("Operando", union(
-                primeros.get("Primitivo"),
-                primeros.get("Referencia")
+        primeros.put(synID.operando, union(
+                primeros.get(synID.primitivo),
+                primeros.get(synID.referencia)
         ));
-        primeros.put("ExpresionBasica", union(
-                primeros.get("OperadorUnario"),
-                primeros.get("Operando")
+        primeros.put(synID.expresionBasica, union(
+                primeros.get(synID.operadorUnario),
+                primeros.get(synID.operando)
         ));
-        primeros.put("ExpresionCompuestaResto", union(
-                Set.of(ID.p_question_mark),
-                primeros.get("OperadorBinario")
+        primeros.put(synID.expresionCompuestaResto, union(
+                Set.of(lexID.p_question_mark),
+                primeros.get(synID.operadorBinario)
         )); // "€"
-        primeros.put("ExpresionCompuesta", union(
-                primeros.get("ExpresionBasica")
+        primeros.put(synID.expresionCompuesta, union(
+                primeros.get(synID.expresionBasica)
         ));
-        primeros.put("ExpresionResto", union(primeros.get("OperadorAsignacion")));
-        primeros.put("Expresion", union(primeros.get("ExpresionCompuesta")));
-        primeros.put("ExpresionOpcional", union(primeros.get("Expresion"))); // "€"
-        primeros.put("ForIterador", Set.of(ID.p_colon));
-        primeros.put("ForExpresion", Set.of(ID.p_semicolon));
-        primeros.put("ForInstancia", union(
-                primeros.get("ForIterador"),
-                primeros.get("ForExpresion")
+        primeros.put(synID.expresionResto, Set.of(lexID.op_equal));
+        primeros.put(synID.expresion, union(primeros.get(synID.expresionCompuesta)));
+        primeros.put(synID.expresionOpcional, union(primeros.get(synID.expresion))); // "€"
+        primeros.put(synID.forIterador, Set.of(lexID.p_colon));
+        primeros.put(synID.forExpresion, Set.of(lexID.p_semicolon));
+        primeros.put(synID.forInstancia, union(
+                primeros.get(synID.forIterador),
+                primeros.get(synID.forExpresion)
         ));
-        primeros.put("ForArgs", union(
-                Set.of(ID.kw_var),
-                primeros.get("Expresion")
+        primeros.put(synID.forArgs, union(
+                Set.of(lexID.kw_var),
+                primeros.get(synID.expresion)
         ));
-        primeros.put("For", Set.of(ID.kw_for));
-        primeros.put("Sentencia", union(
-                Set.of(ID.p_semicolon),
-                primeros.get("VarLocal"),
-                primeros.get("Return"),
-                primeros.get("If"),
-                primeros.get("While"),
-                primeros.get("For"),
-                primeros.get("Bloque"),
-                primeros.get("Expresion")
+        primeros.put(synID.for_, Set.of(lexID.kw_for));
+        primeros.put(synID.sentencia, union(
+                Set.of(lexID.p_semicolon),
+                primeros.get(synID.varLocal),
+                primeros.get(synID.return_),
+                primeros.get(synID.if_),
+                primeros.get(synID.while_),
+                primeros.get(synID.for_),
+                primeros.get(synID.bloque),
+                primeros.get(synID.expresion)
         ));
-        primeros.put("ListaSentencias", union(primeros.get("Sentencia"))); // "€"
-        primeros.put("DeclaracionMetodo", primeros.get("ArgsFormales"));
-        primeros.put("MetodoVariable", union(
-                primeros.get("DeclaracionMetodo"),
-                primeros.get("DeclaracionVariable")
+        primeros.put(synID.listaSentencias, union(primeros.get(synID.sentencia))); // "€"
+        primeros.put(synID.declaracionMetodo, primeros.get(synID.argsFormales));
+        primeros.put(synID.metodoVariable, union(
+                primeros.get(synID.declaracionMetodo),
+                primeros.get(synID.declaracionVariable)
         ));
-        primeros.put("Miembro", union(
-                primeros.get("Tipo"),
-                primeros.get("ModificadorMiembro"),
-                primeros.get("Constructor"),
-                Set.of(ID.kw_void)
+        primeros.put(synID.miembro, union(
+                primeros.get(synID.tipo),
+                primeros.get(synID.modificadorMiembro),
+                primeros.get(synID.constructor),
+                Set.of(lexID.kw_void)
         ));
-        primeros.put("ListaMiembros", primeros.get("Miembro"));
-        primeros.put("ListaExps", primeros.get("Expresion"));
-        primeros.put("ListaExpsOpcional", union(primeros.get("ListaExps"))); // "€"
+        primeros.put(synID.listaMiembros, primeros.get(synID.miembro));
+        primeros.put(synID.listaExps, primeros.get(synID.expresion));
+        primeros.put(synID.listaExpsOpcional, union(primeros.get(synID.listaExps))); // "€"
     }
 
     @SafeVarargs
@@ -133,10 +129,10 @@ public class Primeros {
         }
         return result;
     }
-    public static boolean isFirstOf(String currentState, ID tokenID) {
-        return primeros.get(currentState).contains(tokenID);
+    public static boolean isFirstOf(synID currentState, lexID tokenLexID) {
+        return primeros.get(currentState).contains(tokenLexID);
     }
-    public static Set<ID> getFirsts(String currentState) {
+    public static Set<lexID> getFirsts(synID currentState) {
         return primeros.get(currentState);
     }
 }

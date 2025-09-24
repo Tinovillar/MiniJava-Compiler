@@ -49,8 +49,8 @@ public class LexicalAnalyzer {
         updateLexeme();
         updateCurrentChar();
     }
-    private Token tokenToReturn(ID id) {
-        return new Token(id, lexeme, sourceManager.getLineNumber());
+    private Token tokenToReturn(lexID lexId) {
+        return new Token(lexId, lexeme, sourceManager.getLineNumber());
     }
 
     private Token e0() throws LexicalException {
@@ -148,7 +148,7 @@ public class LexicalAnalyzer {
             case SourceManager.END_OF_FILE:
                 updateLexemeAndCurrentChar();
                 hasNext = false;
-                return new Token(ID.EOF, lexeme, sourceManager.getLineNumber());
+                return new Token(lexID.EOF, lexeme, sourceManager.getLineNumber());
             default:
                 int column = sourceManager.getColumnNumber();
                 updateLexemeAndCurrentChar();
@@ -162,7 +162,7 @@ public class LexicalAnalyzer {
             if(lexeme.length() <= 9) return e1Digit();
             throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber(), "The number is too long.");
         } else {
-            return tokenToReturn(ID.literal_integer);
+            return tokenToReturn(lexID.literal_integer);
         }
     }
     private Token e1LetterUpperCase() throws LexicalException {
@@ -170,7 +170,7 @@ public class LexicalAnalyzer {
             updateLexemeAndCurrentChar();
             return e1LetterUpperCase();
         }
-        return tokenToReturn(ID.id_class);
+        return tokenToReturn(lexID.id_class);
     }
     private Token e1LetterLowerCase() throws LexicalException {
         if(Character.isLetterOrDigit(currentChar) || currentChar == '_') {
@@ -198,7 +198,7 @@ public class LexicalAnalyzer {
     private Token e2SingleQuote() throws LexicalException {
         if(currentChar == '\'') {
             updateLexemeAndCurrentChar();
-            return tokenToReturn(ID.literal_char);
+            return tokenToReturn(lexID.literal_char);
         }
         while (currentChar != '\'' && currentChar != SourceManager.END_OF_FILE && currentChar != '\n') {
             updateLexemeAndCurrentChar();
@@ -225,7 +225,7 @@ public class LexicalAnalyzer {
             return e1DoubleQuote();
         } else if(currentChar == '"') {
             updateLexemeAndCurrentChar();
-            return tokenToReturn(ID.literal_string);
+            return tokenToReturn(lexID.literal_string);
         }
         if(currentChar == '\n') {
             throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber(), "Literal string must be closed in the same line.");
@@ -242,7 +242,7 @@ public class LexicalAnalyzer {
             updateLexemeAndCurrentChar();
             return e1MultipleComment();
         } else {
-            return tokenToReturn(ID.op_division);
+            return tokenToReturn(lexID.op_division);
         }
     }
     private Token e1SimpleComment() throws LexicalException {
@@ -273,63 +273,63 @@ public class LexicalAnalyzer {
             updateLexemeAndCurrentChar();
             return e2Equal();
         }
-        return tokenToReturn(ID.op_equal);
+        return tokenToReturn(lexID.op_equal);
     }
     private Token e2Equal() {
-        return tokenToReturn(ID.op_equal_equal);
+        return tokenToReturn(lexID.op_equal_equal);
     }
     private Token e1NotEqual() {
-        return tokenToReturn(ID.op_not_equal);
+        return tokenToReturn(lexID.op_not_equal);
     }
     private Token e1ExclamationMark() {
         if(currentChar == '=') {
             updateLexemeAndCurrentChar();
             return e1NotEqual();
         }
-        return tokenToReturn(ID.op_not);
+        return tokenToReturn(lexID.op_not);
     }
     private Token e1LessThan() {
         if(currentChar == '=') {
             updateLexemeAndCurrentChar();
             return e2LessThan();
         }
-        return tokenToReturn(ID.op_less_than);
+        return tokenToReturn(lexID.op_less_than);
     }
     private Token e2LessThan() {
-        return tokenToReturn(ID.op_less_than_equal);
+        return tokenToReturn(lexID.op_less_than_equal);
     }
     private Token e1GreaterThan() {
         if(currentChar == '=') {
             updateLexemeAndCurrentChar();
             return e2GreaterThan();
         }
-        return tokenToReturn(ID.op_greater_than);
+        return tokenToReturn(lexID.op_greater_than);
     }
     private Token e2GreaterThan() {
-        return tokenToReturn(ID.op_greater_than_equal);
+        return tokenToReturn(lexID.op_greater_than_equal);
     }
     private Token e1Add() {
         if(currentChar == '+') {
             updateLexemeAndCurrentChar();
             return e2Add();
         }
-        return tokenToReturn(ID.op_plus);
+        return tokenToReturn(lexID.op_plus);
     }
     private Token e2Add() {
-        return tokenToReturn(ID.op_plus_plus);
+        return tokenToReturn(lexID.op_plus_plus);
     }
     private Token e1Sub() {
         if(currentChar == '-') {
             updateLexemeAndCurrentChar();
             return e2Sub();
         }
-        return tokenToReturn(ID.op_minus);
+        return tokenToReturn(lexID.op_minus);
     }
     private Token e2Sub() {
-        return tokenToReturn(ID.op_minus_minus);
+        return tokenToReturn(lexID.op_minus_minus);
     }
     private Token e1Mul() {
-        return tokenToReturn(ID.op_multiplication);
+        return tokenToReturn(lexID.op_multiplication);
     }
     private Token e1And() throws LexicalException {
         if(currentChar == '&') {
@@ -339,9 +339,9 @@ public class LexicalAnalyzer {
         throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber(), "The & operator is not supported. Must be &&.");
     }
     private Token e2And() {
-        return tokenToReturn(ID.op_and);
+        return tokenToReturn(lexID.op_and);
     }
-    private Token e1Mod() { return tokenToReturn(ID.op_mod); }
+    private Token e1Mod() { return tokenToReturn(lexID.op_mod); }
     private Token e1Or() throws LexicalException {
         if(currentChar == '|') {
             updateLexemeAndCurrentChar();
@@ -350,39 +350,39 @@ public class LexicalAnalyzer {
         throw new LexicalException(lexeme, sourceManager.getLineNumber(), sourceManager.getColumnNumber(), "The | operator is not supported. Must be ||.");
     }
     private Token e1QuestionMark() {
-        return tokenToReturn(ID.p_question_mark);
+        return tokenToReturn(lexID.p_question_mark);
     }
     private Token e2Or() {
-        return tokenToReturn(ID.op_or);
+        return tokenToReturn(lexID.op_or);
     }
     private Token e1OpenParenthesis() {
-        return tokenToReturn(ID.p_o_parenthesis);
+        return tokenToReturn(lexID.p_o_parenthesis);
     }
     private Token e1CloseParenthesis() {
-        return tokenToReturn(ID.p_c_parenthesis);
+        return tokenToReturn(lexID.p_c_parenthesis);
     }
     private Token e1OpenBracket1() {
-        return tokenToReturn(ID.p_o_bracket1);
+        return tokenToReturn(lexID.p_o_bracket1);
     }
     private Token e1CloseBracket1() {
-        return tokenToReturn(ID.p_c_bracket1);
+        return tokenToReturn(lexID.p_c_bracket1);
     }
     private Token e1OpenBracket2() {
-        return tokenToReturn(ID.p_o_bracket2);
+        return tokenToReturn(lexID.p_o_bracket2);
     }
     private Token e1CloseBracket2() {
-        return tokenToReturn(ID.p_c_bracket2);
+        return tokenToReturn(lexID.p_c_bracket2);
     }
     private Token e1Dot() {
-        return tokenToReturn(ID.p_dot);
+        return tokenToReturn(lexID.p_dot);
     }
     private Token e1Comma() {
-        return tokenToReturn(ID.p_comma);
+        return tokenToReturn(lexID.p_comma);
     }
     private Token e1Colon() {
-        return tokenToReturn(ID.p_colon);
+        return tokenToReturn(lexID.p_colon);
     }
     private Token e1SemiColon() {
-        return tokenToReturn(ID.p_semicolon);
+        return tokenToReturn(lexID.p_semicolon);
     }
 }

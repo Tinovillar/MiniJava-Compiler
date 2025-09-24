@@ -1,6 +1,6 @@
 package lexical;
 
-public enum ID {
+public enum lexID {
     kw_class,
     kw_extends,
     kw_public,

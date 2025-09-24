@@ -1,17 +1,16 @@
 package exceptions;
 
-import lexical.ID;
+import lexical.lexID;
 import lexical.Token;
-import sourceManager.SourceManager;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class SyntacticException extends Exception {
     private Token currentToken;
-    private Set<ID> expected;
+    private Set<lexID> expected;
 
-    public SyntacticException(Token currentToken, Set<ID> expected) {
+    public SyntacticException(Token currentToken, Set<lexID> expected) {
         this.currentToken = currentToken;
         this.expected = expected;
     }
@@ -20,7 +19,7 @@ public class SyntacticException extends Exception {
     public void printStackTrace() {
         System.out.println("Error sintactico en la linea " + currentToken.getLineNumber());
         System.out.println("Se esperaba " + expected.stream().map(Enum::name).collect(Collectors.joining(", ")) + " y se encontro: '" + currentToken.getLexeme()+"'");
-        String lexeme = currentToken.getId().equals(ID.EOF)
+        String lexeme = currentToken.getId().equals(lexID.EOF)
                 ? "EOF"
                 : currentToken.getLexeme();
 
