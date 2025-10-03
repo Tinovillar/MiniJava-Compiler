@@ -105,7 +105,7 @@ public class SyntacticAnalyzer {
         } else if(Primeros.isFirstOf(synID.declaracionVariable, currentToken.getId())) {
             declaracionVariable();
         } else {
-            throw new SyntacticException(currentToken, Primeros.getFirsts(synID.modificadorMiembro));
+            throw new SyntacticException(currentToken, Primeros.getFirsts(synID.metodoVariable));
         }
     }
     private void declaracionVariable() throws SyntacticException {
@@ -131,7 +131,7 @@ public class SyntacticAnalyzer {
         } else if(lexID.kw_void.equals(currentToken.getId())) {
             match(lexID.kw_void);
         } else {
-            throw new SyntacticException(currentToken, Primeros.getFirsts(synID.modificadorMiembro));
+            throw new SyntacticException(currentToken, Primeros.getFirsts(synID.tipoMetodo));
         }
     }
     private void tipo() throws SyntacticException {
@@ -140,14 +140,14 @@ public class SyntacticAnalyzer {
         } else if(lexID.id_class.equals(currentToken.getId())) {
             match(lexID.id_class);
         } else {
-            throw new SyntacticException(currentToken, Primeros.getFirsts(synID.modificadorMiembro));
+            throw new SyntacticException(currentToken, Primeros.getFirsts(synID.tipo));
         }
     }
     private void tipoPrimitivo() throws SyntacticException {
         if(Primeros.isFirstOf(synID.tipoPrimitivo, currentToken.getId())) {
             match(currentToken.getId());
         } else {
-            throw new SyntacticException(currentToken, Primeros.getFirsts(synID.modificadorMiembro));
+            throw new SyntacticException(currentToken, Primeros.getFirsts(synID.tipoPrimitivo));
         }
     }
     private void ArgsFormales() throws SyntacticException {
@@ -181,7 +181,7 @@ public class SyntacticAnalyzer {
         } else if(lexID.p_semicolon.equals(currentToken.getId())) {
             match(lexID.p_semicolon);
         } else {
-            throw new SyntacticException(currentToken, Primeros.getFirsts(synID.modificadorMiembro));
+            throw new SyntacticException(currentToken, Primeros.getFirsts(synID.bloqueOpcional));
         }
     }
     private void bloque() throws SyntacticException {
@@ -216,7 +216,7 @@ public class SyntacticAnalyzer {
         }else if(lexID.p_semicolon.equals(currentToken.getId())) {
             match(lexID.p_semicolon);
         } else {
-            throw new SyntacticException(currentToken, Primeros.getFirsts(synID.modificadorMiembro));
+            throw new SyntacticException(currentToken, Primeros.getFirsts(synID.sentencia));
         }
     }
     private void varLocal() throws SyntacticException {
@@ -271,7 +271,7 @@ public class SyntacticAnalyzer {
             expresion();
             forExpresion();
         } else {
-            throw new SyntacticException(currentToken, Primeros.getFirsts(synID.modificadorMiembro));
+            throw new SyntacticException(currentToken, Primeros.getFirsts(synID.forArgs));
         }
     }
     private void forInstancia() throws SyntacticException {
@@ -282,7 +282,7 @@ public class SyntacticAnalyzer {
             expresionCompuesta();
             forExpresion();
         } else {
-            throw new SyntacticException(currentToken, Primeros.getFirsts(synID.modificadorMiembro));
+            throw new SyntacticException(currentToken, Primeros.getFirsts(synID.forInstancia));
         }
     }
     private void forIterador() throws SyntacticException {
@@ -313,7 +313,7 @@ public class SyntacticAnalyzer {
             expresionBasica();
             expresionCompuestaResto();
         } else {
-            throw new SyntacticException(currentToken, Primeros.getFirsts(synID.modificadorMiembro));
+            throw new SyntacticException(currentToken, Primeros.getFirsts(synID.expresionCompuesta));
         }
     }
     private void expresionCompuestaResto() throws SyntacticException {
@@ -332,7 +332,7 @@ public class SyntacticAnalyzer {
         if(isFirstOf(synID.operadorBinario)) {
             match(currentToken.getId());
         } else {
-            throw new SyntacticException(currentToken, Primeros.getFirsts(synID.modificadorMiembro));
+            throw new SyntacticException(currentToken, Primeros.getFirsts(synID.operadorBinario));
         }
     }
     private void expresionBasica() throws SyntacticException {
@@ -342,14 +342,14 @@ public class SyntacticAnalyzer {
         } else if(isFirstOf(synID.operando)) {
             operando();
         } else {
-            throw new SyntacticException(currentToken, Primeros.getFirsts(synID.modificadorMiembro));
+            throw new SyntacticException(currentToken, Primeros.getFirsts(synID.expresionBasica));
         }
     }
     private void operadorUnario() throws SyntacticException {
         if(isFirstOf(synID.operadorUnario)) {
             match(currentToken.getId());
         } else {
-            throw new SyntacticException(currentToken, Primeros.getFirsts(synID.modificadorMiembro));
+            throw new SyntacticException(currentToken, Primeros.getFirsts(synID.operadorUnario));
         }
     }
     private void operando() throws SyntacticException {
@@ -357,6 +357,8 @@ public class SyntacticAnalyzer {
             primitivo();
         } else if(isFirstOf(synID.referencia)) {
             referencia();
+        } else {
+            throw new SyntacticException(currentToken, Primeros.getFirsts(synID.operando));
         }
     }
     private void primitivo() throws SyntacticException {
@@ -390,7 +392,7 @@ public class SyntacticAnalyzer {
         } else if(isFirstOf(synID.expresionParentizada)) {
             expresionParentizada();
         } else {
-            throw new SyntacticException(currentToken, Primeros.getFirsts(synID.modificadorMiembro));
+            throw new SyntacticException(currentToken, Primeros.getFirsts(synID.primario));
         }
     }
     private void llamadaConstructor() throws SyntacticException {
