@@ -1,4 +1,0 @@
-///[SinErrores]
-Class
-voID
-falSe
