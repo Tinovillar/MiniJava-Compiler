@@ -287,7 +287,7 @@ public class SyntacticAnalyzer {
     }
     private void forIterador() throws SyntacticException {
         match(lexID.p_colon);
-        match(lexID.id_met_or_var);
+        expresion();
     }
     private void forExpresion() throws SyntacticException {
         match(lexID.p_semicolon);

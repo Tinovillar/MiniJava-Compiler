@@ -1,4 +1,4 @@
-///[Error:+|4]
+///[Error:;|4]
 class Sopa {
     public Sopa() {
         x = +;
