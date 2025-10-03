@@ -31,3 +31,6 @@ bin/
 
 ### Java ###
 /src/META-INF/
+
+### Project ###
+/resources/otherTests/
