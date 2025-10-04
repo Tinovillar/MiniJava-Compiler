@@ -18,6 +18,7 @@ public class SymbolTable {
             class_.isWellDeclared();
         }
     }
+    public void consolidate() {}
 
     public void addClass(ConcreteClass class_) {
         if(!classes.containsKey(class_.getName())) {

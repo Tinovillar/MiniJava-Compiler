@@ -14,6 +14,9 @@ public class Attribute {
         this.visibility = visibility;
     }
 
+    public void isWellDeclared() {}
+    public void consolidate() {}
+
     public Token getToken() {
         return token;
     }

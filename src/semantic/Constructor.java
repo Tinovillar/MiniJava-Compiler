@@ -11,4 +11,7 @@ public class Constructor {
         // super()
         parameters = new HashMap<>();
     }
+
+    public void isWellDeclared() {}
+    public void consolidate() {}
 }

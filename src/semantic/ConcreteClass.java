@@ -21,6 +21,8 @@ public class ConcreteClass {
     public boolean isWellDeclared() {
         return true;
     }
+    public void consolidate() {}
+
     public String getName() {
         return token.getLexeme();
     }
