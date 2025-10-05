@@ -7,14 +7,13 @@ import java.util.HashMap;
 public class ConcreteClass {
     Token token;
     String parent;
+    String modifier;
     Constructor constructor;
     HashMap<String, Attribute> attributes;
     HashMap<String, Method> methods;
 
-    public ConcreteClass(Token token, String parent, Constructor constructor) {
+    public ConcreteClass(Token token) {
         this.token = token;
-        this.parent = parent;
-        this.constructor = constructor;
         this.attributes = new HashMap<>();
         this.methods = new HashMap<>();
     }
@@ -50,5 +49,17 @@ public class ConcreteClass {
         } else {
             System.out.println("Error: método duplicado '" + name + "' en clase " + getName());
         }
+    }
+    public void setConstructor(Constructor constructor) {
+        this.constructor = constructor;
+    }
+    public void setParent(String parent) {
+        this.parent = parent;
+    }
+    public String getModifier() {
+        return modifier;
+    }
+    public void setModifier(String modifier) {
+        this.modifier = modifier;
     }
 }

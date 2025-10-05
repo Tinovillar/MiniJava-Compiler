@@ -5,15 +5,22 @@ import exceptions.SyntacticException;
 import lexical.lexID;
 import lexical.LexicalAnalyzer;
 import lexical.Token;
+import semantic.ConcreteClass;
+import semantic.Constructor;
+import semantic.SymbolTable;
 
 import java.util.Set;
 
 public class SyntacticAnalyzer {
     private LexicalAnalyzer lexicalAnalyzer;
     private Token currentToken;
-    public SyntacticAnalyzer(LexicalAnalyzer lexicalAnalyzer) {
+    private final SymbolTable ST;
+
+    public SyntacticAnalyzer(LexicalAnalyzer lexicalAnalyzer, SymbolTable symbolTable) {
         this.lexicalAnalyzer = lexicalAnalyzer;
+        this.ST = symbolTable;
     }
+
     private void match(lexID tokenLexID) throws SyntacticException {
         if(tokenLexID.equals(currentToken.getId())) {
             try {
@@ -47,24 +54,34 @@ public class SyntacticAnalyzer {
         }
     }
     private void clase() throws SyntacticException {
-        modificadorOpcional();
+        Token modifier = modificadorOpcional();
         match(lexID.kw_class);
+        ST.setCurrentClass(new ConcreteClass(currentToken));
+        ST.getCurrentClass().setModifier(modifier.getLexeme());
         match(lexID.id_class);
-        herenciaOpcional();
+        Token parent = herenciaOpcional();
+        ST.getCurrentClass().setParent(parent.getLexeme());
         match(lexID.p_o_bracket1);
         listaMiembros();
         match(lexID.p_c_bracket1);
+        ST.addClass(ST.getCurrentClass());
     }
-    private void modificadorOpcional() throws SyntacticException {
+    private Token modificadorOpcional() throws SyntacticException {
+        Token toReturn = Token.blankToken();
         if(Primeros.isFirstOf(synID.modificadorOpcional, currentToken.getId())) {
+            toReturn = currentToken;
             match(currentToken.getId());
         }
+        return toReturn;
     }
-    private void herenciaOpcional() throws SyntacticException {
+    private Token herenciaOpcional() throws SyntacticException {
+        Token toReturn = Token.blankToken();
         if(Primeros.isFirstOf(synID.herenciaOpcional, currentToken.getId())) {
             match(lexID.kw_extends);
+            toReturn = currentToken;
             match(lexID.id_class);
         }
+        return toReturn;
     }
     private void listaMiembros() throws SyntacticException {
         if(Primeros.isFirstOf(synID.listaMiembros, currentToken.getId())) {
@@ -121,6 +138,9 @@ public class SyntacticAnalyzer {
     }
     private void constructor() throws SyntacticException {
         match(lexID.kw_public);
+        Constructor constructor = new Constructor(currentToken, ST.getCurrentClass().getName());
+        ST.setCurrentConstructor(constructor);
+        ST.getCurrentClass().setConstructor(constructor);
         match(lexID.id_class);
         ArgsFormales();
         bloque();

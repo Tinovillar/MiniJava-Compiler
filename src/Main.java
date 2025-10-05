@@ -1,5 +1,6 @@
 import exceptions.SyntacticException;
 import lexical.LexicalAnalyzer;
+import semantic.SymbolTable;
 import sourceManager.BetterSourceManagerImpl;
 import sourceManager.SourceManager;
 import syntactic.SyntacticAnalyzer;
@@ -20,10 +21,15 @@ public class Main {
             SourceManager sourceManager = new BetterSourceManagerImpl();
             sourceManager.open(args[0]);
 
+            SymbolTable symbolTable = new SymbolTable();
+
             LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(sourceManager);
-            SyntacticAnalyzer syntacticAnalyzer = new SyntacticAnalyzer(lexicalAnalyzer);
+            SyntacticAnalyzer syntacticAnalyzer = new SyntacticAnalyzer(lexicalAnalyzer, symbolTable);
 
             syntacticAnalyzer.startAnalysis();
+
+            symbolTable.isWellDeclared();
+            symbolTable.consolidate();
 
             if(!errors) {
                 System.out.println("[SinErrores]");
