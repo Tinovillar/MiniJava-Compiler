@@ -27,4 +27,8 @@ public class Token {
     public String toString() {
         return " > ("+ this.lexId.toString() +", " + this.lexeme + ", " + this.lineNumber + ")";
     }
+
+    public static Token blankToken() {
+        return new Token(null, "", -1);
+    }
 }
