@@ -1,4 +1,5 @@
 package semantic;
 
-public class Type {
+public interface Type {
+    String getName();
 }

@@ -21,11 +21,37 @@ public class SymbolTable {
     public void consolidate() {}
 
     public void addClass(ConcreteClass class_) {
-        if(!classes.containsKey(class_.getName())) {
-            classes.put(class_.getName(), class_);
-            currentClass = class_;
-        } else {
+        String name = class_.getName();
+        if(classes.containsKey(name)) {
             // Error
         }
+        classes.put(name, class_);
+    }
+    public ConcreteClass getClassOrNull(String name) {
+        return classes.get(name);
+    }
+    public ConcreteClass getCurrentClass() {
+        return currentClass;
+    }
+    public void setCurrentClass(ConcreteClass currentClass) {
+        this.currentClass = currentClass;
+    }
+    public Constructor getCurrentConstructor() {
+        return currentConstructor;
+    }
+    public void setCurrentConstructor(Constructor currentConstructor) {
+        this.currentConstructor = currentConstructor;
+    }
+    public Attribute getCurrentAttribute() {
+        return currentAttribute;
+    }
+    public void setCurrentAttribute(Attribute currentAttribute) {
+        this.currentAttribute = currentAttribute;
+    }
+    public Method getCurrentMethod() {
+        return currentMethod;
+    }
+    public void setCurrentMethod(Method currentMethod) {
+        this.currentMethod = currentMethod;
     }
 }
