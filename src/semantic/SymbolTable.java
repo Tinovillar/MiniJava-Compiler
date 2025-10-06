@@ -69,15 +69,14 @@ public class SymbolTable {
 
         System.out.println("==============================");
     }
-
-
     public void isWellDeclared() {
         for(ConcreteClass class_ : classes.values()) {
             class_.isWellDeclared();
         }
     }
-    public void consolidate() {}
+    public void consolidate() {
 
+    }
     public void addCurrentClass() {
         String name = currentClass.getName();
         if(classes.containsKey(name)) {

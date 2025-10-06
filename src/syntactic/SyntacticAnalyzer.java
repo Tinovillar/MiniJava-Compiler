@@ -1,6 +1,7 @@
 package syntactic;
 
 import com.sun.jdi.connect.Connector;
+import compiler.Main;
 import exceptions.LexicalException;
 import exceptions.SyntacticException;
 import lexical.lexID;
@@ -13,11 +14,10 @@ import java.util.Set;
 public class SyntacticAnalyzer {
     private LexicalAnalyzer lexicalAnalyzer;
     private Token currentToken;
-    private final SymbolTable ST;
+    private final SymbolTable ST = Main.ST;
 
-    public SyntacticAnalyzer(LexicalAnalyzer lexicalAnalyzer, SymbolTable symbolTable) {
+    public SyntacticAnalyzer(LexicalAnalyzer lexicalAnalyzer) {
         this.lexicalAnalyzer = lexicalAnalyzer;
-        this.ST = symbolTable;
     }
 
     private void match(lexID tokenLexID) throws SyntacticException {

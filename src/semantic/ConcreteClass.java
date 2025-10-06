@@ -1,5 +1,6 @@
 package semantic;
 
+import compiler.Main;
 import lexical.Token;
 
 import java.util.HashMap;
@@ -18,8 +19,24 @@ public class ConcreteClass {
         this.methods = new HashMap<>();
     }
 
-    public boolean isWellDeclared() {
-        return true;
+    public void isWellDeclared() {
+        checkInheritnace();
+        checkCircularInheritance();
+
+        if(constructor != null) {
+            constructor.isWellDeclared();
+        }
+        for(Method method : methods.values()) {
+            method.isWellDeclared();
+        }
+        for(Attribute attribute : attributes.values()) {
+            attribute.isWellDeclared();
+        }
+    }
+    private void checkInheritnace() {
+        if(parent != null && Main.ST.getClassOrNull(parent) != null) {
+            
+        }
     }
     public void consolidate() {}
     public Token getToken() {
@@ -62,11 +79,9 @@ public class ConcreteClass {
             System.out.println("Error: método duplicado '" + name + "' en clase " + getName());
         }
     }
-
     public HashMap<String, Attribute> getAttributes() {
         return attributes;
     }
-
     public HashMap<String, Method> getMethods() {
         return methods;
     }

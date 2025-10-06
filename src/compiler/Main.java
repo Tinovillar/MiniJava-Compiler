@@ -1,3 +1,5 @@
+package compiler;
+
 import exceptions.SyntacticException;
 import lexical.LexicalAnalyzer;
 import semantic.SymbolTable;
@@ -9,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class Main {
+    public static final SymbolTable ST = new SymbolTable();
     public static void main(String[] args) {
         try {
             boolean errors = false;
@@ -21,16 +24,14 @@ public class Main {
             SourceManager sourceManager = new BetterSourceManagerImpl();
             sourceManager.open(args[0]);
 
-            SymbolTable symbolTable = new SymbolTable();
-
             LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(sourceManager);
-            SyntacticAnalyzer syntacticAnalyzer = new SyntacticAnalyzer(lexicalAnalyzer, symbolTable);
+            SyntacticAnalyzer syntacticAnalyzer = new SyntacticAnalyzer(lexicalAnalyzer);
 
             syntacticAnalyzer.startAnalysis();
 
-            symbolTable.printTable();
-            symbolTable.isWellDeclared();
-            symbolTable.consolidate();
+            ST.printTable();
+            ST.isWellDeclared();
+            ST.consolidate();
 
             if(!errors) {
                 System.out.println("[SinErrores]");
