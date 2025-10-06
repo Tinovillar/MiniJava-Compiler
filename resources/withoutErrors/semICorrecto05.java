@@ -12,7 +12,7 @@ class B extends A {
 
 
 
-class Init{
+abstract class Init{
     static void main()
     { }
 }
