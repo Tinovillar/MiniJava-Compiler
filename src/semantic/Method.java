@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 public class Method {
     Token token;
+    Token modifier;
     String parent;
     Type returnType;
     HashMap<String, Parameter> parameters;
@@ -30,6 +31,9 @@ public class Method {
     }
     public void setParent(String parent) {
         this.parent = parent;
+    }
+    public void setModifier(Token modifier) {
+        this.modifier = modifier;
     }
     public Type getReturnType() {
         return returnType;

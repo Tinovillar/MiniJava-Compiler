@@ -1,13 +1,12 @@
 package syntactic;
 
+import com.sun.jdi.connect.Connector;
 import exceptions.LexicalException;
 import exceptions.SyntacticException;
 import lexical.lexID;
 import lexical.LexicalAnalyzer;
 import lexical.Token;
-import semantic.ConcreteClass;
-import semantic.Constructor;
-import semantic.SymbolTable;
+import semantic.*;
 
 import java.util.Set;
 
@@ -64,7 +63,7 @@ public class SyntacticAnalyzer {
         match(lexID.p_o_bracket1);
         listaMiembros();
         match(lexID.p_c_bracket1);
-        ST.addClass(ST.getCurrentClass());
+        ST.addCurrentClass();
     }
     private Token modificadorOpcional() throws SyntacticException {
         Token toReturn = Token.blankToken();
@@ -93,34 +92,57 @@ public class SyntacticAnalyzer {
         if(Primeros.isFirstOf(synID.constructor, currentToken.getId())) {
             constructor();
         } else if(Primeros.isFirstOf(synID.tipo, currentToken.getId())) {
-            tipo();
-            match(lexID.id_met_or_var);
-            metodoVariable();
+            metodoVarDeclarados();
         } else if(Primeros.isFirstOf(synID.modificadorMiembro, currentToken.getId())) {
-            modificadorMiembro();
-            tipoMetodo();
-            match(lexID.id_met_or_var);
-            declaracionMetodo();
+            metodoConModificador();
         } else if(currentToken.getId().equals(lexID.kw_void)) {
-            match(lexID.kw_void);
-            match(lexID.id_met_or_var);
-            declaracionMetodo();
+            metodoConVoid();
         } else {
             throw new SyntacticException(currentToken, Primeros.getFirsts(synID.miembro));
         }
     }
-    private void modificadorMiembro() throws SyntacticException {
+    private void metodoVarDeclarados() throws SyntacticException {
+        Type type = tipo();
+        Token token = currentToken;
+        match(lexID.id_met_or_var);
+        metodoVariable(type, token);
+    }
+    private void metodoConModificador() throws SyntacticException {
+        Token modifier = modificadorMiembro();
+        Type type = tipoMetodo();
+        ST.setCurrentMethod(new Method(currentToken, ST.getCurrentClass().getName(), type));
+        ST.getCurrentMethod().setModifier(modifier);
+        match(lexID.id_met_or_var);
+        declaracionMetodo();
+        ST.addCurrentMethod();
+    }
+    private void metodoConVoid() throws SyntacticException {
+        Type type = new ReferenceType(currentToken);
+        match(lexID.kw_void);
+        ST.setCurrentMethod(new Method(currentToken, ST.getCurrentClass().getName(), type));
+        match(lexID.id_met_or_var);
+        declaracionMetodo();
+        ST.addCurrentMethod();
+    }
+    private Token modificadorMiembro() throws SyntacticException {
+        Token modifier;
         if(Primeros.isFirstOf(synID.modificadorMiembro, currentToken.getId())) {
+            modifier = currentToken;
             match(currentToken.getId());
         } else {
             throw new SyntacticException(currentToken, Primeros.getFirsts(synID.modificadorMiembro));
         }
+        return modifier;
     }
-    private void metodoVariable() throws SyntacticException {
+    private void metodoVariable(Type type, Token token) throws SyntacticException {
         if(Primeros.isFirstOf(synID.declaracionMetodo, currentToken.getId())) {
+            ST.setCurrentMethod(new Method(token, ST.getCurrentClass().getName(), type));
             declaracionMetodo();
+            ST.addCurrentMethod();
         } else if(Primeros.isFirstOf(synID.declaracionVariable, currentToken.getId())) {
+            ST.setCurrentAttribute(new Attribute(token, type));
             declaracionVariable();
+            ST.addCurrentAttribute();
         } else {
             throw new SyntacticException(currentToken, Primeros.getFirsts(synID.metodoVariable));
         }
@@ -139,29 +161,36 @@ public class SyntacticAnalyzer {
     private void constructor() throws SyntacticException {
         match(lexID.kw_public);
         Constructor constructor = new Constructor(currentToken, ST.getCurrentClass().getName());
-        ST.setCurrentConstructor(constructor);
+        ST.setCurrentMethod(constructor);
         ST.getCurrentClass().setConstructor(constructor);
         match(lexID.id_class);
         ArgsFormales();
         bloque();
     }
-    private void tipoMetodo() throws SyntacticException {
+    private Type tipoMetodo() throws SyntacticException {
+        Type type = null;
         if(Primeros.isFirstOf(synID.tipo, currentToken.getId())) {
-            tipo();
+            type = tipo();
         } else if(lexID.kw_void.equals(currentToken.getId())) {
+            type = new ReferenceType(currentToken);
             match(lexID.kw_void);
         } else {
             throw new SyntacticException(currentToken, Primeros.getFirsts(synID.tipoMetodo));
         }
+        return type;
     }
-    private void tipo() throws SyntacticException {
+    private Type tipo() throws SyntacticException {
+        Type tipo = null;
         if(Primeros.isFirstOf(synID.tipoPrimitivo, currentToken.getId())) {
+            tipo = new PrimitiveType(currentToken);
             tipoPrimitivo();
         } else if(lexID.id_class.equals(currentToken.getId())) {
+            tipo = new ReferenceType(currentToken);
             match(lexID.id_class);
         } else {
             throw new SyntacticException(currentToken, Primeros.getFirsts(synID.tipo));
         }
+        return tipo;
     }
     private void tipoPrimitivo() throws SyntacticException {
         if(Primeros.isFirstOf(synID.tipoPrimitivo, currentToken.getId())) {
@@ -192,7 +221,8 @@ public class SyntacticAnalyzer {
         }
     }
     private void argFormal() throws SyntacticException {
-        tipo();
+        Type type = tipo();
+        ST.getCurrentMethod().addParameter(new Parameter(currentToken.getLexeme(), type));
         match(lexID.id_met_or_var);
     }
     private void bloqueOpcional() throws SyntacticException {

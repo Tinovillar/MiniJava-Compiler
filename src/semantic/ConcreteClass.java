@@ -25,8 +25,20 @@ public class ConcreteClass {
     public Token getToken() {
         return token;
     }
+    public void setParent(String parent) {
+        this.parent = parent;
+    }
     public String getParent() {
         return parent;
+    }
+    public String getModifier() {
+        return modifier;
+    }
+    public void setModifier(String modifier) {
+        this.modifier = modifier;
+    }
+    public void setConstructor(Constructor constructor) {
+        this.constructor = constructor;
     }
     public Constructor getConstructor() {
         return constructor;
@@ -50,16 +62,12 @@ public class ConcreteClass {
             System.out.println("Error: método duplicado '" + name + "' en clase " + getName());
         }
     }
-    public void setConstructor(Constructor constructor) {
-        this.constructor = constructor;
+
+    public HashMap<String, Attribute> getAttributes() {
+        return attributes;
     }
-    public void setParent(String parent) {
-        this.parent = parent;
-    }
-    public String getModifier() {
-        return modifier;
-    }
-    public void setModifier(String modifier) {
-        this.modifier = modifier;
+
+    public HashMap<String, Method> getMethods() {
+        return methods;
     }
 }

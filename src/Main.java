@@ -28,6 +28,7 @@ public class Main {
 
             syntacticAnalyzer.startAnalysis();
 
+            symbolTable.printTable();
             symbolTable.isWellDeclared();
             symbolTable.consolidate();
 
