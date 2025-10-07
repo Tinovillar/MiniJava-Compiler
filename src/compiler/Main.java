@@ -33,13 +33,14 @@ public class Main {
 
             syntacticAnalyzer.startAnalysis();
 
-//            ST.printTable();
             ST.isWellDeclared();
             ST.consolidate();
 
             if(!errors) {
                 System.out.println("[SinErrores]");
             }
+
+            ST.printTable();
 
             sourceManager.close();
         } catch (FileNotFoundException e) {
