@@ -13,7 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class Main {
-    public static final SymbolTable ST = new SymbolTable();
+    public static SymbolTable ST;
     public static void main(String[] args) {
         try {
             boolean errors = false;
@@ -25,6 +25,8 @@ public class Main {
 
             SourceManager sourceManager = new BetterSourceManagerImpl();
             sourceManager.open(args[0]);
+
+            ST = new SymbolTable();
 
             LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(sourceManager);
             SyntacticAnalyzer syntacticAnalyzer = new SyntacticAnalyzer(lexicalAnalyzer);

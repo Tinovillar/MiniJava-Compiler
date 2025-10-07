@@ -59,7 +59,7 @@ public class SyntacticAnalyzer {
         ST.getCurrentClass().setModifier(modifier.getLexeme());
         match(lexID.id_class);
         Token parent = herenciaOpcional();
-        ST.getCurrentClass().setParent(parent.getLexeme());
+        ST.getCurrentClass().setParent(parent);
         match(lexID.p_o_bracket1);
         listaMiembros();
         match(lexID.p_c_bracket1);
@@ -113,7 +113,8 @@ public class SyntacticAnalyzer {
         ST.setCurrentMethod(new Method(currentToken, ST.getCurrentClass().getName(), type));
         ST.getCurrentMethod().setModifier(modifier);
         match(lexID.id_met_or_var);
-        declaracionMetodo();
+        boolean hasBlock = declaracionMetodo();
+        ST.getCurrentMethod().setHasBody(hasBlock);
         ST.addCurrentMethod();
     }
     private void metodoConVoid() throws SyntacticException, SemanticException {
@@ -121,7 +122,8 @@ public class SyntacticAnalyzer {
         match(lexID.kw_void);
         ST.setCurrentMethod(new Method(currentToken, ST.getCurrentClass().getName(), type));
         match(lexID.id_met_or_var);
-        declaracionMetodo();
+        boolean hasBlock = declaracionMetodo();
+        ST.getCurrentMethod().setHasBody(hasBlock);
         ST.addCurrentMethod();
     }
     private Token modificadorMiembro() throws SyntacticException {
@@ -137,7 +139,8 @@ public class SyntacticAnalyzer {
     private void metodoVariable(Type type, Token token) throws SyntacticException, SemanticException {
         if(Primeros.isFirstOf(synID.declaracionMetodo, currentToken.getId())) {
             ST.setCurrentMethod(new Method(token, ST.getCurrentClass().getName(), type));
-            declaracionMetodo();
+            boolean hasBlock = declaracionMetodo();
+            ST.getCurrentMethod().setHasBody(hasBlock);
             ST.addCurrentMethod();
         } else if(Primeros.isFirstOf(synID.declaracionVariable, currentToken.getId())) {
             ST.setCurrentAttribute(new Attribute(token, type));
@@ -154,9 +157,10 @@ public class SyntacticAnalyzer {
         }
         match(lexID.p_semicolon);
     }
-    private void declaracionMetodo() throws SyntacticException, SemanticException {
+    private boolean declaracionMetodo() throws SyntacticException, SemanticException {
         ArgsFormales();
-        bloqueOpcional();
+        boolean hasBlock = bloqueOpcional();
+        return hasBlock;
     }
     private void constructor() throws SyntacticException, SemanticException {
         match(lexID.kw_public);
@@ -225,14 +229,18 @@ public class SyntacticAnalyzer {
         ST.getCurrentMethod().addParameter(new Parameter(currentToken, type));
         match(lexID.id_met_or_var);
     }
-    private void bloqueOpcional() throws SyntacticException {
+    private boolean bloqueOpcional() throws SyntacticException {
+        boolean hasBlock;
         if(Primeros.isFirstOf(synID.bloque, currentToken.getId())) {
+            hasBlock = true;
             bloque();
         } else if(lexID.p_semicolon.equals(currentToken.getId())) {
+            hasBlock = false;
             match(lexID.p_semicolon);
         } else {
             throw new SyntacticException(currentToken, Primeros.getFirsts(synID.bloqueOpcional));
         }
+        return hasBlock;
     }
     private void bloque() throws SyntacticException {
         match(lexID.p_o_bracket1);

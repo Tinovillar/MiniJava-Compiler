@@ -2,6 +2,7 @@ package semantic;
 
 import exceptions.SemanticException;
 import lexical.Token;
+import lexical.lexID;
 
 import java.util.HashMap;
 
@@ -10,19 +11,30 @@ public class Method {
     Token modifier;
     String parent;
     Type returnType;
+
+    Boolean hasBody;
     HashMap<String, Parameter> parameters;
 
     public Method(Token token, String parent, Type returnType) {
         this.token = token;
         this.parent = parent;
         this.returnType = returnType;
+        this.hasBody = true;
         this.parameters = new HashMap<>();
     }
 
     public void isWellDeclared() throws SemanticException {
 //        checkDuplicatedParameters(); redundante
+        checkAbstractMethod();
         if(returnType != null) returnType.checkType();
         for (Parameter parameter : parameters.values()) parameter.isWellDeclared();
+    }
+    private void checkAbstractMethod() throws SemanticException {
+        if(modifier != null && modifier.getId().equals(lexID.kw_abstract) && hasBody)
+            throw new SemanticException(token, "Un metodo abstracto no puede tener cuerpo.");
+    }
+    public void setHasBody(Boolean hasBody) {
+        this.hasBody = hasBody;
     }
     protected void checkDuplicatedParameters() throws SemanticException {
         java.util.HashSet<String> paramNames = new java.util.HashSet<>();

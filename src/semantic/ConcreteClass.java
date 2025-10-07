@@ -9,7 +9,7 @@ import java.util.HashSet;
 
 public class ConcreteClass {
     Token token;
-    String parent;
+    Token parent;
     String modifier;
     Constructor constructor;
     HashMap<String, Attribute> attributes;
@@ -32,17 +32,17 @@ public class ConcreteClass {
         for(Attribute attribute : attributes.values()) attribute.isWellDeclared();
     }
     private void checkInheritance() throws SemanticException {
-        if (parent == null) return;
-        if (parent.equals(getName()))
+        if (parent.getLexeme() == "") return;
+        if (parent.getLexeme().equals(getName()))
             throw new SemanticException(token, "Una clase no puede heredar de sí misma: " + getName());
-//        if (Main.ST.getClassOrNull(parent) == null) Null equivale a Object, agregar
-//            throw new SemanticException(token, "Clase padre no declarada: " + parent);
+        if (Main.ST.getClassOrNull(parent.getLexeme()) == null)
+            throw new SemanticException(parent, "Clase padre no declarada: " + parent.getLexeme());
     }
     private void checkCircularInheritance() throws SemanticException {
-        if (parent == null) return;
+        if (parent.getLexeme() == "") return;
 
         HashSet<String> visitados = new HashSet<>();
-        String actual = parent;
+        String actual = parent.getLexeme();
 
         while (actual != null) {
             // si volvemos a ver un nombre ya visitado, hay ciclo
@@ -54,8 +54,8 @@ public class ConcreteClass {
                 throw new SemanticException(token, "Herencia circular: " + getName() + " termina apuntándose a sí misma");
             }
             ConcreteClass up = Main.ST.getClassOrNull(actual);
-            if (up == null) break;            // padre no está definido (ya lo detecta checkInheritance)
-            actual = up.getParent();          // subir un nivel
+            if (up == null) break;                  // padre no está definido (ya lo detecta checkInheritance)
+            actual = up.getParent().getLexeme();    // subir un nivel
         }
     }
     private void checkDuplicatedMembers() throws SemanticException {
@@ -82,10 +82,10 @@ public class ConcreteClass {
     public Token getToken() {
         return token;
     }
-    public void setParent(String parent) {
+    public void setParent(Token parent) {
         this.parent = parent;
     }
-    public String getParent() {
+    public Token getParent() {
         return parent;
     }
     public String getModifier() {
@@ -95,7 +95,7 @@ public class ConcreteClass {
         this.modifier = modifier;
     }
     public void setConstructor(Constructor constructor) throws SemanticException {
-        if(constructor != null) throw new SemanticException(token, "Ya tiene asignado un constructor.");
+        if(this.constructor != null) throw new SemanticException(token, "Ya tiene asignado un constructor.");
         this.constructor = constructor;
     }
     public Constructor getConstructor() {

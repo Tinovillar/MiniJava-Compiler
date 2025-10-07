@@ -3,6 +3,7 @@ package semantic;
 import exceptions.SemanticException;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class SymbolTable {
     ConcreteClass currentClass;
@@ -72,17 +73,26 @@ public class SymbolTable {
         System.out.println("==============================");
     }
     public void isWellDeclared() throws SemanticException {
+        checkDuplicatedClasses();
         for(ConcreteClass class_ : classes.values()) {
             class_.isWellDeclared();
+        }
+    }
+    private void checkDuplicatedClasses() throws SemanticException {
+        HashSet<String> classesNames = new HashSet<>();
+        for (ConcreteClass c : classes.values()) {
+            if (!classesNames.add(c.getName())) {
+                throw new SemanticException(c.getToken(), "Atributo duplicado: " + c.getName());
+            }
         }
     }
     public void consolidate() {
 
     }
-    public void addCurrentClass() {
+    public void addCurrentClass() throws SemanticException {
         String name = currentClass.getName();
         if(classes.containsKey(name)) {
-            // Error
+            throw new SemanticException(currentClass.getToken(), "La clase " + currentClass.getToken().getLexeme() + " esta repetida.");
         }
         classes.put(name, currentClass);
     }
