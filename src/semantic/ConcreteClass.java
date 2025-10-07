@@ -1,6 +1,7 @@
 package semantic;
 
 import compiler.Main;
+import exceptions.SemanticException;
 import lexical.Token;
 
 import java.util.HashMap;
@@ -19,7 +20,7 @@ public class ConcreteClass {
         this.methods = new HashMap<>();
     }
 
-    public void isWellDeclared() {
+    public void isWellDeclared() throws SemanticException {
         checkInheritnace();
         checkCircularInheritance();
 
@@ -33,10 +34,13 @@ public class ConcreteClass {
             attribute.isWellDeclared();
         }
     }
-    private void checkInheritnace() {
+    private void checkInheritnace() throws SemanticException {
         if(parent != null && Main.ST.getClassOrNull(parent) != null) {
-            
+            throw new SemanticException(token);
         }
+    }
+    private void checkCircularInheritance() {
+        
     }
     public void consolidate() {}
     public Token getToken() {

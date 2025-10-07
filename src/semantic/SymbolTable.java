@@ -1,5 +1,7 @@
 package semantic;
 
+import exceptions.SemanticException;
+
 import java.util.HashMap;
 
 public class SymbolTable {
@@ -69,7 +71,7 @@ public class SymbolTable {
 
         System.out.println("==============================");
     }
-    public void isWellDeclared() {
+    public void isWellDeclared() throws SemanticException {
         for(ConcreteClass class_ : classes.values()) {
             class_.isWellDeclared();
         }

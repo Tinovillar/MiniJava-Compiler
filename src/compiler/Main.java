@@ -1,5 +1,7 @@
 package compiler;
 
+import exceptions.LexicalException;
+import exceptions.SemanticException;
 import exceptions.SyntacticException;
 import lexical.LexicalAnalyzer;
 import semantic.SymbolTable;
@@ -43,6 +45,8 @@ public class Main {
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (SyntacticException e) {
+            e.printStackTrace();
+        } catch (SemanticException e) {
             e.printStackTrace();
         }
     }
