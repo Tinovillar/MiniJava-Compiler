@@ -12,4 +12,7 @@ public class PrimitiveType implements Type {
     public String getName() {
         return token.getLexeme();
     }
+    public void checkType() {
+
+    }
 }

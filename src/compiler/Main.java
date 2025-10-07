@@ -31,7 +31,7 @@ public class Main {
 
             syntacticAnalyzer.startAnalysis();
 
-            ST.printTable();
+//            ST.printTable();
             ST.isWellDeclared();
             ST.consolidate();
 

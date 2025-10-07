@@ -1,5 +1,6 @@
 package semantic;
 
+import exceptions.SemanticException;
 import lexical.Token;
 import lexical.lexID;
 
@@ -12,7 +13,9 @@ public class Attribute {
         this.type = type;
     }
 
-    public void isWellDeclared() {}
+    public void isWellDeclared() throws SemanticException {
+        type.checkType();
+    }
     public void consolidate() {}
 
     public Token getToken() {

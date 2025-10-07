@@ -1,8 +1,8 @@
 package syntactic;
 
-import com.sun.jdi.connect.Connector;
 import compiler.Main;
 import exceptions.LexicalException;
+import exceptions.SemanticException;
 import exceptions.SyntacticException;
 import lexical.lexID;
 import lexical.LexicalAnalyzer;
@@ -34,7 +34,7 @@ public class SyntacticAnalyzer {
     private boolean isFirstOf(synID state) {
         return Primeros.isFirstOf(state, currentToken.getId());
     }
-    public void startAnalysis() throws SyntacticException {
+    public void startAnalysis() throws SyntacticException, SemanticException {
         try {
             currentToken = lexicalAnalyzer.getNextToken();
         } catch (LexicalException e) {
@@ -42,17 +42,17 @@ public class SyntacticAnalyzer {
         }
         inicial();
     }
-    private void inicial() throws SyntacticException {
+    private void inicial() throws SyntacticException, SemanticException {
         listaClases();
         match(lexID.EOF);
     }
-    private void listaClases() throws SyntacticException {
+    private void listaClases() throws SyntacticException, SemanticException {
         if(Primeros.isFirstOf(synID.clase, currentToken.getId())) {
             clase();
             listaClases();
         }
     }
-    private void clase() throws SyntacticException {
+    private void clase() throws SyntacticException, SemanticException {
         Token modifier = modificadorOpcional();
         match(lexID.kw_class);
         ST.setCurrentClass(new ConcreteClass(currentToken));
@@ -82,13 +82,13 @@ public class SyntacticAnalyzer {
         }
         return toReturn;
     }
-    private void listaMiembros() throws SyntacticException {
+    private void listaMiembros() throws SyntacticException, SemanticException {
         if(Primeros.isFirstOf(synID.listaMiembros, currentToken.getId())) {
             miembro();
             listaMiembros();
         }
     }
-    private void miembro() throws SyntacticException {
+    private void miembro() throws SyntacticException, SemanticException {
         if(Primeros.isFirstOf(synID.constructor, currentToken.getId())) {
             constructor();
         } else if(Primeros.isFirstOf(synID.tipo, currentToken.getId())) {
@@ -101,13 +101,13 @@ public class SyntacticAnalyzer {
             throw new SyntacticException(currentToken, Primeros.getFirsts(synID.miembro));
         }
     }
-    private void metodoVarDeclarados() throws SyntacticException {
+    private void metodoVarDeclarados() throws SyntacticException, SemanticException {
         Type type = tipo();
         Token token = currentToken;
         match(lexID.id_met_or_var);
         metodoVariable(type, token);
     }
-    private void metodoConModificador() throws SyntacticException {
+    private void metodoConModificador() throws SyntacticException, SemanticException {
         Token modifier = modificadorMiembro();
         Type type = tipoMetodo();
         ST.setCurrentMethod(new Method(currentToken, ST.getCurrentClass().getName(), type));
@@ -116,7 +116,7 @@ public class SyntacticAnalyzer {
         declaracionMetodo();
         ST.addCurrentMethod();
     }
-    private void metodoConVoid() throws SyntacticException {
+    private void metodoConVoid() throws SyntacticException, SemanticException {
         Type type = new ReferenceType(currentToken);
         match(lexID.kw_void);
         ST.setCurrentMethod(new Method(currentToken, ST.getCurrentClass().getName(), type));
@@ -134,7 +134,7 @@ public class SyntacticAnalyzer {
         }
         return modifier;
     }
-    private void metodoVariable(Type type, Token token) throws SyntacticException {
+    private void metodoVariable(Type type, Token token) throws SyntacticException, SemanticException {
         if(Primeros.isFirstOf(synID.declaracionMetodo, currentToken.getId())) {
             ST.setCurrentMethod(new Method(token, ST.getCurrentClass().getName(), type));
             declaracionMetodo();
@@ -154,11 +154,11 @@ public class SyntacticAnalyzer {
         }
         match(lexID.p_semicolon);
     }
-    private void declaracionMetodo() throws SyntacticException {
+    private void declaracionMetodo() throws SyntacticException, SemanticException {
         ArgsFormales();
         bloqueOpcional();
     }
-    private void constructor() throws SyntacticException {
+    private void constructor() throws SyntacticException, SemanticException {
         match(lexID.kw_public);
         Constructor constructor = new Constructor(currentToken, ST.getCurrentClass().getName());
         ST.setCurrentMethod(constructor);
@@ -199,30 +199,30 @@ public class SyntacticAnalyzer {
             throw new SyntacticException(currentToken, Primeros.getFirsts(synID.tipoPrimitivo));
         }
     }
-    private void ArgsFormales() throws SyntacticException {
+    private void ArgsFormales() throws SyntacticException, SemanticException {
         match(lexID.p_o_parenthesis);
         listaArgsFormalesOpcional();
         match(lexID.p_c_parenthesis);
     }
-    private void listaArgsFormalesOpcional() throws SyntacticException {
+    private void listaArgsFormalesOpcional() throws SyntacticException, SemanticException {
         if(Primeros.isFirstOf(synID.listaArgsFormales, currentToken.getId())) {
             listaArgsFormales();
         }
     }
-    private void listaArgsFormales() throws SyntacticException {
+    private void listaArgsFormales() throws SyntacticException, SemanticException {
         argFormal();
         listaArgsFormalesResto();
     }
-    private void listaArgsFormalesResto() throws SyntacticException {
+    private void listaArgsFormalesResto() throws SyntacticException, SemanticException {
         if(lexID.p_comma.equals(currentToken.getId())) {
             match(lexID.p_comma);
             argFormal();
             listaArgsFormalesResto();
         }
     }
-    private void argFormal() throws SyntacticException {
+    private void argFormal() throws SyntacticException, SemanticException {
         Type type = tipo();
-        ST.getCurrentMethod().addParameter(new Parameter(currentToken.getLexeme(), type));
+        ST.getCurrentMethod().addParameter(new Parameter(currentToken, type));
         match(lexID.id_met_or_var);
     }
     private void bloqueOpcional() throws SyntacticException {

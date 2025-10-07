@@ -1,5 +1,6 @@
 package semantic;
 
+import exceptions.SemanticException;
 import lexical.Token;
 
 import java.util.HashMap;
@@ -18,7 +19,19 @@ public class Method {
         this.parameters = new HashMap<>();
     }
 
-    public void isWellDeclared() {}
+    public void isWellDeclared() throws SemanticException {
+//        checkDuplicatedParameters(); redundante
+        if(returnType != null) returnType.checkType();
+        for (Parameter parameter : parameters.values()) parameter.isWellDeclared();
+    }
+    protected void checkDuplicatedParameters() throws SemanticException {
+        java.util.HashSet<String> paramNames = new java.util.HashSet<>();
+        for (Parameter p : parameters.values()) {
+            if (!paramNames.add(p.getName())) {
+                throw new SemanticException(p.getToken(), "Parámetro duplicado en constructor: " + p.getName());
+            }
+        }
+    }
     public void consolidate() {}
     public Token getToken() {
         return token;
@@ -29,17 +42,11 @@ public class Method {
     public String getParent() {
         return parent;
     }
-    public void setParent(String parent) {
-        this.parent = parent;
-    }
     public void setModifier(Token modifier) {
         this.modifier = modifier;
     }
     public Type getReturnType() {
         return returnType;
-    }
-    public void setReturnType(Type returnType) {
-        this.returnType = returnType;
     }
     public HashMap<String, Parameter> getParameters() {
         return parameters;
@@ -47,13 +54,12 @@ public class Method {
     public String getName() {
         return token.getLexeme();
     }
-    public void addParameter(Parameter param) {
+    public void addParameter(Parameter param) throws SemanticException {
         String name = param.getName();
         if (!parameters.containsKey(name)) {
             parameters.put(name, param);
         } else {
-            // acá después vas a manejar el error semántico
-            System.out.println("Error: parámetro duplicado '" + name + "' en método " + getName());
+            throw new SemanticException(param.getToken(), "Parametro duplicado '" + name + "' en clase " + getName());
         }
     }
 }

@@ -107,10 +107,10 @@ public class SymbolTable {
     public void setCurrentMethod(Method currentMethod) {
         this.currentMethod = currentMethod;
     }
-    public void addCurrentMethod() {
+    public void addCurrentMethod() throws SemanticException {
         currentClass.addMethod(currentMethod);
     }
-    public void addCurrentAttribute() {
+    public void addCurrentAttribute() throws SemanticException {
         currentClass.addAttribute(currentAttribute);
     }
 }

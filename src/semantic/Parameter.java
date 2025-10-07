@@ -1,18 +1,26 @@
 package semantic;
 
+import exceptions.SemanticException;
+import lexical.Token;
+
 public class Parameter {
-    private String name;
+    private Token token;
     private Type type;
 
-    public Parameter(String name, Type type) {
-        this.name = name;
+    public Parameter(Token token, Type type) {
+        this.token = token;
         this.type = type;
     }
 
-    public void isWellDeclared() {}
+    public void isWellDeclared() throws SemanticException {
+        type.checkType();
+    }
     public void consolidate() {}
     public String getName() {
-        return name;
+        return token.getLexeme();
+    }
+    public Token getToken() {
+        return token;
     }
     public Type getType() {
         return type;
