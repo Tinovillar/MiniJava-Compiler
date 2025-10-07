@@ -94,7 +94,8 @@ public class ConcreteClass {
     public void setModifier(String modifier) {
         this.modifier = modifier;
     }
-    public void setConstructor(Constructor constructor) {
+    public void setConstructor(Constructor constructor) throws SemanticException {
+        if(constructor != null) throw new SemanticException(token, "Ya tiene asignado un constructor.");
         this.constructor = constructor;
     }
     public Constructor getConstructor() {

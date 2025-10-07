@@ -17,7 +17,7 @@ public class ReferenceType implements Type {
     }
     public void checkType() throws SemanticException {
         if (Main.ST.getClassOrNull(token.getLexeme()) == null && !token.getId().equals(lexID.kw_void)) {
-            throw new SemanticException(null, "Tipo no declarado: " + token.getLexeme());
+            throw new SemanticException(token, "Tipo no declarado: " + token.getLexeme());
         }
     }
 }
