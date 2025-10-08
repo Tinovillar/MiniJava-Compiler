@@ -15,4 +15,7 @@ public class PrimitiveType implements Type {
     public void checkType() {
 
     }
+    public boolean equals(Type toCompare) {
+        return toCompare.getName().equals(getName());
+    }
 }

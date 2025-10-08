@@ -20,4 +20,7 @@ public class ReferenceType implements Type {
             throw new SemanticException(token, "Tipo no declarado: " + token.getLexeme());
         }
     }
+    public boolean equals(Type toCompare) {
+        return toCompare.getName().equals(getName());
+    }
 }

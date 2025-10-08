@@ -27,6 +27,9 @@ public class Token {
     public String toString() {
         return " > ("+ this.lexId.toString() +", " + this.lexeme + ", " + this.lineNumber + ")";
     }
+    public boolean equals(Token toCompare) {
+        return toCompare.getId().equals(lexId) && toCompare.getLexeme().equals(lexeme);
+    }
 
     public static Token blankToken() {
         return new Token(null, "", -1);

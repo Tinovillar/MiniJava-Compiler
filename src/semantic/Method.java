@@ -4,16 +4,18 @@ import exceptions.SemanticException;
 import lexical.Token;
 import lexical.lexID;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class Method {
-    Token token;
-    Token modifier;
-    String parent;
-    Type returnType;
+    protected Token token;
+    protected Token modifier;
+    protected String parent;
+    protected Type returnType;
 
-    Boolean hasBody;
-    HashMap<String, Parameter> parameters;
+    protected Boolean hasBody;
+    protected HashMap<String, Parameter> parameters;
 
     public Method(Token token, String parent, Type returnType) {
         this.token = token;
@@ -73,5 +75,33 @@ public class Method {
         } else {
             throw new SemanticException(param.getToken(), "Parametro duplicado '" + name + "' en clase " + getName());
         }
+    }
+    public Token getModifier() {
+        return modifier;
+    }
+    public boolean equals(Method toCompare) {
+        return toCompare.getModifier().equals(modifier) &&
+                toCompare.getName().equals(getName()) &&
+                toCompare.getReturnType().equals(returnType) &&
+                areParametersEquals(toCompare.getParameters().values());
+    }
+    private boolean areParametersEquals(Collection<Parameter> toCompare) {
+        if (parameters.size() != toCompare.size()) {
+            return false;
+        }
+
+        Iterator<Parameter> it1 = parameters.values().iterator();
+        Iterator<Parameter> it2 = toCompare.iterator();
+
+        while (it1.hasNext() && it2.hasNext()) {
+            Parameter p1 = it1.next();
+            Parameter p2 = it2.next();
+
+            if (!p1.getType().equals(p2.getType())) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
