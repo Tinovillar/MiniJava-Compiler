@@ -27,6 +27,7 @@ public class Main {
             sourceManager.open(args[0]);
 
             ST = new SymbolTable();
+            ST.initialize();
 
             LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(sourceManager);
             SyntacticAnalyzer syntacticAnalyzer = new SyntacticAnalyzer(lexicalAnalyzer);

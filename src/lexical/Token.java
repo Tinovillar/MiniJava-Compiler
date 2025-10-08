@@ -25,6 +25,7 @@ public class Token {
 
     @Override
     public String toString() {
+        if(lexId == null) return "> ( Blank Token )";
         return " > ("+ this.lexId.toString() +", " + this.lexeme + ", " + this.lineNumber + ")";
     }
     public boolean equals(Token toCompare) {

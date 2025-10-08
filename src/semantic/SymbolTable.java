@@ -22,6 +22,7 @@ public class SymbolTable {
     }
     private void createObject() throws SemanticException {
         ConcreteClass object = new ConcreteClass(new Token(lexID.id_class, "Object", -1));
+        object.setParent(Token.blankToken());
 
         Method debugPrint = new Method(
                 new Token(lexID.id_met_or_var, "debugPrint", -1),
@@ -48,7 +49,7 @@ public class SymbolTable {
         Method read = new Method(
                 new Token(lexID.id_met_or_var, "read", -1), // read
                 "",
-                new ReferenceType(new Token(lexID.kw_int, "int", -1))); // int
+                new PrimitiveType(new Token(lexID.kw_int, "int", -1))); // int
         read.setModifier(new Token(lexID.kw_static, "static", -1)); // static
         // static void printB (boolean b)
         Method printB = new Method(
@@ -70,7 +71,7 @@ public class SymbolTable {
                 new PrimitiveType(new Token(lexID.kw_char, "char", -1)))); // char
         // static void printI(int i)
         Method printI = new Method(
-                new Token(lexID.id_met_or_var, "printC", -1), // printI
+                new Token(lexID.id_met_or_var, "printI", -1), // printI
                 "",
                 new ReferenceType(new Token(lexID.kw_void, "void", -1))); // void
         printI.setModifier(new Token(lexID.kw_static, "static", -1)); // static
