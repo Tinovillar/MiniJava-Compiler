@@ -41,8 +41,27 @@ public class ConcreteClass {
             throw new SemanticException(parent, "Clase padre no declarada: " + parent.getLexeme());
     }
     private void checkWrongInheritance() throws SemanticException {
-        if(modifier != null && modifier.getId() != null && modifier.getId().equals(lexID.kw_abstract))
+        checkConstructorInAbstract();
+        checkInheritanceFromFinalClass();
+        checkInheritanceFromAbstract();
+    }
+    private void checkInheritanceFromAbstract() throws SemanticException {
+        if(hasModifier(lexID.kw_abstract) && parent != null && !parent.getLexeme().equals("Object") && Main.ST.getClassOrNull(parent.getLexeme()) != null && !Main.ST.getClassOrNull(parent.getLexeme()).hasModifier(lexID.kw_abstract))
+            throw new SemanticException(token, "Una clase abstract no puede extender otra clase");
+    }
+    private void checkInheritanceFromFinalClass() throws SemanticException {
+        if(parent != null && Main.ST.getClassOrNull(parent.getLexeme()) != null && Main.ST.getClassOrNull(parent.getLexeme()).hasModifier(lexID.kw_final))
+            throw new SemanticException(token, "No se puede heredar de una clase final");
+    }
+    private void checkConstructorInAbstract() throws SemanticException {
+        if(hasModifier(lexID.kw_abstract) && constructor != null)
             throw new SemanticException(constructor.getToken(), "Una clase abstracta no puede tener constructor");
+    }
+    public boolean hasModifier(lexID m) {
+        return modifier != null && modifier.getId() != null && m.equals(modifier.getId());
+    }
+    public boolean hasModifier() {
+        return modifier != null;
     }
     private void checkCircularInheritance() throws SemanticException {
         if (parent.getLexeme() == "") return;
@@ -57,7 +76,7 @@ public class ConcreteClass {
             }
             // si en la cadena aparece esta misma clase, también es ciclo
             if (actual.equals(getName())) {
-                throw new SemanticException(token, "Herencia circular: " + getName() + " termina apuntándose a sí misma");
+                throw new SemanticException(parent, "Herencia circular: " + getName() + " termina apuntándose a sí misma");
             }
             ConcreteClass up = Main.ST.getClassOrNull(actual);
             if (up == null) break;                  // padre no está definido (ya lo detecta checkInheritance)
@@ -119,6 +138,13 @@ public class ConcreteClass {
                 ourMethod.checkParametersMatch(parentMethod);
             }
         }
+        if (modifier == null || modifier.getId() == null) {
+            for (Method m : completedMethods.values()) {
+                if (m.isAbstract() && !m.hasBody()) {
+                    throw new SemanticException(m.token, "Se requiere implementar los metodos abstractos");
+                }
+            }
+        }
         this.methods = completedMethods;
     }
     private void checkModifiers(Method ourMethod, Method parentMethod) throws SemanticException {
@@ -147,7 +173,7 @@ public class ConcreteClass {
         this.modifier = modifier;
     }
     public void setConstructor(Constructor constructor) throws SemanticException {
-        if(this.constructor != null) throw new SemanticException(token, "Ya tiene asignado un constructor.");
+        if(this.constructor != null) throw new SemanticException(constructor.getToken(), "Ya tiene asignado un constructor.");
         this.constructor = constructor;
     }
     public Constructor getConstructor() {
@@ -183,5 +209,9 @@ public class ConcreteClass {
     }
     public void setConsolidated(boolean consolidated) {
         this.consolidated = consolidated;
+    }
+
+    public boolean isAbstract() {
+        return modifier != null && modifier.getId() != null && modifier.getId().equals(lexID.kw_abstract);
     }
 }

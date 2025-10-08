@@ -1,5 +1,6 @@
 package semantic;
 
+import compiler.Main;
 import exceptions.SemanticException;
 import lexical.Token;
 import lexical.lexID;
@@ -26,25 +27,22 @@ public class Method {
     }
 
     public void isWellDeclared() throws SemanticException {
-//        checkDuplicatedParameters(); redundante
         checkAbstractMethod();
         if(returnType != null) returnType.checkType();
         for (Parameter parameter : parameters.values()) parameter.isWellDeclared();
     }
     private void checkAbstractMethod() throws SemanticException {
-        if(modifier != null && modifier.getId().equals(lexID.kw_abstract) && hasBody)
-            throw new SemanticException(token, "Un metodo abstracto no puede tener cuerpo.");
+        if(modifier != null && modifier.getId().equals(lexID.kw_abstract)) {
+            if(!Main.ST.getClassOrNull(parent).isAbstract())
+                throw new SemanticException(token, "Un metodo abstracto no puede estar en una clase NO abstracta");
+            if(hasBody)
+                throw new SemanticException(token, "Un metodo abstracto no puede tener cuerpo.");
+        } else if(!hasBody){
+            throw new SemanticException(token, "El metodo debe tener cuerpo");
+        }
     }
     public void setHasBody(Boolean hasBody) {
         this.hasBody = hasBody;
-    }
-    protected void checkDuplicatedParameters() throws SemanticException {
-        java.util.HashSet<String> paramNames = new java.util.HashSet<>();
-        for (Parameter p : parameters.values()) {
-            if (!paramNames.add(p.getName())) {
-                throw new SemanticException(p.getToken(), "Parámetro duplicado en constructor: " + p.getName());
-            }
-        }
     }
     public void consolidate() {}
     public Token getToken() {
@@ -108,5 +106,9 @@ public class Method {
         }
 
         return true;
+    }
+
+    public boolean isAbstract() {
+        return modifier != null && modifier.getId() != null && modifier.getId().equals(lexID.kw_abstract);
     }
 }

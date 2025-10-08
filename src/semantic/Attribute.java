@@ -1,7 +1,9 @@
 package semantic;
 
+import compiler.Main;
 import exceptions.SemanticException;
 import lexical.Token;
+import lexical.lexID;
 
 public class Attribute {
     Token idVar;
