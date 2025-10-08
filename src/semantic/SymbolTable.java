@@ -23,6 +23,7 @@ public class SymbolTable {
     private void createObject() throws SemanticException {
         ConcreteClass object = new ConcreteClass(new Token(lexID.id_class, "Object", -1));
         object.setParent(Token.blankToken());
+        object.setConsolidated(true);
 
         Method debugPrint = new Method(
                 new Token(lexID.id_met_or_var, "debugPrint", -1),
@@ -156,7 +157,7 @@ public class SymbolTable {
             if (c.getParent() != null)
                 System.out.println("  Hereda de: " + c.getParent());
             if (c.getModifier() != null)
-                System.out.println("  Modificador: " + c.getModifier());
+                System.out.println("  Modificador: " + c.getModifier().getLexeme());
 
             // --- Constructor ---
             Constructor ctor = c.getConstructor();
@@ -219,7 +220,7 @@ public class SymbolTable {
             }
         }
     }
-    public void consolidate() {
+    public void consolidate() throws SemanticException {
         for(ConcreteClass class_ : classes.values()) {
             class_.consolidate();
         }

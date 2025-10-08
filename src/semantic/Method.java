@@ -53,6 +53,9 @@ public class Method {
     public void setToken(Token token) {
         this.token = token;
     }
+    public boolean hasBody() {
+        return hasBody;
+    }
     public String getParent() {
         return parent;
     }
@@ -79,11 +82,13 @@ public class Method {
     public Token getModifier() {
         return modifier;
     }
-    public boolean equals(Method toCompare) {
-        return toCompare.getModifier().equals(modifier) &&
-                toCompare.getName().equals(getName()) &&
-                toCompare.getReturnType().equals(returnType) &&
-                areParametersEquals(toCompare.getParameters().values());
+    public void checkParametersMatch(Method toCompare) throws SemanticException {
+        if(!areParametersEquals(toCompare.getParameters().values()))
+            throw new SemanticException(this.token, "No es posible sobreescribir un metodo con diferentes parametros");
+    }
+    public void checkReturnTypeMatch(Method toCompare) throws SemanticException {
+        if(!returnType.equals(toCompare.getReturnType()))
+            throw new SemanticException(this.token, "No es posible sobreescribir un metodo con diferente tipo de retorno");
     }
     private boolean areParametersEquals(Collection<Parameter> toCompare) {
         if (parameters.size() != toCompare.size()) {

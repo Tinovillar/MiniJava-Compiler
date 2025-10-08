@@ -3,17 +3,20 @@ package semantic;
 import compiler.Main;
 import exceptions.SemanticException;
 import lexical.Token;
+import lexical.lexID;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 public class ConcreteClass {
-    Token token;
-    Token parent;
-    String modifier;
-    Constructor constructor;
-    HashMap<String, Attribute> attributes;
-    HashMap<String, Method> methods;
+    protected Token token;
+    protected Token parent;
+    protected Token modifier;
+    protected Constructor constructor;
+    protected HashMap<String, Attribute> attributes;
+    protected HashMap<String, Method> methods;
+    boolean consolidated = false;
 
     public ConcreteClass(Token token) {
         this.token = token;
@@ -24,8 +27,7 @@ public class ConcreteClass {
     public void isWellDeclared() throws SemanticException {
         checkInheritance();
         checkCircularInheritance();
-//        checkDuplicatedMembers(); redundante
-//        checkWrongInheritance();
+        checkWrongInheritance();
 
         if(constructor != null) constructor.isWellDeclared();
         for(Method method : methods.values()) method.isWellDeclared();
@@ -37,6 +39,10 @@ public class ConcreteClass {
             throw new SemanticException(token, "Una clase no puede heredar de sí misma: " + getName());
         if (Main.ST.getClassOrNull(parent.getLexeme()) == null)
             throw new SemanticException(parent, "Clase padre no declarada: " + parent.getLexeme());
+    }
+    private void checkWrongInheritance() throws SemanticException {
+        if(modifier != null && modifier.getId() != null && modifier.getId().equals(lexID.kw_abstract))
+            throw new SemanticException(constructor.getToken(), "Una clase abstracta no puede tener constructor");
     }
     private void checkCircularInheritance() throws SemanticException {
         if (parent.getLexeme() == "") return;
@@ -78,7 +84,53 @@ public class ConcreteClass {
             }
         }
     }
-    public void consolidate() {}
+    public void consolidate() throws SemanticException {
+        if(!consolidated) {
+            ConcreteClass parentClass = Main.ST.getClassOrNull(parent.getLexeme());
+            parentClass.consolidate();
+
+            Map<String, Method> parentMethods = parentClass.getMethods();
+            Map<String, Attribute> parentAttributes = parentClass.getAttributes();
+
+            consolidateAttributes(parentAttributes);
+            consolidateMethods(parentMethods);
+
+            if (constructor == null) constructor = new Constructor(new Token(lexID.id_class, getName(), -1), getName());
+
+            consolidated = true;
+        }
+    }
+    private void consolidateAttributes(Map<String, Attribute> parentAttributes) throws SemanticException {
+        HashMap<String, Attribute> completedAttributes = new HashMap<>(parentAttributes);
+        for (Attribute attribute : attributes.values()) {
+            if(completedAttributes.putIfAbsent(attribute.getName(), attribute) != null) // Chequear sobreescritura con el tipo del atributo
+                throw new SemanticException(attribute.getToken(), "No es posible sobreescribir un atributo del padre.");
+        }
+        this.attributes = completedAttributes;
+    }
+    private void consolidateMethods(Map<String, Method> parentMethods) throws SemanticException {
+        HashMap<String, Method> completedMethods = new HashMap<>(parentMethods);
+        Method parentMethod;
+        for (Method ourMethod : methods.values()) {
+            parentMethod = completedMethods.put(ourMethod.getName(), ourMethod);
+            if (parentMethod != null) {
+                checkModifiers(ourMethod, parentMethod);
+                ourMethod.checkReturnTypeMatch(parentMethod);
+                ourMethod.checkParametersMatch(parentMethod);
+            }
+        }
+        this.methods = completedMethods;
+    }
+    private void checkModifiers(Method ourMethod, Method parentMethod) throws SemanticException {
+        if(parentMethod.getModifier() != null) {
+            if (parentMethod.getModifier().getId().equals(lexID.kw_static))
+                throw new SemanticException(ourMethod.getToken(), "No se puede sobreescribir un metodo estatico");
+            if (parentMethod.getModifier().getId().equals(lexID.kw_final))
+                throw new SemanticException(ourMethod.getToken(), "No se puede sobreescribir un metodo final");
+            if (parentMethod.getModifier().getId().equals(lexID.kw_abstract) && !ourMethod.hasBody())
+                throw new SemanticException(ourMethod.getToken(), "No se implemento un metodo abstracto");
+        }
+    }
     public Token getToken() {
         return token;
     }
@@ -88,10 +140,10 @@ public class ConcreteClass {
     public Token getParent() {
         return parent;
     }
-    public String getModifier() {
+    public Token getModifier() {
         return modifier;
     }
-    public void setModifier(String modifier) {
+    public void setModifier(Token modifier) {
         this.modifier = modifier;
     }
     public void setConstructor(Constructor constructor) throws SemanticException {
@@ -125,5 +177,11 @@ public class ConcreteClass {
     }
     public HashMap<String, Method> getMethods() {
         return methods;
+    }
+    public boolean isConsolidated() {
+        return consolidated;
+    }
+    public void setConsolidated(boolean consolidated) {
+        this.consolidated = consolidated;
     }
 }

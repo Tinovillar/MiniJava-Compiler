@@ -56,7 +56,7 @@ public class SyntacticAnalyzer {
         Token modifier = modificadorOpcional();
         match(lexID.kw_class);
         ST.setCurrentClass(new ConcreteClass(currentToken));
-        ST.getCurrentClass().setModifier(modifier.getLexeme());
+        ST.getCurrentClass().setModifier(modifier);
         match(lexID.id_class);
         Token parent = herenciaOpcional();
         ST.getCurrentClass().setParent(parent);
@@ -74,7 +74,7 @@ public class SyntacticAnalyzer {
         return toReturn;
     }
     private Token herenciaOpcional() throws SyntacticException {
-        Token toReturn = Token.blankToken();
+        Token toReturn = new Token(lexID.id_class, "Object", -1);
         if(Primeros.isFirstOf(synID.herenciaOpcional, currentToken.getId())) {
             match(lexID.kw_extends);
             toReturn = currentToken;
