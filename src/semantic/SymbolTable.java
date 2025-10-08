@@ -1,6 +1,8 @@
 package semantic;
 
 import exceptions.SemanticException;
+import lexical.Token;
+import lexical.lexID;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,6 +17,136 @@ public class SymbolTable {
         classes = new HashMap<>();
     }
 
+    public void initialize() throws SemanticException {
+        createPredefinedClasses();
+    }
+    private void createObject() throws SemanticException {
+        ConcreteClass object = new ConcreteClass(new Token(lexID.id_class, "Object", -1));
+
+        Method debugPrint = new Method(
+                new Token(lexID.id_met_or_var, "debugPrint", -1),
+                "",
+                new ReferenceType(new Token(lexID.kw_void, "void", -1)));
+        debugPrint.setModifier(new Token(lexID.kw_static, "static", -1));
+        debugPrint.addParameter(
+                new Parameter(new Token(lexID.id_met_or_var, "i", -1),
+                new PrimitiveType(new Token(lexID.kw_int, "int", -1))));
+        object.addMethod(debugPrint);
+
+        classes.put("Object", object);
+    }
+    private void createString() {
+        ConcreteClass string = new ConcreteClass(new Token(lexID.id_class, "String", -1));
+        string.setParent(new Token(lexID.id_class, "Object", -1));
+
+        classes.put("String", string);
+    }
+    private void createSystem() throws SemanticException {
+        ConcreteClass system = new ConcreteClass(new Token(lexID.id_class, "System", -1));
+        system.setParent(new Token(lexID.id_class, "Object", -1));
+        // static int read ()
+        Method read = new Method(
+                new Token(lexID.id_met_or_var, "read", -1), // read
+                "",
+                new ReferenceType(new Token(lexID.kw_int, "int", -1))); // int
+        read.setModifier(new Token(lexID.kw_static, "static", -1)); // static
+        // static void printB (boolean b)
+        Method printB = new Method(
+                new Token(lexID.id_met_or_var, "printB", -1), // printB
+                "",
+                new ReferenceType(new Token(lexID.kw_void, "void", -1))); // void
+        printB.setModifier(new Token(lexID.kw_static, "static", -1)); // static
+        printB.addParameter(new Parameter(
+                new Token(lexID.id_met_or_var, "b", -1), // b
+                new PrimitiveType(new Token(lexID.kw_boolean, "boolean", -1)))); // boolean
+        // static void printC (char c)
+        Method printC = new Method(
+                new Token(lexID.id_met_or_var, "printC", -1), // printC
+                "",
+                new ReferenceType(new Token(lexID.kw_void, "void", -1))); // void
+        printC.setModifier(new Token(lexID.kw_static, "static", -1)); // static
+        printC.addParameter(new Parameter(
+                new Token(lexID.id_met_or_var, "c", -1), // c
+                new PrimitiveType(new Token(lexID.kw_char, "char", -1)))); // char
+        // static void printI(int i)
+        Method printI = new Method(
+                new Token(lexID.id_met_or_var, "printC", -1), // printI
+                "",
+                new ReferenceType(new Token(lexID.kw_void, "void", -1))); // void
+        printI.setModifier(new Token(lexID.kw_static, "static", -1)); // static
+        printI.addParameter(new Parameter(
+                new Token(lexID.id_met_or_var, "i", -1), // i
+                new PrimitiveType(new Token(lexID.kw_int, "int", -1)))); // int
+        // static void printS(String s)
+        Method printS = new Method(
+                new Token(lexID.id_met_or_var, "printS", -1), // printS
+                "",
+                new ReferenceType(new Token(lexID.kw_void, "void", -1))); // void
+        printS.setModifier(new Token(lexID.kw_static, "static", -1)); // static
+        printS.addParameter(new Parameter(
+                new Token(lexID.id_met_or_var, "s", -1), // s
+                new ReferenceType(new Token(lexID.id_class, "String", -1)))); // String
+        // static void printLn()
+        Method printLn = new Method(
+                new Token(lexID.id_met_or_var, "printLn", -1), // printLn
+                "",
+                new ReferenceType(new Token(lexID.kw_void, "void", -1))); // void
+        printLn.setModifier(new Token(lexID.kw_static, "static", -1)); // static
+        // static void printBln(boolean b)
+        Method printBln = new Method(
+                new Token(lexID.id_met_or_var, "printBln", -1), // printBln
+                "",
+                new ReferenceType(new Token(lexID.kw_void, "void", -1))); // void
+        printBln.setModifier(new Token(lexID.kw_static, "static", -1)); // static
+        printBln.addParameter(new Parameter(
+                new Token(lexID.id_met_or_var, "b", -1), // b
+                new PrimitiveType(new Token(lexID.kw_boolean, "boolean", -1)))); // boolean
+        // static void printCln(char c)
+        Method printCln = new Method(
+                new Token(lexID.id_met_or_var, "printCln", -1), // printCln
+                "",
+                new ReferenceType(new Token(lexID.kw_void, "void", -1))); // void
+        printCln.setModifier(new Token(lexID.kw_static, "static", -1)); // static
+        printCln.addParameter(new Parameter(
+                new Token(lexID.id_met_or_var, "c", -1), // s
+                new PrimitiveType(new Token(lexID.kw_char, "char", -1)))); // char
+        // static void printIln(int i)
+        Method printIln = new Method(
+                new Token(lexID.id_met_or_var, "printIln", -1), // printIln
+                "",
+                new ReferenceType(new Token(lexID.kw_void, "void", -1))); // void
+        printIln.setModifier(new Token(lexID.kw_static, "static", -1)); // static
+        printIln.addParameter(new Parameter(
+                new Token(lexID.id_met_or_var, "s", -1), // i
+                new PrimitiveType(new Token(lexID.kw_int, "int", -1)))); // int
+        // static void printSln(String s)
+        Method printSln = new Method(
+                new Token(lexID.id_met_or_var, "printSln", -1), // printSln
+                "",
+                new ReferenceType(new Token(lexID.kw_void, "void", -1))); // void
+        printSln.setModifier(new Token(lexID.kw_static, "static", -1)); // static
+        printSln.addParameter(new Parameter(
+                new Token(lexID.id_met_or_var, "s", -1), // s
+                new ReferenceType(new Token(lexID.id_class, "String", -1)))); // String
+        // Add all methods
+        system.addMethod(read);
+        system.addMethod(printB);
+        system.addMethod(printC);
+        system.addMethod(printI);
+        system.addMethod(printS);
+        system.addMethod(printLn);
+        system.addMethod(printBln);
+        system.addMethod(printCln);
+        system.addMethod(printIln);
+        system.addMethod(printSln);
+
+        classes.put("System", system);
+    }
+    private void createPredefinedClasses() throws SemanticException {
+        createObject();
+        createString();
+        createSystem();
+    }
     public void printTable() {
         System.out.println("===== TABLA DE SIMBOLOS =====");
 
@@ -87,7 +219,9 @@ public class SymbolTable {
         }
     }
     public void consolidate() {
-
+        for(ConcreteClass class_ : classes.values()) {
+            class_.consolidate();
+        }
     }
     public void addCurrentClass() throws SemanticException {
         String name = currentClass.getName();
