@@ -17,8 +17,6 @@ public class Attribute {
     public void isWellDeclared() throws SemanticException {
         type.checkType();
     }
-    public void consolidate() {}
-
     public Token getToken() {
         return idVar;
     }

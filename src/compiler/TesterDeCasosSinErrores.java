@@ -18,7 +18,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(Parameterized.class)
 public class TesterDeCasosSinErrores {
-    
+
     private static final String msgExito = "[SinErrores]";
     private static final String testFilesDirectoryPath = "resources/withoutErrors/";
 

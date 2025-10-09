@@ -42,14 +42,14 @@ public class ConcreteClass {
     }
     private void checkWrongInheritance() throws SemanticException {
         checkConstructorInAbstract();
-        checkInheritanceFromFinalClass();
+        checkInheritanceOfFinalClass();
         checkInheritanceFromAbstract();
     }
     private void checkInheritanceFromAbstract() throws SemanticException {
         if(hasModifier(lexID.kw_abstract) && parent != null && !parent.getLexeme().equals("Object") && Main.ST.getClassOrNull(parent.getLexeme()) != null && !Main.ST.getClassOrNull(parent.getLexeme()).hasModifier(lexID.kw_abstract))
             throw new SemanticException(token, "Una clase abstract no puede extender otra clase");
     }
-    private void checkInheritanceFromFinalClass() throws SemanticException {
+    private void checkInheritanceOfFinalClass() throws SemanticException {
         if(parent != null && Main.ST.getClassOrNull(parent.getLexeme()) != null && Main.ST.getClassOrNull(parent.getLexeme()).hasModifier(lexID.kw_final))
             throw new SemanticException(token, "No se puede heredar de una clase final");
     }
@@ -81,26 +81,6 @@ public class ConcreteClass {
             ConcreteClass up = Main.ST.getClassOrNull(actual);
             if (up == null) break;                  // padre no está definido (ya lo detecta checkInheritance)
             actual = up.getParent().getLexeme();    // subir un nivel
-        }
-    }
-    private void checkDuplicatedMembers() throws SemanticException {
-        checkDuplicatedAttributes();
-        checkDuplicatedMethods();
-    }
-    private void checkDuplicatedAttributes() throws SemanticException {
-        HashSet<String> attrNames = new HashSet<>();
-        for (Attribute a : attributes.values()) {
-            if (!attrNames.add(a.getName())) {
-                throw new SemanticException(a.getToken(), "Atributo duplicado: " + a.getName());
-            }
-        }
-    }
-    private void checkDuplicatedMethods() throws SemanticException {
-        HashSet<String> methodNames = new HashSet<>();
-        for (Method m : methods.values()) {
-            if (!methodNames.add(m.getName())) {
-                throw new SemanticException(m.getToken(), "Método duplicado: " + m.getName());
-            }
         }
     }
     public void consolidate() throws SemanticException {
