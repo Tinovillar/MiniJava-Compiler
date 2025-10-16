@@ -1,8 +1,12 @@
 package semantic.nodes.literal;
 
+import exceptions.SemanticException;
+import lexical.Token;
+import semantic.Type;
 import semantic.nodes.expression.ExpressionNode;
+import semantic.nodes.expression.OperatorNode;
 
-public abstract class LiteralNode extends ExpressionNode {
+public abstract class LiteralNode extends OperatorNode {
     public abstract boolean isCompatibleWith(LiteralNode other);
     public boolean supportsType(IntNode intNode) {
         return false;
@@ -19,4 +23,11 @@ public abstract class LiteralNode extends ExpressionNode {
     public boolean supportsType(NullNode nullNode) {
         return false;
     }
+    public Token getToken() {
+        return null;
+    }
+    public Type check() throws SemanticException {
+        return null;
+    }
+    public void generate() {}
 }
