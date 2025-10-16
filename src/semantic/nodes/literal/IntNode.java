@@ -1,4 +1,6 @@
 package semantic.nodes.literal;
 
-public class IntNode {
+import semantic.nodes.expression.ExpressionNode;
+
+public class IntNode extends ExpressionNode {
 }
