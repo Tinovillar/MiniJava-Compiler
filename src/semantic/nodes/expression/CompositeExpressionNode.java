@@ -1,0 +1,10 @@
+package semantic.nodes.expression;
+
+import exceptions.SemanticException;
+import semantic.Type;
+
+public class CompositeExpressionNode extends ExpressionNode {
+    public Type check() throws SemanticException {
+        return null;
+    }
+}
