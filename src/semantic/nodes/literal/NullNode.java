@@ -1,6 +1,7 @@
 package semantic.nodes.literal;
 
-import semantic.nodes.expression.ExpressionNode;
-
-public class NullNode extends ExpressionNode {
+public class NullNode extends LiteralNode {
+    public boolean isCompatibleWith(LiteralNode other) {
+        return false;
+    }
 }
