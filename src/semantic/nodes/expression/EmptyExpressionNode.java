@@ -1,4 +1,10 @@
 package semantic.nodes.expression;
 
-public class EmptyExpressionNode {
+import exceptions.SemanticException;
+import semantic.Type;
+
+public class EmptyExpressionNode extends ExpressionNode {
+    public Type check() throws SemanticException {
+        return null;
+    }
 }

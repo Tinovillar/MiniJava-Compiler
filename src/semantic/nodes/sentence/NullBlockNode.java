@@ -1,4 +1,8 @@
 package semantic.nodes.sentence;
 
-public class NullBlockNode {
+import exceptions.SemanticException;
+import semantic.Type;
+
+public class NullBlockNode extends SentenceNode {
+    public Type check() throws SemanticException {}
 }

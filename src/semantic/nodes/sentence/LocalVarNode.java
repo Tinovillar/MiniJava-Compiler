@@ -1,4 +1,8 @@
 package semantic.nodes.sentence;
 
-public class LocalVarNode {
+import exceptions.SemanticException;
+import semantic.Type;
+
+public class LocalVarNode extends SentenceNode {
+    public Type check() throws SemanticException {}
 }

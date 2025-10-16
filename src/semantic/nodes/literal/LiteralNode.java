@@ -23,11 +23,7 @@ public abstract class LiteralNode extends OperatorNode {
     public boolean supportsType(NullNode nullNode) {
         return false;
     }
-    public Token getToken() {
-        return null;
-    }
     public Type check() throws SemanticException {
         return null;
     }
-    public void generate() {}
 }
