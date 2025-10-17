@@ -9,12 +9,10 @@ import java.util.Map;
 public class BlockNode extends SentenceNode {
     private ArrayList<SentenceNode> sentences;
     private Map<String, LocalVarNode> localVarMap;
-    protected boolean checked;
 
     public BlockNode() {
         sentences = new ArrayList<>();
         localVarMap = new HashMap<>();
-        checked = false;
     }
 
     public void check() throws SemanticException {
@@ -39,11 +37,5 @@ public class BlockNode extends SentenceNode {
         if(localVarMap.put(localVar.getName(), localVar) != null) {
             // Exception
         }
-    }
-    public boolean isChecked() {
-        return checked;
-    }
-    public void setChecked(boolean checked) {
-        this.checked = checked;
     }
 }
