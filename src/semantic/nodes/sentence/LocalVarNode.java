@@ -3,12 +3,11 @@ package semantic.nodes.sentence;
 import exceptions.SemanticException;
 import lexical.Token;
 import semantic.Type;
-import semantic.nodes.expression.CompositeExpressionNode;
 import semantic.nodes.expression.ExpressionNode;
 
 public class LocalVarNode extends SentenceNode {
     Token token;
-    CompositeExpressionNode expression;
+    ExpressionNode expression;
     Type type;
 
     public LocalVarNode(Token token) {
@@ -28,7 +27,7 @@ public class LocalVarNode extends SentenceNode {
     public ExpressionNode getExpression() {
         return expression;
     }
-    public void setExpression(CompositeExpressionNode expression) {
+    public void setExpression(ExpressionNode expression) {
         this.expression = expression;
     }
     public Type getType() {

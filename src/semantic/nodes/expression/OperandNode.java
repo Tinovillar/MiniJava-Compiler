@@ -1,4 +1,4 @@
 package semantic.nodes.expression;
 
-public abstract class OperandNode extends CompositeExpressionNode {
+public abstract class OperandNode extends ExpressionNode {
 }

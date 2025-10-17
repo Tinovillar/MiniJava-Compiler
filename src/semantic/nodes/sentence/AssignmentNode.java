@@ -2,15 +2,14 @@ package semantic.nodes.sentence;
 
 import exceptions.SemanticException;
 import semantic.Type;
-import semantic.nodes.expression.CompositeExpressionNode;
 import semantic.nodes.expression.ExpressionNode;
 
 public class AssignmentNode extends SentenceNode {
-    private CompositeExpressionNode leftExpression;
+    private ExpressionNode leftExpression;
     private ExpressionNode rightExpression;
 
     public AssignmentNode() {}
-    public AssignmentNode(CompositeExpressionNode leftExpression, ExpressionNode rightExpression) {
+    public AssignmentNode(ExpressionNode leftExpression, ExpressionNode rightExpression) {
         this.leftExpression = leftExpression;
         this.rightExpression = rightExpression;
     }
@@ -21,13 +20,13 @@ public class AssignmentNode extends SentenceNode {
         if(!leftType.equals(rightType)) // TODO: Exception
         checked = true;
     }
-    public void setLeftExpression(CompositeExpressionNode toLeft) {
+    public void setLeftExpression(ExpressionNode toLeft) {
         this.leftExpression = toLeft;
     }
     public void setRightExpression(ExpressionNode toRight) {
         this.rightExpression = toRight;
     }
-    public CompositeExpressionNode getLeftExpression() {
+    public ExpressionNode getLeftExpression() {
         return leftExpression;
     }
     public ExpressionNode getRightExpression() {

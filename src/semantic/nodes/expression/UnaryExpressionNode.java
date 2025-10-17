@@ -4,7 +4,7 @@ import exceptions.SemanticException;
 import lexical.Token;
 import semantic.Type;
 
-public class UnaryExpressionNode extends CompositeExpressionNode {
+public class UnaryExpressionNode extends ExpressionNode {
     private OperandNode operand;
     private Token operator;
 
