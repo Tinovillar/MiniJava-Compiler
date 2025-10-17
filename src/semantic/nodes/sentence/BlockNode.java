@@ -7,9 +7,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class BlockNode extends SentenceNode {
-    ArrayList<SentenceNode> sentences;
-    Map<String, LocalVarNode> localVarMap;
-    boolean checked;
+    private ArrayList<SentenceNode> sentences;
+    private Map<String, LocalVarNode> localVarMap;
+    private boolean checked;
 
     public BlockNode() {
         sentences = new ArrayList<>();
@@ -17,18 +17,28 @@ public class BlockNode extends SentenceNode {
         checked = false;
     }
 
-    public void check() throws SemanticException {}
+    public void check() throws SemanticException {
+        for(SentenceNode sentence : sentences) {
+            sentence.check();
+        }
+        for(LocalVarNode localVar : localVarMap.values()) {
+            localVar.check();
+        }
+        checked = true;
+    }
     public ArrayList<SentenceNode> getSentences() {
         return sentences;
     }
-    public void addSentences(SentenceNode sentence) {
+    public void addSentence(SentenceNode sentence) {
         sentences.add(sentence);
     }
     public Map<String, LocalVarNode> getLocalVarMap() {
         return localVarMap;
     }
     public void addLocalVar(LocalVarNode localVar) {
-        this.localVarMap.put(localVar.getName(), localVar);
+        if(localVarMap.put(localVar.getName(), localVar) != null) {
+            // Exception
+        }
     }
     public boolean isChecked() {
         return checked;
