@@ -1,9 +1,10 @@
-package semantic;
+package semantic.model;
 
 import compiler.Main;
 import exceptions.SemanticException;
 import lexical.Token;
 import lexical.lexID;
+import semantic.type.Type;
 
 import java.util.Collection;
 import java.util.HashMap;

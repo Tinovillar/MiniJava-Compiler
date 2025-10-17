@@ -1,7 +1,6 @@
-package semantic;
+package semantic.type;
 
 import exceptions.SemanticException;
-import lexical.Token;
 
 public interface Type {
     String getName();

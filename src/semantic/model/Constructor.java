@@ -1,4 +1,4 @@
-package semantic;
+package semantic.model;
 
 import exceptions.SemanticException;
 import lexical.Token;

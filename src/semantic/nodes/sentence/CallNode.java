@@ -2,7 +2,7 @@ package semantic.nodes.sentence;
 
 import exceptions.SemanticException;
 import lexical.Token;
-import semantic.Type;
+import semantic.type.Type;
 import semantic.nodes.access.AccessNode;
 
 public class CallNode extends SentenceNode {

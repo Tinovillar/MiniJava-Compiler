@@ -1,7 +1,7 @@
 package semantic.nodes.expression;
 
 import exceptions.SemanticException;
-import semantic.Type;
+import semantic.type.Type;
 
 public class EmptyExpressionNode extends ExpressionNode {
     public Type check() throws SemanticException {

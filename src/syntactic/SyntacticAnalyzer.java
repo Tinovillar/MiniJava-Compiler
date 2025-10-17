@@ -8,6 +8,10 @@ import lexical.lexID;
 import lexical.LexicalAnalyzer;
 import lexical.Token;
 import semantic.*;
+import semantic.model.*;
+import semantic.type.PrimitiveType;
+import semantic.type.ReferenceType;
+import semantic.type.Type;
 
 import java.util.Set;
 

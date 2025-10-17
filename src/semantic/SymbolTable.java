@@ -3,6 +3,9 @@ package semantic;
 import exceptions.SemanticException;
 import lexical.Token;
 import lexical.lexID;
+import semantic.model.*;
+import semantic.type.PrimitiveType;
+import semantic.type.ReferenceType;
 
 import java.util.HashMap;
 import java.util.HashSet;

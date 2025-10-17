@@ -1,4 +1,4 @@
-package semantic;
+package semantic.type;
 
 import lexical.Token;
 

@@ -1,7 +1,7 @@
 package semantic.nodes.sentence;
 
 import exceptions.SemanticException;
-import semantic.Type;
+import semantic.type.Type;
 import semantic.nodes.expression.ExpressionNode;
 
 public class AssignmentNode extends SentenceNode {

@@ -1,7 +1,8 @@
-package semantic;
+package semantic.model;
 
 import exceptions.SemanticException;
 import lexical.Token;
+import semantic.type.Type;
 
 public class Parameter {
     private Token token;

@@ -2,7 +2,7 @@ package semantic.nodes.expression;
 
 import exceptions.SemanticException;
 import lexical.Token;
-import semantic.Type;
+import semantic.type.Type;
 
 public class UnaryExpressionNode extends ExpressionNode {
     private OperandNode operand;

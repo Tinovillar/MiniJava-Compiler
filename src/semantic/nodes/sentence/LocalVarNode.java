@@ -2,7 +2,7 @@ package semantic.nodes.sentence;
 
 import exceptions.SemanticException;
 import lexical.Token;
-import semantic.Type;
+import semantic.type.Type;
 import semantic.nodes.expression.ExpressionNode;
 
 public class LocalVarNode extends SentenceNode {
