@@ -9,7 +9,7 @@ import java.util.Map;
 public class BlockNode extends SentenceNode {
     private ArrayList<SentenceNode> sentences;
     private Map<String, LocalVarNode> localVarMap;
-    private boolean checked;
+    protected boolean checked;
 
     public BlockNode() {
         sentences = new ArrayList<>();
