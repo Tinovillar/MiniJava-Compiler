@@ -51,8 +51,8 @@ public class ConcreteClass {
             throw new SemanticException(token, "Una clase abstract no puede extender otra clase");
     }
     private void checkInheritanceOfStaticClass() throws SemanticException {
-        if(hasModifier(lexID.kw_static) && hasParent() && parentExist() && !Main.ST.getClassOrNull(parent.getLexeme()).hasModifier(lexID.kw_static))
-            throw new SemanticException(token, "Una clase static no puede ser heredada");
+        if(hasParent() && parentExist() && Main.ST.getClassOrNull(parent.getLexeme()).hasModifier(lexID.kw_static))
+            throw new SemanticException(token, "No se puede heredar de una clase static");
     }
     private void checkInheritanceOfFinalClass() throws SemanticException {
         if(parent != null && parentExist() && Main.ST.getClassOrNull(parent.getLexeme()).hasModifier(lexID.kw_final))
