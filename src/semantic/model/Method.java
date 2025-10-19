@@ -86,7 +86,7 @@ public class Method {
         checkParametersMatch(toCompare);
     }
     private void checkModifierMatch(Method toCompare) throws SemanticException {
-        if(!isAbstract() && !toCompare.isAbstract() && modifier != toCompare.getModifier()) {
+        if(modifier != toCompare.getModifier() && !toCompare.isAbstract()) {
             throw new SemanticException(this.token, "No es posible cambiar el modificador de un metodo");
         }
     }
