@@ -44,13 +44,18 @@ public class ConcreteClass {
         checkConstructorInAbstract();
         checkInheritanceOfFinalClass();
         checkInheritanceFromAbstract();
+        checkInheritanceOfStaticClass();
     }
     private void checkInheritanceFromAbstract() throws SemanticException {
-        if(hasModifier(lexID.kw_abstract) && parent != null && !parent.getLexeme().equals("Object") && Main.ST.getClassOrNull(parent.getLexeme()) != null && !Main.ST.getClassOrNull(parent.getLexeme()).hasModifier(lexID.kw_abstract))
+        if(hasModifier(lexID.kw_abstract) && hasParent() && parentExist() && !Main.ST.getClassOrNull(parent.getLexeme()).hasModifier(lexID.kw_abstract))
             throw new SemanticException(token, "Una clase abstract no puede extender otra clase");
     }
+    private void checkInheritanceOfStaticClass() throws SemanticException {
+        if(hasModifier(lexID.kw_static) && hasParent() && parentExist() && !Main.ST.getClassOrNull(parent.getLexeme()).hasModifier(lexID.kw_static))
+            throw new SemanticException(token, "Una clase static no puede ser heredada");
+    }
     private void checkInheritanceOfFinalClass() throws SemanticException {
-        if(parent != null && Main.ST.getClassOrNull(parent.getLexeme()) != null && Main.ST.getClassOrNull(parent.getLexeme()).hasModifier(lexID.kw_final))
+        if(parent != null && parentExist() && Main.ST.getClassOrNull(parent.getLexeme()).hasModifier(lexID.kw_final))
             throw new SemanticException(token, "No se puede heredar de una clase final");
     }
     private void checkConstructorInAbstract() throws SemanticException {
@@ -60,8 +65,11 @@ public class ConcreteClass {
     public boolean hasModifier(lexID m) {
         return modifier != null && modifier.getId() != null && m.equals(modifier.getId());
     }
-    public boolean hasModifier() {
-        return modifier != null;
+    private boolean hasParent() {
+        return parent != null && !parent.getLexeme().equals("Object");
+    }
+    private boolean parentExist() {
+        return Main.ST.getClassOrNull(parent.getLexeme()) != null;
     }
     private void checkCircularInheritance() throws SemanticException {
         if (parent.getLexeme() == "") return;
