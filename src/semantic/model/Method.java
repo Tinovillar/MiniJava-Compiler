@@ -45,7 +45,6 @@ public class Method {
     public void setHasBody(Boolean hasBody) {
         this.hasBody = hasBody;
     }
-    public void consolidate() {}
     public Token getToken() {
         return token;
     }
@@ -81,11 +80,21 @@ public class Method {
     public Token getModifier() {
         return modifier;
     }
-    public void checkParametersMatch(Method toCompare) throws SemanticException {
+    public void checkSignatureMatch(Method toCompare) throws SemanticException {
+        checkModifierMatch(toCompare);
+        checkReturnTypeMatch(toCompare);
+        checkParametersMatch(toCompare);
+    }
+    private void checkModifierMatch(Method toCompare) throws SemanticException {
+        if(!isAbstract() && !toCompare.isAbstract() && modifier != toCompare.getModifier()) {
+            throw new SemanticException(this.token, "No es posible cambiar el modificador de un metodo");
+        }
+    }
+    private void checkParametersMatch(Method toCompare) throws SemanticException {
         if(!areParametersEquals(toCompare.getParameters().values()))
             throw new SemanticException(this.token, "No es posible sobreescribir un metodo con diferentes parametros");
     }
-    public void checkReturnTypeMatch(Method toCompare) throws SemanticException {
+    private void checkReturnTypeMatch(Method toCompare) throws SemanticException {
         if(!returnType.equals(toCompare.getReturnType()))
             throw new SemanticException(this.token, "No es posible sobreescribir un metodo con diferente tipo de retorno");
     }

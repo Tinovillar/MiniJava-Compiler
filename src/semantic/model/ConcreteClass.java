@@ -122,8 +122,7 @@ public class ConcreteClass {
             parentMethod = completedMethods.put(ourMethod.getName(), ourMethod);
             if (parentMethod != null) {
                 checkModifiers(ourMethod, parentMethod);
-                ourMethod.checkReturnTypeMatch(parentMethod);
-                ourMethod.checkParametersMatch(parentMethod);
+                ourMethod.checkSignatureMatch(parentMethod);
             }
         }
         if (modifier == null || modifier.getId() == null) {
