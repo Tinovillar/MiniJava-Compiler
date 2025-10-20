@@ -5,22 +5,6 @@ import semantic.type.Type;
 import semantic.nodes.expression.OperandNode;
 
 public abstract class LiteralNode extends OperandNode {
-    public abstract boolean isCompatibleWith(LiteralNode other);
-    public boolean supportsType(IntNode intNode) {
-        return false;
-    }
-    public boolean supportsType(StringNode stringNode) {
-        return false;
-    }
-    public boolean supportsType(CharNode charNode) {
-        return false;
-    }
-    public boolean supportsType(BooleanNode booleanNode) {
-        return false;
-    }
-    public boolean supportsType(NullNode nullNode) {
-        return false;
-    }
     public Type check() throws SemanticException {
         return null;
     }

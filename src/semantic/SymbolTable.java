@@ -4,6 +4,7 @@ import exceptions.SemanticException;
 import lexical.Token;
 import lexical.lexID;
 import semantic.model.*;
+import semantic.nodes.sentence.BlockNode;
 import semantic.type.PrimitiveType;
 import semantic.type.ReferenceType;
 
@@ -14,6 +15,7 @@ public class SymbolTable {
     ConcreteClass currentClass;
     Attribute currentAttribute;
     Method currentMethod;
+    BlockNode currentBlock;
     HashMap<String, ConcreteClass> classes;
 
     public SymbolTable() {
@@ -261,5 +263,9 @@ public class SymbolTable {
     }
     public void addCurrentAttribute() throws SemanticException {
         currentClass.addAttribute(currentAttribute);
+    }
+    public BlockNode getCurrentBlock() {return this.currentBlock;}
+    public void setCurrentBlock(BlockNode blockNode) {
+        this.currentBlock = blockNode;
     }
 }
