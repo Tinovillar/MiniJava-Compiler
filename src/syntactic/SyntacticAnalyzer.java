@@ -1,5 +1,6 @@
 package syntactic;
 
+import com.sun.source.tree.BreakTree;
 import compiler.Main;
 import exceptions.LexicalException;
 import exceptions.SemanticException;
@@ -9,10 +10,20 @@ import lexical.LexicalAnalyzer;
 import lexical.Token;
 import semantic.*;
 import semantic.model.*;
+import semantic.nodes.access.*;
+import semantic.nodes.access.chained.ChainedMetNode;
+import semantic.nodes.access.chained.ChainedNode;
+import semantic.nodes.access.chained.ChainedVarNode;
+import semantic.nodes.expression.*;
+import semantic.nodes.literal.FactoryNode;
+import semantic.nodes.literal.NullNode;
+import semantic.nodes.sentence.*;
 import semantic.type.PrimitiveType;
 import semantic.type.ReferenceType;
 import semantic.type.Type;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class SyntacticAnalyzer {
@@ -246,263 +257,276 @@ public class SyntacticAnalyzer {
         }
         return hasBlock;
     }
-    private void bloque() throws SyntacticException {
+    private SentenceNode bloque() throws SyntacticException {
         match(lexID.p_o_bracket1);
+        BlockNode blockNode = new BlockNode();
+        ST.setCurrentBlock(blockNode);
         listaSentencias();
         match(lexID.p_c_bracket1);
+        return blockNode;
     }
     private void listaSentencias() throws SyntacticException {
         if(Primeros.isFirstOf(synID.listaSentencias, currentToken.getId())) {
-            sentencia();
+            ST.getCurrentBlock().addSentence(sentencia());
             listaSentencias();
         }
     }
-    private void sentencia() throws SyntacticException {
+    private SentenceNode sentencia() throws SyntacticException {
+        SentenceNode toReturn;
         if(isFirstOf(synID.varLocal)) {
-            varLocal();
+            toReturn = varLocal();
             match(lexID.p_semicolon);
         } else if(isFirstOf(synID.return_)) {
-            return_();
+            toReturn = return_();
             match(lexID.p_semicolon);
         } else if(isFirstOf(synID.if_)) {
-            if_();
+            toReturn = if_();
         } else if(isFirstOf(synID.while_)) {
-            while_();
+            toReturn = while_();
         } else if(isFirstOf(synID.bloque)) {
-            bloque();
+            toReturn = bloque();
         } else if(isFirstOf(synID.expresion)) {
-            expresion();
+            toReturn = new AssignmentCallNode(expresion());
             match(lexID.p_semicolon);
-        } else if(isFirstOf(synID.for_)) {
-            for_();
-        }else if(lexID.p_semicolon.equals(currentToken.getId())) {
+        } else if(lexID.p_semicolon.equals(currentToken.getId())) {
+            toReturn = new EmptySentenceNode();
             match(lexID.p_semicolon);
         } else {
             throw new SyntacticException(currentToken, Primeros.getFirsts(synID.sentencia));
         }
+        return toReturn;
     }
-    private void varLocal() throws SyntacticException {
+    private LocalVarNode varLocal() throws SyntacticException {
         match(lexID.kw_var);
+        LocalVarNode localVarNode = new LocalVarNode(currentToken);
         match(lexID.id_met_or_var);
         match(lexID.op_equal);
-        expresionCompuesta();
+        localVarNode.setExpression(expresionCompuesta());
+        return localVarNode;
     }
-    private void return_() throws SyntacticException {
+    private ReturnNode return_() throws SyntacticException {
         match(lexID.kw_return);
-        expresionOpcional();
+        return new ReturnNode(expresionOpcional());
     }
-    private void expresionOpcional() throws SyntacticException {
+    private ExpressionNode expresionOpcional() throws SyntacticException {
+        ExpressionNode expressionNode = new EmptyExpressionNode();
         if(isFirstOf(synID.expresion)) {
-            expresion();
+            expressionNode = expresion(); // TODO return de expression
         }
+        return expressionNode;
     }
-    private void if_() throws SyntacticException {
+    private SentenceNode if_() throws SyntacticException {
+        IfNode ifNode = new IfNode();
         match(lexID.kw_if);
         match(lexID.p_o_parenthesis);
-        expresion();
+        ifNode.setCondition(expresion());
         match(lexID.p_c_parenthesis);
-        sentencia();
-        else_();
+        ifNode.setIfBody(sentencia());
+        ifNode.setElseBody(else_());
+        return ifNode;
     }
-    private void else_() throws SyntacticException {
+    private SentenceNode else_() throws SyntacticException {
+        SentenceNode sentenceNode = null;
         if(lexID.kw_else.equals(currentToken.getId())) {
             match(lexID.kw_else);
-            sentencia();
+            sentenceNode = sentencia();
         }
+        return sentenceNode;
     }
-    private void while_() throws SyntacticException {
+    private SentenceNode while_() throws SyntacticException {
+        WhileNode whileNode = new WhileNode();
         match(lexID.kw_while);
         match(lexID.p_o_parenthesis);
-        expresion();
+        whileNode.setCondition(expresion());
         match(lexID.p_c_parenthesis);
-        sentencia();
+        whileNode.setBody(sentencia());
+        return whileNode;
     }
-    private void for_() throws SyntacticException {
-        match(lexID.kw_for);
-        match(lexID.p_o_parenthesis);
-        forArgs();
-        match(lexID.p_c_parenthesis);
-        sentencia();
+    private ExpressionNode expresion() throws SyntacticException {
+        ExpressionNode expressionNode = expresionCompuesta();
+        return expresionResto(expressionNode);
     }
-    private void forArgs() throws SyntacticException {
-        if(lexID.kw_var.equals(currentToken.getId())) {
-            match(lexID.kw_var);
-            match(lexID.id_met_or_var);
-            forInstancia();
-        } else if(isFirstOf(synID.expresion)) {
-            expresion();
-            forExpresion();
-        } else {
-            throw new SyntacticException(currentToken, Primeros.getFirsts(synID.forArgs));
-        }
-    }
-    private void forInstancia() throws SyntacticException {
-        if(isFirstOf(synID.forIterador)) {
-            forIterador();
-        } else if(lexID.op_equal.equals(currentToken.getId())) {
-            match(lexID.op_equal);
-            expresionCompuesta();
-            forExpresion();
-        } else {
-            throw new SyntacticException(currentToken, Primeros.getFirsts(synID.forInstancia));
-        }
-    }
-    private void forIterador() throws SyntacticException {
-        match(lexID.p_colon);
-        expresion();
-    }
-    private void forExpresion() throws SyntacticException {
-        match(lexID.p_semicolon);
-        expresion();
-        match(lexID.p_semicolon);
-        expresion();
-    }
-    private void expresion() throws SyntacticException {
-        expresionCompuesta();
-        expresionResto();
-    }
-    private void expresionResto() throws SyntacticException {
+    private ExpressionNode expresionResto(ExpressionNode leftExpression) throws SyntacticException {
+        ExpressionNode toReturn = null;
         if(currentToken.getId().equals(lexID.op_equal)) {
+            BinaryExpressionNode binaryExpressionNode = new BinaryExpressionNode();
+            binaryExpressionNode.setLeftExpression(leftExpression);
+            binaryExpressionNode.setOperator(currentToken);
             operadorAsignacion();
-            expresionCompuesta();
+            binaryExpressionNode.setRightExpression(expresionCompuesta());
+            toReturn = binaryExpressionNode;
         }
+        return toReturn;
     }
     private void operadorAsignacion() throws SyntacticException {
         match(lexID.op_equal);
     }
-    private void expresionCompuesta() throws SyntacticException {
+    private ExpressionNode expresionCompuesta() throws SyntacticException {
         if (isFirstOf(synID.expresionBasica)) {
-            expresionBasica();
-            expresionCompuestaResto();
+            BinaryExpressionNode expression = new BinaryExpressionNode();
+            expression.setLeftExpression(expresionBasica());
+            return expresionCompuestaResto(expression);
         } else {
             throw new SyntacticException(currentToken, Primeros.getFirsts(synID.expresionCompuesta));
         }
     }
-    private void expresionCompuestaResto() throws SyntacticException {
+    private ExpressionNode expresionCompuestaResto(ExpressionNode leftExpression) throws SyntacticException {
+        ExpressionNode expressionNode = null;
         if(isFirstOf(synID.operadorBinario)) {
-            operadorBinario();
-            expresionBasica();
-            expresionCompuestaResto();
-        } else if (currentToken.getId().equals(lexID.p_question_mark)) {
-            match(lexID.p_question_mark);
-            expresionCompuesta();
-            match(lexID.p_colon);
-            expresionCompuesta();
+            BinaryExpressionNode binaryExpression = new BinaryExpressionNode();
+            binaryExpression.setLeftExpression(leftExpression);
+            binaryExpression.setOperator(operadorBinario());
+            binaryExpression.setRightExpression(expresionBasica());
+            expressionNode = expresionCompuestaResto(binaryExpression);
         }
+        return expressionNode;
     }
-    private void operadorBinario() throws SyntacticException {
+    private Token operadorBinario() throws SyntacticException {
         if(isFirstOf(synID.operadorBinario)) {
+            Token operator = currentToken;
             match(currentToken.getId());
+            return operator;
         } else {
             throw new SyntacticException(currentToken, Primeros.getFirsts(synID.operadorBinario));
         }
     }
-    private void expresionBasica() throws SyntacticException {
+    private ExpressionNode expresionBasica() throws SyntacticException {
         if(isFirstOf(synID.operadorUnario)) {
-            operadorUnario();
-            operando();
+            UnaryExpressionNode unaryExpression = new UnaryExpressionNode();
+            unaryExpression.setOperator(operadorUnario());
+            unaryExpression.setOperand(operando());
+            return unaryExpression;
         } else if(isFirstOf(synID.operando)) {
-            operando();
+            return operando();
         } else {
             throw new SyntacticException(currentToken, Primeros.getFirsts(synID.expresionBasica));
         }
     }
-    private void operadorUnario() throws SyntacticException {
+    private Token operadorUnario() throws SyntacticException {
         if(isFirstOf(synID.operadorUnario)) {
+            Token operator = currentToken;
             match(currentToken.getId());
+            return operator;
         } else {
             throw new SyntacticException(currentToken, Primeros.getFirsts(synID.operadorUnario));
         }
     }
-    private void operando() throws SyntacticException {
+    private OperandNode operando() throws SyntacticException {
         if(isFirstOf(synID.primitivo)) {
-            primitivo();
+            return primitivo();
         } else if(isFirstOf(synID.referencia)) {
-            referencia();
+            return referencia();
         } else {
             throw new SyntacticException(currentToken, Primeros.getFirsts(synID.operando));
         }
     }
-    private void primitivo() throws SyntacticException {
+    private OperandNode primitivo() throws SyntacticException {
+        OperandNode operandNode = new NullNode();
         if(isFirstOf(synID.primitivo)) {
+            operandNode = FactoryNode.getPrimitiveNode(currentToken.getId());
             match(currentToken.getId());
         }
+        return operandNode;
     }
-    private void referencia() throws SyntacticException {
-        primario();
-        referenciaResto();
+    private OperandNode referencia() throws SyntacticException {
+        AccessNode accessNode = primario();
+        accessNode.setChained(referenciaResto());
+        return accessNode;
     }
-    private void referenciaResto() throws SyntacticException {
+    private ChainedNode referenciaResto() throws SyntacticException {
+        ChainedNode chainedNode = null;
         if(lexID.p_dot.equals(currentToken.getId())) {
             match(lexID.p_dot);
+            Token id = currentToken;
             match(lexID.id_met_or_var);
-            varMetEncadenada();
+            chainedNode = varMetEncadenada(id);
+            chainedNode.setChained(referenciaResto());
             referenciaResto();
         }
+        return chainedNode;
     }
-    private void primario() throws SyntacticException {
+    private AccessNode primario() throws SyntacticException {
+        AccessNode accessNode = null;
         if (lexID.kw_this.equals(currentToken.getId())) {
+            accessNode = new ThisNode(currentToken);
             match(lexID.kw_this);
         } else if (lexID.literal_string.equals(currentToken.getId())) {
+            accessNode = new StringNode(currentToken);
             match(lexID.literal_string);
         } else if (isFirstOf(synID.llamadaMetOrVar)) {
-            llamadaMetOrVar();
+            accessNode = llamadaMetOrVar();
         } else if (isFirstOf(synID.llamadaConstructor)) {
-            llamadaConstructor();
+            accessNode = llamadaConstructor();
         } else if(isFirstOf(synID.llamadaMetodoEstatico)) {
-            llamadaMetodoEstatico();
+            accessNode = llamadaMetodoEstatico();
         } else if(isFirstOf(synID.expresionParentizada)) {
-            expresionParentizada();
+            accessNode = expresionParentizada();
         } else {
             throw new SyntacticException(currentToken, Primeros.getFirsts(synID.primario));
         }
+        return accessNode;
     }
-    private void llamadaConstructor() throws SyntacticException {
+    private AccessNode llamadaConstructor() throws SyntacticException {
         match(lexID.kw_new);
+        Token id = currentToken;
         match(lexID.id_class);
-        argsActuales();
+        ConstructorCallNode constructor = new ConstructorCallNode(id, argsActuales());
+        return constructor;
     }
-    private void expresionParentizada() throws SyntacticException {
+    private AccessNode expresionParentizada() throws SyntacticException {
         match(lexID.p_o_parenthesis);
-        expresion();
+        AccessNode expression = new ParenthesizedExpressionNode(expresion());
         match(lexID.p_c_parenthesis);
+        return expression;
     }
-    private void llamadaMetOrVar() throws SyntacticException {
+    private AccessNode llamadaMetOrVar() throws SyntacticException {
+        Token id = currentToken;
+        AccessNode accessNode = new AccessVarNode(id);
         match(lexID.id_met_or_var);
         if(isFirstOf(synID.argsActuales)) {
-            argsActuales();
+            accessNode = new MethodCallNode(id, argsActuales());
         }
+        return accessNode;
     }
-    private void llamadaMetodoEstatico() throws SyntacticException {
+    private AccessNode llamadaMetodoEstatico() throws SyntacticException {
+        Token idClass = currentToken;
         match(lexID.id_class);
         match(lexID.p_dot);
+        Token idMetOrVar = currentToken;
         match(lexID.id_met_or_var);
-        argsActuales();
+        return new StaticMethodCallNode(idClass, idMetOrVar, argsActuales());
     }
-    private void argsActuales() throws SyntacticException {
+    private List<ExpressionNode> argsActuales() throws SyntacticException {
         match(lexID.p_o_parenthesis);
-        listaExpsOpcional();
+        List<ExpressionNode> list = listaExpsOpcional();
         match(lexID.p_c_parenthesis);
+        return list;
     }
-    private void listaExpsOpcional() throws SyntacticException {
+    private List<ExpressionNode> listaExpsOpcional() throws SyntacticException {
+        List<ExpressionNode> list = new ArrayList<>();
         if(isFirstOf(synID.listaExps)) {
-            listaExps();
+            list = listaExps();
         }
+        return list;
     }
-    private void listaExps() throws SyntacticException {
-        expresion();
-        listaExpsResto();
+    private List<ExpressionNode> listaExps() throws SyntacticException {
+        List<ExpressionNode> list = new ArrayList<>();
+        list.add(expresion());
+        listaExpsResto(list);
+        return list;
     }
-    private void listaExpsResto() throws SyntacticException {
+    private void listaExpsResto(List<ExpressionNode> list) throws SyntacticException {
         if(lexID.p_comma.equals(currentToken.getId())) {
             match(lexID.p_comma);
-            expresion();
-            listaExpsResto();
+            list.add(expresion());
+            listaExpsResto(list);
         }
     }
-    private void varMetEncadenada() throws SyntacticException {
+    private ChainedNode varMetEncadenada(Token id) throws SyntacticException {
+        ChainedNode chainedNode = new ChainedVarNode(id);
         if(isFirstOf(synID.varMetEncadenada)) {
-            argsActuales();
+            chainedNode = new ChainedMetNode(id, argsActuales());
         }
+        return chainedNode;
     }
 }
