@@ -128,8 +128,8 @@ public class SyntacticAnalyzer {
         ST.setCurrentMethod(new Method(currentToken, ST.getCurrentClass().getName(), type));
         ST.getCurrentMethod().setModifier(modifier);
         match(lexID.id_met_or_var);
-        boolean hasBlock = declaracionMetodo();
-        ST.getCurrentMethod().setHasBody(hasBlock);
+        BlockNode block = declaracionMetodo();
+        ST.getCurrentMethod().setBlock(block);
         ST.addCurrentMethod();
     }
     private void metodoConVoid() throws SyntacticException, SemanticException {
@@ -137,8 +137,8 @@ public class SyntacticAnalyzer {
         match(lexID.kw_void);
         ST.setCurrentMethod(new Method(currentToken, ST.getCurrentClass().getName(), type));
         match(lexID.id_met_or_var);
-        boolean hasBlock = declaracionMetodo();
-        ST.getCurrentMethod().setHasBody(hasBlock);
+        BlockNode block = declaracionMetodo();
+        ST.getCurrentMethod().setBlock(block);
         ST.addCurrentMethod();
     }
     private Token modificadorMiembro() throws SyntacticException {
@@ -154,8 +154,8 @@ public class SyntacticAnalyzer {
     private void metodoVariable(Type type, Token token) throws SyntacticException, SemanticException {
         if(Primeros.isFirstOf(synID.declaracionMetodo, currentToken.getId())) {
             ST.setCurrentMethod(new Method(token, ST.getCurrentClass().getName(), type));
-            boolean hasBlock = declaracionMetodo();
-            ST.getCurrentMethod().setHasBody(hasBlock);
+            BlockNode block = declaracionMetodo();
+            ST.getCurrentMethod().setBlock(block);
             ST.addCurrentMethod();
         } else if(Primeros.isFirstOf(synID.declaracionVariable, currentToken.getId())) {
             ST.setCurrentAttribute(new Attribute(token, type));
@@ -172,10 +172,9 @@ public class SyntacticAnalyzer {
         }
         match(lexID.p_semicolon);
     }
-    private boolean declaracionMetodo() throws SyntacticException, SemanticException {
+    private BlockNode declaracionMetodo() throws SyntacticException, SemanticException {
         ArgsFormales();
-        boolean hasBlock = bloqueOpcional();
-        return hasBlock;
+        return bloqueOpcional();
     }
     private void constructor() throws SyntacticException, SemanticException {
         match(lexID.kw_public);
@@ -244,20 +243,19 @@ public class SyntacticAnalyzer {
         ST.getCurrentMethod().addParameter(new Parameter(currentToken, type));
         match(lexID.id_met_or_var);
     }
-    private boolean bloqueOpcional() throws SyntacticException {
-        boolean hasBlock;
+    private BlockNode bloqueOpcional() throws SyntacticException {
+        BlockNode block;
         if(Primeros.isFirstOf(synID.bloque, currentToken.getId())) {
-            hasBlock = true;
-            bloque();
+            block = bloque();
         } else if(lexID.p_semicolon.equals(currentToken.getId())) {
-            hasBlock = false;
+            block = new EmptyBlockNode();
             match(lexID.p_semicolon);
         } else {
             throw new SyntacticException(currentToken, Primeros.getFirsts(synID.bloqueOpcional));
         }
-        return hasBlock;
+        return block;
     }
-    private SentenceNode bloque() throws SyntacticException {
+    private BlockNode bloque() throws SyntacticException {
         match(lexID.p_o_bracket1);
         BlockNode blockNode = new BlockNode();
         ST.setCurrentBlock(blockNode);

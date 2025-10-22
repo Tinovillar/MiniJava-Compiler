@@ -4,6 +4,7 @@ import compiler.Main;
 import exceptions.SemanticException;
 import lexical.Token;
 import lexical.lexID;
+import semantic.nodes.sentence.BlockNode;
 import semantic.type.Type;
 
 import java.util.Collection;
@@ -15,15 +16,13 @@ public class Method {
     protected Token modifier;
     protected String parent;
     protected Type returnType;
-
-    protected Boolean hasBody;
+    protected BlockNode block;
     protected HashMap<String, Parameter> parameters;
 
     public Method(Token token, String parent, Type returnType) {
         this.token = token;
         this.parent = parent;
         this.returnType = returnType;
-        this.hasBody = true;
         this.parameters = new HashMap<>();
     }
 
@@ -36,14 +35,11 @@ public class Method {
         if(modifier != null && modifier.getId().equals(lexID.kw_abstract)) {
             if(!Main.ST.getClassOrNull(parent).isAbstract())
                 throw new SemanticException(token, "Un metodo abstracto no puede estar en una clase NO abstracta");
-            if(hasBody)
+            if(hasBody())
                 throw new SemanticException(token, "Un metodo abstracto no puede tener cuerpo.");
-        } else if(!hasBody){
+        } else if(!hasBody()){
             throw new SemanticException(token, "El metodo debe tener cuerpo");
         }
-    }
-    public void setHasBody(Boolean hasBody) {
-        this.hasBody = hasBody;
     }
     public Token getToken() {
         return token;
@@ -52,7 +48,7 @@ public class Method {
         this.token = token;
     }
     public boolean hasBody() {
-        return hasBody;
+        return this.block != null;
     }
     public String getParent() {
         return parent;
@@ -120,5 +116,9 @@ public class Method {
 
     public boolean isAbstract() {
         return modifier != null && modifier.getId() != null && modifier.getId().equals(lexID.kw_abstract);
+    }
+
+    public void setBlock(BlockNode block) {
+        this.block = block;
     }
 }
