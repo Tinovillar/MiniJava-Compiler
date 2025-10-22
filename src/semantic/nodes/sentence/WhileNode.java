@@ -1,7 +1,23 @@
 package semantic.nodes.sentence;
 
 import exceptions.SemanticException;
+import semantic.nodes.expression.ExpressionNode;
 
 public class WhileNode extends SentenceNode {
+    private ExpressionNode condition;
+    private SentenceNode body;
+
+    public SentenceNode getBody() {
+        return body;
+    }
+    public void setBody(SentenceNode body) {
+        this.body = body;
+    }
+    public ExpressionNode getCondition() {
+        return condition;
+    }
+    public void setCondition(ExpressionNode condition) {
+        this.condition = condition;
+    }
     public void check() throws SemanticException {}
 }
