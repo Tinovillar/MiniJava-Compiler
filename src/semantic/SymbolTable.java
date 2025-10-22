@@ -5,6 +5,7 @@ import lexical.Token;
 import lexical.lexID;
 import semantic.model.*;
 import semantic.nodes.sentence.BlockNode;
+import semantic.nodes.sentence.EmptyBlockNode;
 import semantic.type.PrimitiveType;
 import semantic.type.ReferenceType;
 
@@ -38,6 +39,7 @@ public class SymbolTable {
         debugPrint.addParameter(
                 new Parameter(new Token(lexID.id_met_or_var, "i", -1),
                 new PrimitiveType(new Token(lexID.kw_int, "int", -1))));
+        debugPrint.setBlock(new EmptyBlockNode());
         object.addMethod(debugPrint);
 
         classes.put("Object", object);
@@ -57,6 +59,7 @@ public class SymbolTable {
                 "",
                 new PrimitiveType(new Token(lexID.kw_int, "int", -1))); // int
         read.setModifier(new Token(lexID.kw_static, "static", -1)); // static
+        read.setBlock(new EmptyBlockNode());
         // static void printB (boolean b)
         Method printB = new Method(
                 new Token(lexID.id_met_or_var, "printB", -1), // printB
@@ -66,6 +69,7 @@ public class SymbolTable {
         printB.addParameter(new Parameter(
                 new Token(lexID.id_met_or_var, "b", -1), // b
                 new PrimitiveType(new Token(lexID.kw_boolean, "boolean", -1)))); // boolean
+        printB.setBlock(new EmptyBlockNode());
         // static void printC (char c)
         Method printC = new Method(
                 new Token(lexID.id_met_or_var, "printC", -1), // printC
@@ -75,6 +79,7 @@ public class SymbolTable {
         printC.addParameter(new Parameter(
                 new Token(lexID.id_met_or_var, "c", -1), // c
                 new PrimitiveType(new Token(lexID.kw_char, "char", -1)))); // char
+        printC.setBlock(new EmptyBlockNode());
         // static void printI(int i)
         Method printI = new Method(
                 new Token(lexID.id_met_or_var, "printI", -1), // printI
@@ -84,6 +89,7 @@ public class SymbolTable {
         printI.addParameter(new Parameter(
                 new Token(lexID.id_met_or_var, "i", -1), // i
                 new PrimitiveType(new Token(lexID.kw_int, "int", -1)))); // int
+        printI.setBlock(new EmptyBlockNode());
         // static void printS(String s)
         Method printS = new Method(
                 new Token(lexID.id_met_or_var, "printS", -1), // printS
@@ -93,12 +99,14 @@ public class SymbolTable {
         printS.addParameter(new Parameter(
                 new Token(lexID.id_met_or_var, "s", -1), // s
                 new ReferenceType(new Token(lexID.id_class, "String", -1)))); // String
+        printS.setBlock(new EmptyBlockNode());
         // static void printLn()
         Method printLn = new Method(
                 new Token(lexID.id_met_or_var, "printLn", -1), // printLn
                 "",
                 new ReferenceType(new Token(lexID.kw_void, "void", -1))); // void
         printLn.setModifier(new Token(lexID.kw_static, "static", -1)); // static
+        printLn.setBlock(new EmptyBlockNode());
         // static void printBln(boolean b)
         Method printBln = new Method(
                 new Token(lexID.id_met_or_var, "printBln", -1), // printBln
@@ -108,6 +116,7 @@ public class SymbolTable {
         printBln.addParameter(new Parameter(
                 new Token(lexID.id_met_or_var, "b", -1), // b
                 new PrimitiveType(new Token(lexID.kw_boolean, "boolean", -1)))); // boolean
+        printBln.setBlock(new EmptyBlockNode());
         // static void printCln(char c)
         Method printCln = new Method(
                 new Token(lexID.id_met_or_var, "printCln", -1), // printCln
@@ -117,6 +126,7 @@ public class SymbolTable {
         printCln.addParameter(new Parameter(
                 new Token(lexID.id_met_or_var, "c", -1), // s
                 new PrimitiveType(new Token(lexID.kw_char, "char", -1)))); // char
+        printCln.setBlock(new EmptyBlockNode());
         // static void printIln(int i)
         Method printIln = new Method(
                 new Token(lexID.id_met_or_var, "printIln", -1), // printIln
@@ -126,6 +136,7 @@ public class SymbolTable {
         printIln.addParameter(new Parameter(
                 new Token(lexID.id_met_or_var, "s", -1), // i
                 new PrimitiveType(new Token(lexID.kw_int, "int", -1)))); // int
+        printIln.setBlock(new EmptyBlockNode());
         // static void printSln(String s)
         Method printSln = new Method(
                 new Token(lexID.id_met_or_var, "printSln", -1), // printSln
@@ -135,6 +146,7 @@ public class SymbolTable {
         printSln.addParameter(new Parameter(
                 new Token(lexID.id_met_or_var, "s", -1), // s
                 new ReferenceType(new Token(lexID.id_class, "String", -1)))); // String
+        printSln.setBlock(new EmptyBlockNode());
         // Add all methods
         system.addMethod(read);
         system.addMethod(printB);
