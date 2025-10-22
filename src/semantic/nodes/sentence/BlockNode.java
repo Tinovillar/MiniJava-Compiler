@@ -15,15 +15,7 @@ public class BlockNode extends SentenceNode {
         localVarMap = new HashMap<>();
     }
 
-    public void check() throws SemanticException {
-        for(SentenceNode sentence : sentences) {
-            sentence.check();
-        }
-        for(LocalVarNode localVar : localVarMap.values()) {
-            localVar.check();
-        }
-        checked = true;
-    }
+    public void check() throws SemanticException {}
     public ArrayList<SentenceNode> getSentences() {
         return sentences;
     }
