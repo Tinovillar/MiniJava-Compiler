@@ -346,7 +346,7 @@ public class SyntacticAnalyzer {
         return expresionResto(expressionNode);
     }
     private ExpressionNode expresionResto(ExpressionNode leftExpression) throws SyntacticException {
-        ExpressionNode toReturn = null;
+        ExpressionNode toReturn = leftExpression;
         if(currentToken.getId().equals(lexID.op_equal)) {
             BinaryExpressionNode binaryExpressionNode = new BinaryExpressionNode();
             binaryExpressionNode.setLeftExpression(leftExpression);
@@ -362,15 +362,14 @@ public class SyntacticAnalyzer {
     }
     private ExpressionNode expresionCompuesta() throws SyntacticException {
         if (isFirstOf(synID.expresionBasica)) {
-            BinaryExpressionNode expression = new BinaryExpressionNode();
-            expression.setLeftExpression(expresionBasica());
-            return expresionCompuestaResto(expression);
+            ExpressionNode leftExpression = expresionBasica();
+            return expresionCompuestaResto(leftExpression);
         } else {
             throw new SyntacticException(currentToken, Primeros.getFirsts(synID.expresionCompuesta));
         }
     }
     private ExpressionNode expresionCompuestaResto(ExpressionNode leftExpression) throws SyntacticException {
-        ExpressionNode expressionNode = null;
+        ExpressionNode expressionNode = leftExpression;
         if(isFirstOf(synID.operadorBinario)) {
             BinaryExpressionNode binaryExpression = new BinaryExpressionNode();
             binaryExpression.setLeftExpression(leftExpression);
