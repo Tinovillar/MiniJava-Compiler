@@ -302,16 +302,17 @@ public class SyntacticAnalyzer {
         match(lexID.id_met_or_var);
         match(lexID.op_equal);
         localVarNode.setExpression(expresionCompuesta());
+        ST.getCurrentBlock().addLocalVar(localVarNode);
         return localVarNode;
     }
     private ReturnNode return_() throws SyntacticException {
         match(lexID.kw_return);
-        return new ReturnNode(expresionOpcional());
+        return new ReturnNode(ST.getCurrentMethod().getReturnType(), expresionOpcional());
     }
     private ExpressionNode expresionOpcional() throws SyntacticException {
         ExpressionNode expressionNode = new EmptyExpressionNode();
         if(isFirstOf(synID.expresion)) {
-            expressionNode = expresion(); // TODO return de expression
+            expressionNode = expresion();
         }
         return expressionNode;
     }
