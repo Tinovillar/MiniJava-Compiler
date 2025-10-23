@@ -1,6 +1,11 @@
 package semantic.nodes.sentence;
 
+import compiler.Main;
 import exceptions.SemanticException;
+import lexical.Token;
+import semantic.SymbolTable;
+import semantic.model.ConcreteClass;
+import semantic.model.Method;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,10 +14,18 @@ import java.util.Map;
 public class BlockNode extends SentenceNode {
     private ArrayList<SentenceNode> sentences;
     private Map<String, LocalVarNode> localVarMap;
+    private BlockNode parentBlock;
+
+    private Method method_;
+    private ConcreteClass class_;
 
     public BlockNode() {
         sentences = new ArrayList<>();
         localVarMap = new HashMap<>();
+
+        this.class_ = Main.ST.getCurrentClass();
+        this.method_ = Main.ST.getCurrentMethod();
+        this.parentBlock = Main.ST.getCurrentBlock();
     }
 
     public void check() throws SemanticException {}
@@ -26,8 +39,19 @@ public class BlockNode extends SentenceNode {
         return localVarMap;
     }
     public void addLocalVar(LocalVarNode localVar) {
-        if(localVarMap.put(localVar.getName(), localVar) != null) {
+        if(method_.isParameter(localVar.getToken()))
             // Exception
-        }
+        if(isLocalVar(localVar.getToken()))
+            // Exception
+        localVarMap.put(localVar.getName(), localVar);
+    }
+    private boolean isLocalVar(Token toCheck) {
+        if(localVarMap.get(toCheck.getLexeme()) == null) {
+            if(parentBlock != null) {
+                return parentBlock.isLocalVar(toCheck);
+            }
+            return false;
+        } else
+            return true;
     }
 }

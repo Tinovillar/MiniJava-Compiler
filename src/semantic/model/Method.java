@@ -113,12 +113,17 @@ public class Method {
 
         return true;
     }
-
     public boolean isAbstract() {
         return modifier != null && modifier.getId() != null && modifier.getId().equals(lexID.kw_abstract);
     }
-
     public void setBlock(BlockNode block) {
         this.block = block;
+    }
+    public boolean isParameter(Token toCompare) {
+        for(Parameter param : parameters.values()) {
+            if(param.getToken().equals(toCompare))
+                return true;
+        }
+        return false;
     }
 }
