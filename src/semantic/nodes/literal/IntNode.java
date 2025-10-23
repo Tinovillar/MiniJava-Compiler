@@ -2,12 +2,14 @@ package semantic.nodes.literal;
 
 import lexical.Token;
 import semantic.nodes.access.StringNode;
+import semantic.type.PrimitiveType;
+import semantic.type.Type;
 
 public class IntNode extends LiteralNode implements TypeChecking {
-    private Token token;
+    private Type type;
 
     public IntNode(Token token) {
-        this.token = token;
+        this.type = new PrimitiveType(token);
     }
 
     public boolean isCompatibleWith(TypeChecking other) {
