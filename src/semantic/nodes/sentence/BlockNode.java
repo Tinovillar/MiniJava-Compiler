@@ -42,7 +42,7 @@ public class BlockNode extends SentenceNode {
         if(method_.isParameter(localVar.getToken()))
             // Exception
         if(isLocalVar(localVar.getToken()))
-            // Exception
+            // TODO exception
         localVarMap.put(localVar.getName(), localVar);
     }
     private boolean isLocalVar(Token toCheck) {
