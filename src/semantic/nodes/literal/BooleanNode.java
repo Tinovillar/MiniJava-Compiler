@@ -1,8 +1,15 @@
 package semantic.nodes.literal;
 
+import lexical.Token;
 import semantic.nodes.access.StringNode;
 
 public class BooleanNode extends LiteralNode implements TypeChecking {
+    private Token token;
+
+    public BooleanNode(Token token) {
+        this.token = token;
+    }
+
     public boolean isCompatibleWith(TypeChecking other) {
         return other.supportsType(this);
     }

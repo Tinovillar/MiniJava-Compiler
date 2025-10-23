@@ -421,7 +421,7 @@ public class SyntacticAnalyzer {
     private OperandNode primitivo() throws SyntacticException {
         OperandNode operandNode = new NullNode();
         if(isFirstOf(synID.primitivo)) {
-            operandNode = FactoryNode.getPrimitiveNode(currentToken.getId());
+            operandNode = FactoryNode.getPrimitiveNode(currentToken);
             match(currentToken.getId());
         }
         return operandNode;

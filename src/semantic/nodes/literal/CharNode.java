@@ -1,8 +1,15 @@
 package semantic.nodes.literal;
 
+import lexical.Token;
 import semantic.nodes.access.StringNode;
 
 public class CharNode extends LiteralNode implements TypeChecking {
+    private Token token;
+
+    public CharNode(Token token) {
+        this.token = token;
+    }
+
     public boolean isCompatibleWith(TypeChecking other) {
         return other.supportsType(this);
     }
