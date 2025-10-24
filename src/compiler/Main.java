@@ -36,6 +36,7 @@ public class Main {
 
             ST.isWellDeclared();
             ST.consolidate();
+            ST.check();
 
             if(!errors) {
                 System.out.println("[SinErrores]");

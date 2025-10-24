@@ -126,4 +126,8 @@ public class Method {
         }
         return false;
     }
+    public void check() throws SemanticException {
+//        Main.ST.setCurrentMethod(this);
+        block.check();
+    }
 }

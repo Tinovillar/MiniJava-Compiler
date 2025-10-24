@@ -11,6 +11,7 @@ import semantic.type.ReferenceType;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 public class SymbolTable {
     ConcreteClass currentClass;
@@ -279,5 +280,12 @@ public class SymbolTable {
     public BlockNode getCurrentBlock() {return this.currentBlock;}
     public void setCurrentBlock(BlockNode blockNode) {
         this.currentBlock = blockNode;
+    }
+    public void check() throws SemanticException {
+        for(Map.Entry<String, ConcreteClass> class_ : classes.entrySet()) {
+            if(class_.getValue().getName() != "Object") {
+                class_.getValue().check();
+            }
+        }
     }
 }
