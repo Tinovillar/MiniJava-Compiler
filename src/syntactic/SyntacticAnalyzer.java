@@ -349,12 +349,11 @@ public class SyntacticAnalyzer {
     private ExpressionNode expresionResto(ExpressionNode leftExpression) throws SyntacticException {
         ExpressionNode toReturn = leftExpression;
         if(currentToken.getId().equals(lexID.op_equal)) {
-            BinaryExpressionNode binaryExpressionNode = new BinaryExpressionNode();
-            binaryExpressionNode.setLeftExpression(leftExpression);
-            binaryExpressionNode.setOperator(currentToken);
+            AssignmentExpressionNode assignment = new AssignmentExpressionNode();
+            assignment.setLeftExpression(leftExpression);
             operadorAsignacion();
-            binaryExpressionNode.setRightExpression(expresionCompuesta());
-            toReturn = binaryExpressionNode;
+            assignment.setRightExpression(expresionCompuesta());
+            toReturn = assignment;
         }
         return toReturn;
     }
