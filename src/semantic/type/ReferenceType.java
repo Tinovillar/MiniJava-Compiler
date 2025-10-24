@@ -23,4 +23,7 @@ public class ReferenceType implements Type {
     public boolean equals(Type toCompare) {
         return toCompare.getName().equals(getName());
     }
+    public boolean isBoolean() {
+        return false;
+    }
 }

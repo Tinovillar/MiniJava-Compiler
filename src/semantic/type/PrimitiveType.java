@@ -1,6 +1,7 @@
 package semantic.type;
 
 import lexical.Token;
+import lexical.lexID;
 
 public class PrimitiveType implements Type {
     private Token token;
@@ -17,5 +18,8 @@ public class PrimitiveType implements Type {
     }
     public boolean equals(Type toCompare) {
         return toCompare.getName().equals(getName());
+    }
+    public boolean isBoolean() {
+        return token.getId().equals(lexID.kw_true) || token.getId().equals(lexID.kw_false);
     }
 }
