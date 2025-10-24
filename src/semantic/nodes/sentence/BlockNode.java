@@ -28,7 +28,15 @@ public class BlockNode extends SentenceNode {
         this.parentBlock = Main.ST.getCurrentBlock();
     }
 
-    public void check() throws SemanticException {}
+    public void check() throws SemanticException {
+        Main.ST.setCurrentBlock(this);
+
+        for(SentenceNode sentence : sentences) {
+            sentence.check();
+        }
+
+        Main.ST.setCurrentBlock(parentBlock);
+    }
     public ArrayList<SentenceNode> getSentences() {
         return sentences;
     }
@@ -39,9 +47,9 @@ public class BlockNode extends SentenceNode {
         return localVarMap;
     }
     public void addLocalVar(LocalVarNode localVar) {
-        if(method_.isParameter(localVar.getToken()))
-            // Exception
-        if(isLocalVar(localVar.getToken()))
+        if(method_.isParameter(localVar.getToken())) {}
+            // TODO exception
+        if(isLocalVar(localVar.getToken())) {}
             // TODO exception
         localVarMap.put(localVar.getName(), localVar);
     }
