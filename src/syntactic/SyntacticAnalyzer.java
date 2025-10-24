@@ -261,6 +261,7 @@ public class SyntacticAnalyzer {
         ST.setCurrentBlock(blockNode);
         listaSentencias();
         match(lexID.p_c_bracket1);
+        ST.setCurrentBlock(blockNode.getParentBlock());
         return blockNode;
     }
     private void listaSentencias() throws SyntacticException {

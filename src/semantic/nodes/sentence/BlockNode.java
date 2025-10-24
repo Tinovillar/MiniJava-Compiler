@@ -54,4 +54,5 @@ public class BlockNode extends SentenceNode {
         } else
             return true;
     }
+    public BlockNode getParentBlock() {return this.parentBlock;}
 }
