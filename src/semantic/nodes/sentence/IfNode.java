@@ -1,14 +1,23 @@
 package semantic.nodes.sentence;
 
 import exceptions.SemanticException;
+import lexical.lexID;
 import semantic.nodes.expression.ExpressionNode;
+import semantic.type.Type;
 
 public class IfNode extends SentenceNode {
     private ExpressionNode condition;
     private SentenceNode ifBody;
     private SentenceNode elseBody;
 
-    public void check() throws SemanticException {}
+    public void check() throws SemanticException {
+        Type conditionType = condition.check();
+        if(!conditionType.isBoolean()) {}
+            // TODO exception
+        ifBody.check();
+        if(elseBody != null)
+            elseBody.check();
+    }
     public SentenceNode getElseBody() {
         return elseBody;
     }

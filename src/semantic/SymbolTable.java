@@ -288,4 +288,17 @@ public class SymbolTable {
             }
         }
     }
+    public boolean isSubtypeOf(String type, String subtype) {
+        boolean isSubtype = false;
+        ConcreteClass class_ = getClassOrNull(subtype);
+        while(class_ != null && !isSubtype) {
+            if(class_.getName().equals(type))
+                isSubtype = true;
+            else if(class_.getParent() != null)
+                class_ = getClassOrNull(class_.getParent().getLexeme());
+            else
+                class_ = null;
+        }
+        return isSubtype;
+    }
 }
