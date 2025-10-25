@@ -47,10 +47,15 @@ public class BlockNode extends SentenceNode {
         return localVarMap;
     }
     public void addLocalVar(LocalVarNode localVar) {
-        if(method_.isParameter(localVar.getToken())) {}
+        if(isLocalVar(localVar.getToken())) {
             // TODO exception
-        if(isLocalVar(localVar.getToken())) {}
+        }
+        if(method_ != null && method_.isParameter(localVar.getToken())) {
             // TODO exception
+        }
+        if(class_.isAttribute(localVar.getToken())) {
+            // TODO exception
+        }
         localVarMap.put(localVar.getName(), localVar);
     }
     private boolean isLocalVar(Token toCheck) {

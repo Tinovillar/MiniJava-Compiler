@@ -2,6 +2,7 @@ package semantic.nodes.sentence;
 
 import exceptions.SemanticException;
 import semantic.nodes.expression.ExpressionNode;
+import semantic.type.Type;
 
 public class WhileNode extends SentenceNode {
     private ExpressionNode condition;
@@ -19,5 +20,11 @@ public class WhileNode extends SentenceNode {
     public void setCondition(ExpressionNode condition) {
         this.condition = condition;
     }
-    public void check() throws SemanticException {}
+    public void check() throws SemanticException {
+        Type conditionType = condition.check();
+        if(!conditionType.isBoolean()) {
+            // TODO exception
+        }
+        body.check();
+    }
 }

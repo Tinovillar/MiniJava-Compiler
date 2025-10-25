@@ -206,4 +206,11 @@ public class ConcreteClass {
             method.getValue().check();
         }
     }
+    public boolean isAttribute(Token token) {
+        for(Attribute attribute : attributes.values()) {
+            if(attribute.getName().equals(token.getLexeme()))
+                return true;
+        }
+        return false;
+    }
 }

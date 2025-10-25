@@ -289,7 +289,7 @@ public class SymbolTable {
         }
     }
     public boolean isSubtypeOf(String type, String subtype) {
-        boolean isSubtype = false;
+        boolean isSubtype = type.equals(subtype);
         ConcreteClass class_ = getClassOrNull(subtype);
         while(class_ != null && !isSubtype) {
             if(class_.getName().equals(type))

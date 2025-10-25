@@ -1,5 +1,6 @@
 package semantic.nodes.sentence;
 
+import compiler.Main;
 import exceptions.SemanticException;
 import lexical.Token;
 import semantic.type.ReferenceType;
@@ -17,8 +18,10 @@ public class LocalVarNode extends SentenceNode {
 
     public void check() throws SemanticException {
         this.type = expression.check();
-        if(type.getName() == "void" || type.getName() == "null") {}
+        if(type.getName() == "void" || type.getName() == "null") {
             // TODO exception
+        }
+        Main.ST.getCurrentBlock().addLocalVar(this);
     }
     public String getName() {
         return token.getLexeme();
