@@ -1,7 +1,5 @@
 package semantic.nodes.literal;
 
-import semantic.nodes.access.StringNode;
-
 public class NullNode extends LiteralNode implements TypeChecking {
     public boolean isCompatibleWith(TypeChecking other) {
         return false;

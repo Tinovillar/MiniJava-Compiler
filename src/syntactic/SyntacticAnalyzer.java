@@ -1,6 +1,5 @@
 package syntactic;
 
-import com.sun.source.tree.BreakTree;
 import compiler.Main;
 import exceptions.LexicalException;
 import exceptions.SemanticException;
@@ -17,6 +16,7 @@ import semantic.nodes.access.chained.ChainedVarNode;
 import semantic.nodes.expression.*;
 import semantic.nodes.literal.FactoryNode;
 import semantic.nodes.literal.NullNode;
+import semantic.nodes.literal.StringNode;
 import semantic.nodes.sentence.*;
 import semantic.type.PrimitiveType;
 import semantic.type.ReferenceType;
@@ -442,8 +442,8 @@ public class SyntacticAnalyzer {
         }
         return chainedNode;
     }
-    private AccessNode primario() throws SyntacticException {
-        AccessNode accessNode = null;
+    private OperandNode primario() throws SyntacticException {
+        OperandNode accessNode = null;
         if (lexID.kw_this.equals(currentToken.getId())) {
             accessNode = new ThisNode(currentToken);
             match(lexID.kw_this);

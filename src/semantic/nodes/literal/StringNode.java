@@ -1,11 +1,10 @@
-package semantic.nodes.access;
+package semantic.nodes.literal;
 
 import exceptions.SemanticException;
 import lexical.Token;
-import semantic.nodes.literal.*;
 import semantic.type.Type;
 
-public class StringNode extends AccessNode implements TypeChecking {
+public class StringNode extends LiteralNode implements TypeChecking {
     private Token token;
 
     public StringNode(Token token) {

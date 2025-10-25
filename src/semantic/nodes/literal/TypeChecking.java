@@ -1,7 +1,5 @@
 package semantic.nodes.literal;
 
-import semantic.nodes.access.StringNode;
-
 public interface TypeChecking {
     public boolean isCompatibleWith(TypeChecking other);
     public boolean supportsType(IntNode intNode);

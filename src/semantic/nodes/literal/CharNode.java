@@ -1,7 +1,6 @@
 package semantic.nodes.literal;
 
 import lexical.Token;
-import semantic.nodes.access.StringNode;
 import semantic.type.PrimitiveType;
 import semantic.type.Type;
 
