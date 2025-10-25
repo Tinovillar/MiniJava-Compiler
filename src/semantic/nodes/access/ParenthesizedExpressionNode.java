@@ -12,6 +12,9 @@ public class ParenthesizedExpressionNode extends AccessNode{
     }
 
     public Type check() throws SemanticException {
-        return null;
+        Type type = expression.check();
+        if(chained != null)
+            type = chained.check(type);
+        return type;
     }
 }
