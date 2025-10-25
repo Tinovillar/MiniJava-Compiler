@@ -439,7 +439,6 @@ public class SyntacticAnalyzer {
             match(lexID.id_met_or_var);
             chainedNode = varMetEncadenada(id);
             chainedNode.setChained(referenciaResto());
-            referenciaResto();
         }
         return chainedNode;
     }
