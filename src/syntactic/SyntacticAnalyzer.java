@@ -427,7 +427,7 @@ public class SyntacticAnalyzer {
         return operandNode;
     }
     private OperandNode referencia() throws SyntacticException {
-        AccessNode accessNode = primario();
+        OperandNode accessNode = primario();
         accessNode.setChained(referenciaResto());
         return accessNode;
     }

@@ -42,6 +42,9 @@ public class ConstructorCallNode extends AccessNode {
             }
             index++;
         }
-        return new ReferenceType(id);
+        Type toReturn = new ReferenceType(id);
+        if(chained != null)
+            toReturn = chained.check(toReturn);
+        return toReturn;
     }
 }
