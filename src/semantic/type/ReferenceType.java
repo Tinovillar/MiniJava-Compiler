@@ -26,4 +26,13 @@ public class ReferenceType implements Type {
     public boolean isBoolean() {
         return false;
     }
+    public boolean conformsTo(Type type) {
+        return type.isConformed(this);
+    }
+    public boolean isConformed(PrimitiveType otherPrimitive) {
+        return false;
+    }
+    public boolean isConformed(ReferenceType otherReference) {
+        return Main.ST.isSubtypeOf(getName(), otherReference.getName());
+    }
 }
