@@ -183,7 +183,7 @@ public class SyntacticAnalyzer {
         ST.getCurrentClass().setConstructor(constructor);
         match(lexID.id_class);
         ArgsFormales();
-        bloque();
+        ST.getCurrentClass().getConstructor().setBlock(bloque());
     }
     private Type tipoMetodo() throws SyntacticException {
         Type type = null;

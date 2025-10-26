@@ -27,10 +27,13 @@ public class PrimitiveType implements Type {
         return token.getId().equals(lexID.kw_boolean) || token.getId().equals(lexID.kw_false) || token.getId().equals(lexID.kw_true);
     }
     public boolean conformsTo(Type type) {
+        if(type == null) return false;
         return type.isConformed(this);
     }
     public boolean isConformed(PrimitiveType otherPrimitive) {
-        return otherPrimitive.equals(this);
+        Token otherToken = normalizeToken(otherPrimitive.getToken());
+        Token currToken = normalizeToken(token);
+        return otherToken.getId().equals(currToken.getId());
     }
     public boolean isConformed(ReferenceType otherReference) {
         return false;

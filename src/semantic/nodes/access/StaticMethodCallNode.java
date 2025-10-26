@@ -38,7 +38,7 @@ public class StaticMethodCallNode extends AccessNode {
         int index = 0;
         for(ExpressionNode arg : args) {
             Type type = arg.check();
-            if(type != null && Main.ST.isSubtypeOf(type.getName(), params.get(index).getType().getName())) {
+            if(type != null && !type.conformsTo(params.get(index).getType())) {
                 throw new SemanticException(method.getToken(), "No coinciden los tipos y el orden de los parametros");
             }
             index++;

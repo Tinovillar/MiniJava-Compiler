@@ -17,26 +17,33 @@ public class BinaryExpressionNode extends ExpressionNode {
         Type rightType = rightExpression.check();
         Type resultType = getResultType();
 
-        if(leftType == null)
-            throw new SemanticException(operator, "El tipo de la izquierda es nulo");
-        if(rightType == null)
-            throw new SemanticException(operator, "El tipo de la derecha es nulo");
-
         switch (operator.getId()) {
             // Operadores aritméticos: +, -, *, /, %
             case op_plus, op_minus, op_multiplication, op_division, op_mod -> {
+                if(leftType == null)
+                    throw new SemanticException(operator, "El tipo de la izquierda es nulo");
+                if(rightType == null)
+                    throw new SemanticException(operator, "El tipo de la derecha es nulo");
                 if (!leftType.hasSameType(lexID.literal_integer) || !rightType.hasSameType(lexID.literal_integer)) {
                     throw new SemanticException(operator, "El operador solo acepta tipos int");
                 }
             }
             // Operadores booleanos: &&, ||
             case op_and, op_or -> {
+                if(leftType == null)
+                    throw new SemanticException(operator, "El tipo de la izquierda es nulo");
+                if(rightType == null)
+                    throw new SemanticException(operator, "El tipo de la derecha es nulo");
                 if (!leftType.isBoolean() || !rightType.isBoolean()) {
                     throw new SemanticException(operator, "El operador solo acepta tipos boolean");
                 }
             }
             // Operadores relacionales: <, <=, >, >=
             case op_greater_than, op_greater_than_equal, op_less_than, op_less_than_equal -> {
+                if(leftType == null)
+                    throw new SemanticException(operator, "El tipo de la izquierda es nulo");
+                if(rightType == null)
+                    throw new SemanticException(operator, "El tipo de la derecha es nulo");
                 if (!leftType.hasSameType(lexID.literal_integer) || !rightType.hasSameType(lexID.literal_integer)) {
                     throw new SemanticException(operator, "El operador solo acepta tipos int");
                 }

@@ -3,6 +3,7 @@ package semantic.nodes.access;
 import compiler.Main;
 import exceptions.SemanticException;
 import lexical.Token;
+import lexical.lexID;
 import semantic.model.ConcreteClass;
 import semantic.model.Constructor;
 import semantic.model.Parameter;
@@ -23,13 +24,13 @@ public class ConstructorCallNode extends AccessNode {
 
     public Type check() throws SemanticException {
         ConcreteClass class_ = Main.ST.getClassOrNull(id.getLexeme());
-        if(class_ != null) {
+        if(class_ == null) {
             throw new SemanticException(class_.getToken(), "No existe la clase");
         }
         Constructor constructor = class_.getConstructor();
-        if(!constructor.getModifier().getLexeme().equals("public")) {
-            throw new SemanticException(constructor.getToken(), "No existe el constructor o no es publico");
-        }
+//        if(!constructor.hasModifier(lexID.kw_public)) {
+//            throw new SemanticException(constructor.getToken(), "No existe el constructor o no es publico");
+//        }
         if(args.size() != constructor.getParameters().size()) {
             throw new SemanticException(constructor.getToken(), "Sobran o faltan parametros");
         }

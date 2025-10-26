@@ -43,7 +43,7 @@ public class ChainedMetNode extends ChainedNode {
         int index = 0;
         for(ExpressionNode arg : args) {
             Type type = arg.check();
-            if(type.conformsTo(params.get(index).getType())) {
+            if(!type.conformsTo(params.get(index).getType())) {
                 throw new SemanticException(method.getToken(), "Hay tipos de parametros que no son los adecuados");
             }
             index++;
