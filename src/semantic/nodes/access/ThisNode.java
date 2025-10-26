@@ -15,7 +15,7 @@ public class ThisNode extends AccessNode {
         this.token = token;
     }
     public Type check() throws SemanticException {
-        if (Main.ST.getCurrentMethod().getModifier().getLexeme().equals("static")) {
+        if (Main.ST.getCurrentMethod().hasModifier(lexID.kw_static)) {
             throw new SemanticException(token, "No se puede usar this en un metodo estatico");
         }
         ConcreteClass class_ = Main.ST.getCurrentClass();

@@ -130,4 +130,7 @@ public class Method {
         Main.ST.setCurrentMethod(this);
         block.check();
     }
+    public boolean hasModifier(lexID modifier) {
+        return this.modifier != null && this.modifier.getId().equals(modifier);
+    }
 }

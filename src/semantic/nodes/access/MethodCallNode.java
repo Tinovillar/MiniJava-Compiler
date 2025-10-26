@@ -3,6 +3,7 @@ package semantic.nodes.access;
 import compiler.Main;
 import exceptions.SemanticException;
 import lexical.Token;
+import lexical.lexID;
 import semantic.model.Method;
 import semantic.model.Parameter;
 import semantic.nodes.expression.ExpressionNode;
@@ -22,7 +23,7 @@ public class MethodCallNode extends AccessNode {
 
     public Type check() throws SemanticException {
         Method method = Main.ST.getCurrentClass().getMethods().get(id.getLexeme());
-        if(Main.ST.getCurrentMethod().getModifier().getLexeme().equals("static")) {
+        if(Main.ST.getCurrentMethod().hasModifier(lexID.kw_static)) {
             throw new SemanticException(method.getToken(), "No se puede llamar al metodo en un metodo estatico");
         }
         if(args.size() != method.getParameters().size()) {

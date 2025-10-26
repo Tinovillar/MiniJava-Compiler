@@ -10,4 +10,8 @@ public class BooleanNode extends LiteralNode {
     public BooleanNode(Token token) {
         this.type = new PrimitiveType(token);
     }
+
+    public Type check() {
+        return this.type;
+    }
 }
