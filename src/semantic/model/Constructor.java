@@ -16,5 +16,10 @@ public class Constructor extends Method {
             throw new SemanticException(token, "El constructor debe llamarse igual que la clase: " + parent);
         }
     }
+
+    @Override
+    public void check() throws SemanticException {
+        this.block.check();
+    }
 }
 

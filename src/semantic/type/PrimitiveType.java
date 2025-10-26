@@ -19,7 +19,9 @@ public class PrimitiveType implements Type {
 
     }
     public boolean equals(Type toCompare) {
-        return toCompare.getToken().getId().equals(getToken().getId());
+        Token normalizedThis = normalizeToken(token);
+        Token normalizedToCompare = normalizeToken(toCompare.getToken());
+        return normalizedToCompare.getId().equals(normalizedThis.getId());
     }
     public boolean isBoolean() {
         return token.getId().equals(lexID.kw_boolean) || token.getId().equals(lexID.kw_false) || token.getId().equals(lexID.kw_true);
@@ -41,5 +43,21 @@ public class PrimitiveType implements Type {
     }
     public Token getToken() {
         return token;
+    }
+    private Token normalizeToken(Token token) {
+        switch (token.getId()) {
+            case lexID.literal_integer -> {
+                return new Token(lexID.kw_int, "int", token.getLineNumber());
+            }
+            case lexID.literal_char -> {
+                return new Token(lexID.kw_char, "char", token.getLineNumber());
+            }
+            case lexID.kw_true, kw_false -> {
+                return new Token(lexID.kw_boolean, "boolean", token.getLineNumber());
+            }
+            default -> {
+                return token;
+            }
+        }
     }
 }

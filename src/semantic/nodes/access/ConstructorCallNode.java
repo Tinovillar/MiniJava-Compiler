@@ -28,7 +28,7 @@ public class ConstructorCallNode extends AccessNode {
         }
         Constructor constructor = class_.getConstructor();
         if(!constructor.getModifier().getLexeme().equals("public")) {
-            throw new SemanticException(constructor.getToken(), "No existe el metodo o no es publico");
+            throw new SemanticException(constructor.getToken(), "No existe el constructor o no es publico");
         }
         if(args.size() != constructor.getParameters().size()) {
             throw new SemanticException(constructor.getToken(), "Sobran o faltan parametros");
