@@ -68,4 +68,12 @@ public class BlockNode extends SentenceNode {
             return true;
     }
     public BlockNode getParentBlock() {return this.parentBlock;}
+
+    public LocalVarNode getLocalVar(String lexeme) {
+        LocalVarNode toReturn = localVarMap.get(lexeme);
+        if(toReturn == null && parentBlock != null) {
+            toReturn = parentBlock.getLocalVar(lexeme);
+        }
+        return toReturn;
+    }
 }

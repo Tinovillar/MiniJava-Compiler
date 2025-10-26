@@ -19,7 +19,7 @@ public class AccessVarNode extends AccessNode {
         Type type;
         Attribute attribute = Main.ST.getCurrentClass().getAttributes().get(id.getLexeme());
         Parameter parameter = Main.ST.getCurrentMethod().getParameters().get(id.getLexeme());
-        LocalVarNode localVarNode = Main.ST.getCurrentBlock().getLocalVarMap().get(id.getLexeme());
+        LocalVarNode localVarNode = Main.ST.getCurrentBlock().getLocalVar(id.getLexeme());
         if(attribute != null) {
             type = attribute.getType();
         } else if(parameter != null) {

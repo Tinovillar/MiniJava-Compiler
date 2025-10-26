@@ -19,10 +19,10 @@ public class PrimitiveType implements Type {
 
     }
     public boolean equals(Type toCompare) {
-        return toCompare.getName().equals(getName());
+        return toCompare.getToken().getId().equals(getToken().getId());
     }
     public boolean isBoolean() {
-        return token.getId().equals(lexID.kw_true) || token.getId().equals(lexID.kw_false);
+        return token.getId().equals(lexID.kw_boolean) || token.getId().equals(lexID.kw_false) || token.getId().equals(lexID.kw_true);
     }
     public boolean conformsTo(Type type) {
         return type.isConformed(this);

@@ -17,10 +17,15 @@ public class BinaryExpressionNode extends ExpressionNode {
         Type rightType = rightExpression.check();
         Type resultType = getResultType();
 
+        if(leftType == null)
+            throw new SemanticException(operator, "El tipo de la izquierda es nulo");
+        if(rightType == null)
+            throw new SemanticException(operator, "El tipo de la derecha es nulo");
+
         switch (operator.getId()) {
             // Operadores aritméticos: +, -, *, /, %
             case op_plus, op_minus, op_multiplication, op_division, op_mod -> {
-                if (!leftType.equals("int") || !rightType.equals("int")) {
+                if (!leftType.getToken().getId().toString().equals("literal_integer") || !rightType.getToken().getId().toString().equals("literal_integer")) {
                     throw new SemanticException(operator, "El operador solo acepta tipos int");
                 }
             }
@@ -32,7 +37,7 @@ public class BinaryExpressionNode extends ExpressionNode {
             }
             // Operadores relacionales: <, <=, >, >=
             case op_greater_than, op_greater_than_equal, op_less_than, op_less_than_equal -> {
-                if (!leftType.equals("int") || !rightType.equals("int")) {
+                if (!leftType.getToken().getId().toString().equals("literal_integer") || !rightType.getToken().getId().toString().equals("literal_integer")) {
                     throw new SemanticException(operator, "El operador solo acepta tipos int");
                 }
             }
@@ -71,7 +76,7 @@ public class BinaryExpressionNode extends ExpressionNode {
         Type toReturn;
         switch (operator.getId()) {
             case op_minus, op_plus, op_division, op_multiplication, op_mod -> {
-                toReturn = new PrimitiveType(new Token(lexID.kw_int, "int", -1));
+                toReturn = new PrimitiveType(new Token(lexID.literal_integer, "int", -1));
             }
             case op_and, op_or,op_greater_than,op_greater_than_equal,op_less_than,op_less_than_equal,op_equal_equal,op_not_equal -> {
                 toReturn = new PrimitiveType(new Token(lexID.kw_boolean, "boolean", -1));
