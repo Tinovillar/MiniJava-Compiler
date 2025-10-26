@@ -23,7 +23,7 @@ public class WhileNode extends SentenceNode {
     public void check() throws SemanticException {
         Type conditionType = condition.check();
         if(!conditionType.isBoolean()) {
-            // TODO exception
+            throw new SemanticException(conditionType.getToken(), "El tipo de la condicion no es booleano");
         }
         body.check();
     }

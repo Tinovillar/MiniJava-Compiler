@@ -19,7 +19,7 @@ public class LocalVarNode extends SentenceNode {
     public void check() throws SemanticException {
         this.type = expression.check();
         if(type.getName() == "void" || type.getName() == "null") {
-            // TODO exception
+            throw new SemanticException(token, "El retorno de la expresion es null o void");
         }
         Main.ST.getCurrentBlock().addLocalVar(this);
     }

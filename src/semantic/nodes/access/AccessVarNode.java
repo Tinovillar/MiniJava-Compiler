@@ -27,7 +27,7 @@ public class AccessVarNode extends AccessNode {
         } else if(localVarNode != null) {
             type = localVarNode.getType();
         } else {
-            throw new SemanticException(id, "Variable no declarada"); // TODO exception mejorarla
+            throw new SemanticException(id, "Variable no declarada");
         }
         if(chained != null) {
             type = chained.check(type);

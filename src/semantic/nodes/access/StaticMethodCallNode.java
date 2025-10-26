@@ -25,21 +25,21 @@ public class StaticMethodCallNode extends AccessNode {
     public Type check() throws SemanticException {
         ConcreteClass class_ = Main.ST.getClassOrNull(idClass.getLexeme());
         if(class_ == null) {
-            // TODO exception la clase no existe
+            throw new SemanticException(class_.getToken(), "La clase no existe");
         }
         Method method = class_.getMethods().get(idMetOrVar.getLexeme());
         if(method == null) {
-            // TODO exception el metodo no existe en la clase
+            throw new SemanticException(method.getToken(), "El metodo no existe");
         }
         if(!method.getModifier().getLexeme().equals("static")) {
-            // TODO exception el metodo no es estatico
+            throw new SemanticException(method.getToken(), "El metodo no es estatico");
         }
         List<Parameter> params = method.getParameters().values().stream().toList();
         int index = 0;
         for(ExpressionNode arg : args) {
             Type type = arg.check();
             if(Main.ST.isSubtypeOf(type.getName(), params.get(index).getType().getName())) {
-                // TODO exception no coincide el tipo de los parametros
+                throw new SemanticException(method.getToken(), "No coinciden los tipos y el orden de los parametros");
             }
             index++;
         }

@@ -21,29 +21,29 @@ public class BinaryExpressionNode extends ExpressionNode {
             // Operadores aritméticos: +, -, *, /, %
             case op_plus, op_minus, op_multiplication, op_division, op_mod -> {
                 if (!leftType.equals("int") || !rightType.equals("int")) {
-                    // TODO exception
+                    throw new SemanticException(operator, "El operador solo acepta tipos int");
                 }
             }
             // Operadores booleanos: &&, ||
             case op_and, op_or -> {
                 if (!leftType.isBoolean() || !rightType.isBoolean()) {
-                    // TODO exception
+                    throw new SemanticException(operator, "El operador solo acepta tipos boolean");
                 }
             }
             // Operadores relacionales: <, <=, >, >=
             case op_greater_than, op_greater_than_equal, op_less_than, op_less_than_equal -> {
                 if (!leftType.equals("int") || !rightType.equals("int")) {
-                    // TODO exception
+                    throw new SemanticException(operator, "El operador solo acepta tipos int");
                 }
             }
             // Operadores de igualdad: ==, !=
             case op_equal_equal, op_not_equal -> {
                 if (!leftType.conformsTo(rightType) && !rightType.conformsTo(leftType)) {
-                    // TODO exception
+                    throw new SemanticException(operator, "El operador solo acepta tipos compatibles");
                 }
             }
             default -> {
-                // TODO exception
+                throw new SemanticException(operator, "Error desconocido, el operador no se detecto");
             }
         }
         return resultType;

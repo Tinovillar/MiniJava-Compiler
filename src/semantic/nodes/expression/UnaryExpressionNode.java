@@ -20,17 +20,17 @@ public class UnaryExpressionNode extends ExpressionNode {
             // Operadores aritméticos unarios
             case op_plus, op_minus, op_plus_plus, op_minus_minus -> {
                 if (!operandType.getName().equals("int")) {
-                    // TODO exception
+                    throw new SemanticException(operator, "El operador acepta unicamente tipos int");
                 }
             }
             // Operador lógico unario
             case op_not -> {
                 if (!operandType.isBoolean()) {
-                    // TODO exception solo puede aplicarse el negado a tipo boolean
+                    throw new SemanticException(operandType.getToken(), "El operando tiene que ser de tipo boolean");
                 }
             }
             default -> {
-                // TODO exception opeardor unario no reconocido
+                throw new SemanticException(operator, "Operador no reconocido");
             }
         }
         return resultType;

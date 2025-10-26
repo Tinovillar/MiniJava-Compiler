@@ -301,7 +301,7 @@ public class SyntacticAnalyzer {
         match(lexID.id_met_or_var);
         match(lexID.op_equal);
         localVarNode.setExpression(expresionCompuesta());
-        ST.getCurrentBlock().addLocalVar(localVarNode);
+//        ST.getCurrentBlock().addLocalVar(localVarNode);
         return localVarNode;
     }
     private ReturnNode return_() throws SyntacticException {

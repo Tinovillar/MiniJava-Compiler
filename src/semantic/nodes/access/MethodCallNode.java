@@ -23,17 +23,17 @@ public class MethodCallNode extends AccessNode {
     public Type check() throws SemanticException {
         Method method = Main.ST.getCurrentClass().getMethods().get(id.getLexeme());
         if(Main.ST.getCurrentMethod().getModifier().getLexeme().equals("static")) {
-            // TODO exception no se puede llamar al metodo en un metodo estatico
+            throw new SemanticException(method.getToken(), "No se puede llamar al metodo en un metodo estatico");
         }
         if(args.size() != method.getParameters().size()) {
-            // TODO exception distinta cantidad de args
+            throw new SemanticException(method.getToken(), "Faltan o sobran parametros");
         }
         List<Parameter> params = method.getParameters().values().stream().toList();
         int index = 0;
         for(ExpressionNode arg : args) {
             Type type = arg.check();
             if(Main.ST.isSubtypeOf(type.getName(), params.get(index).getType().getName())) {
-                // TODO exception no coincide el tipo de los parametros
+                throw new SemanticException(method.getToken(), "No se respeta el orden y tipos de los parametros");
             }
             index++;
         }

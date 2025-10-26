@@ -25,34 +25,32 @@ public class ChainedMetNode extends ChainedNode {
         return type.resolveChain(this);
     }
     public Type resolveType(PrimitiveType primitive) throws SemanticException {
-        // TODO no se puede invocar un metodo de un tipo primitivo
-        return null;
+        throw new SemanticException(primitive.getToken(), "No se puede invocar un metodo de un tipo primitivo");
     }
     public Type resolveType(ReferenceType reference) throws SemanticException {
         ConcreteClass class_ = Main.ST.getClassOrNull(reference.getName());
         if(class_ == null) {
-            // TODO exception no existe la clase
+            throw new SemanticException(class_.getToken(), "La clase no existe");
         }
         Method method = class_.getMethods().get(id.getLexeme());
         if(method == null) {
-            throw new SemanticException(id, "error");
-            // TODO exception no existe el metodo en la clase
+            throw new SemanticException(method.getToken(), "No existe el metodo en la clase");
         }
         List<Parameter> params = method.getParameters().values().stream().toList();
         if(params.size() != args.size()) {
-            // TODO exception no existe el metodo en la clase
+            throw new SemanticException(method.getToken(), "La cantidad de parametros no es la adecuada");
         }
         int index = 0;
         for(ExpressionNode arg : args) {
             Type type = arg.check();
             if(type.conformsTo(params.get(index).getType())) {
-                // TODO exception distinta cantidad d eparametros
+                throw new SemanticException(method.getToken(), "Hay tipos de parametros que no son los adecuados");
             }
             index++;
         }
         Type toReturn = method.getReturnType();
         if(toReturn.isVoid() && chainedNode != null) {
-            // TODO tipo void encadenado
+            throw new SemanticException(method.getToken(), "Retorno de tipo void encadenado");
         }
         if(chainedNode != null)
             return toReturn.resolveChain(chainedNode);

@@ -24,21 +24,21 @@ public class ConstructorCallNode extends AccessNode {
     public Type check() throws SemanticException {
         ConcreteClass class_ = Main.ST.getClassOrNull(id.getLexeme());
         if(class_ != null) {
-            // TODO exception no existe la clase
+            throw new SemanticException(class_.getToken(), "No existe la clase");
         }
         Constructor constructor = class_.getConstructor();
         if(!constructor.getModifier().getLexeme().equals("public")) {
-            // TODO exception modificador privado, no es posible acceder desde el contexto actual
+            throw new SemanticException(constructor.getToken(), "No existe el metodo o no es publico");
         }
         if(args.size() != constructor.getParameters().size()) {
-            // TODO exception distinta cantidad de args
+            throw new SemanticException(constructor.getToken(), "Sobran o faltan parametros");
         }
         List<Parameter> params = constructor.getParameters().values().stream().toList();
         int index = 0;
         for(ExpressionNode arg : args) {
             Type type = arg.check();
             if(Main.ST.isSubtypeOf(type.getName(), params.get(index).getType().getName())) {
-                // TODO exception no coincide el tipo de los parametros
+                throw new SemanticException(constructor.getToken(), "No coincide ni el orden ni el tipo de los parametros");
             }
             index++;
         }

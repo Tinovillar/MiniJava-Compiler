@@ -19,7 +19,7 @@ public class AssignmentExpressionNode extends ExpressionNode {
         Type leftType = leftExpression.check();
         Type rightType = rightExpression.check();
         if(!leftType.equals(rightType)) {
-            // TODO exception
+            throw new SemanticException(leftType.getToken(), "El tipo de asignacion no coincide con la asignacion");
         }
         return leftType;
     }

@@ -19,17 +19,16 @@ public class ChainedVarNode extends ChainedNode {
         return type.resolveChain(this);
     }
     public Type resolveType(PrimitiveType primitive) throws SemanticException {
-        // TODO exception no se puede acceder a un atributo de un tipo primitivo
-        return null;
+        throw new SemanticException(primitive.getToken(), "Se intenta acceder a un atributo de un tipo primtivo");
     }
     public Type resolveType(ReferenceType reference) throws SemanticException {
         ConcreteClass class_ = Main.ST.getClassOrNull(reference.getName());
         if(class_ == null) {
-            // TODO exception clase no definida
+            throw new SemanticException(class_.getToken(), "la clase no existe");
         }
         Attribute attribute = class_.getAttributes().get(id.getLexeme());
         if(attribute == null) {
-            // TODO exception el atributo no existe en la clase
+            throw new SemanticException(attribute.getToken(), "El atributo no existe en la clase " + class_.getToken());
         }
         Type attributeType = attribute.getType();
         if(chainedNode != null) {
