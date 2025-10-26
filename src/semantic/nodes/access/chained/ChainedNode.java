@@ -1,5 +1,8 @@
 package semantic.nodes.access.chained;
 
+import exceptions.SemanticException;
+import semantic.type.PrimitiveType;
+import semantic.type.ReferenceType;
 import semantic.type.Type;
 
 public abstract class ChainedNode {
@@ -8,4 +11,6 @@ public abstract class ChainedNode {
         this.chainedNode = chained;
     }
     public abstract Type check(Type type);
+    public abstract Type resolveType(PrimitiveType primitive) throws SemanticException;
+    public abstract Type resolveType(ReferenceType reference) throws SemanticException;
 }

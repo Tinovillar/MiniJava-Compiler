@@ -1,7 +1,9 @@
 package semantic.type;
 
+import exceptions.SemanticException;
 import lexical.Token;
 import lexical.lexID;
+import semantic.nodes.access.chained.ChainedNode;
 
 public class PrimitiveType implements Type {
     private Token token;
@@ -30,5 +32,11 @@ public class PrimitiveType implements Type {
     }
     public boolean isConformed(ReferenceType otherReference) {
         return false;
+    }
+    public Type resolveChain(ChainedNode chain) throws SemanticException {
+        return chain.resolveType(this);
+    }
+    public boolean isVoid() {
+        return getName().equals("void");
     }
 }

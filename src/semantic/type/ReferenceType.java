@@ -4,6 +4,7 @@ import compiler.Main;
 import exceptions.SemanticException;
 import lexical.Token;
 import lexical.lexID;
+import semantic.nodes.access.chained.ChainedNode;
 
 public class ReferenceType implements Type {
     private Token token;
@@ -34,5 +35,11 @@ public class ReferenceType implements Type {
     }
     public boolean isConformed(ReferenceType otherReference) {
         return Main.ST.isSubtypeOf(getName(), otherReference.getName());
+    }
+    public Type resolveChain(ChainedNode chain) throws SemanticException {
+        return chain.resolveType(this);
+    }
+    public boolean isVoid() {
+        return getName().equals("void");
     }
 }
