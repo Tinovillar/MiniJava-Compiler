@@ -201,7 +201,7 @@ public class ConcreteClass {
         return modifier != null && modifier.getId() != null && modifier.getId().equals(lexID.kw_abstract);
     }
     public void check() throws SemanticException {
-//        Main.ST.setCurrentClass(this);
+        Main.ST.setCurrentClass(this);
         for(Map.Entry<String, Method> method : methods.entrySet()) {
             method.getValue().check();
         }

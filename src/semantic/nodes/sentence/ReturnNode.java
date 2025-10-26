@@ -20,12 +20,13 @@ public class ReturnNode extends SentenceNode {
 
         if(method.getReturnType() != null) {
             if(return_ != null && methodIsVoid()) { // return something when method has void return type
-                throw new SemanticException(this.method.getToken(), "El metodo es void y se esta retornando algo");
+                if(return_.check() != null)
+                    throw new SemanticException(this.method.getToken(), "El metodo es void y se esta retornando algo");
             }
             if(return_ == null && !methodIsVoid()) { // return is empty and method has return type
                 throw new SemanticException(this.method.getToken(), "Tiene tipo de retorno pero no retorna nada");
             }
-            if(return_ != null && !Main.ST.isSubtypeOf(method.getReturnType().getName(), return_.check().getName())) { // non compatible types
+            if(return_ != null && return_.check() != null && method.getReturnType().conformsTo(return_.check())) { // non compatible types
                 throw new SemanticException(method.getToken(), "Los tipos de retorno no coinciden");
             }
         } else if(return_ != null) {
