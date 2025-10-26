@@ -2,6 +2,7 @@ package semantic.type;
 
 import exceptions.SemanticException;
 import lexical.Token;
+import lexical.lexID;
 import semantic.nodes.access.chained.ChainedNode;
 
 public interface Type {
@@ -15,4 +16,5 @@ public interface Type {
     boolean isConformed(ReferenceType otherReference);
     Type resolveChain(ChainedNode chain) throws SemanticException;
     boolean isVoid();
+    boolean hasSameType(lexID type);
 }

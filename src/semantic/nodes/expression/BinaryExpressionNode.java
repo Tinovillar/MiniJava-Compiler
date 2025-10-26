@@ -25,7 +25,7 @@ public class BinaryExpressionNode extends ExpressionNode {
         switch (operator.getId()) {
             // Operadores aritméticos: +, -, *, /, %
             case op_plus, op_minus, op_multiplication, op_division, op_mod -> {
-                if (!leftType.getToken().getId().toString().equals("literal_integer") || !rightType.getToken().getId().toString().equals("literal_integer")) {
+                if (!leftType.hasSameType(lexID.literal_integer) || !rightType.hasSameType(lexID.literal_integer)) {
                     throw new SemanticException(operator, "El operador solo acepta tipos int");
                 }
             }
@@ -37,7 +37,7 @@ public class BinaryExpressionNode extends ExpressionNode {
             }
             // Operadores relacionales: <, <=, >, >=
             case op_greater_than, op_greater_than_equal, op_less_than, op_less_than_equal -> {
-                if (!leftType.getToken().getId().toString().equals("literal_integer") || !rightType.getToken().getId().toString().equals("literal_integer")) {
+                if (!leftType.hasSameType(lexID.literal_integer) || !rightType.hasSameType(lexID.literal_integer)) {
                     throw new SemanticException(operator, "El operador solo acepta tipos int");
                 }
             }

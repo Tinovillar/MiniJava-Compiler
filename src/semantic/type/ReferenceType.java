@@ -45,4 +45,9 @@ public class ReferenceType implements Type {
     public Token getToken() {
         return token;
     }
+
+    @Override
+    public boolean hasSameType(lexID type) {
+        return token.getId().equals(type);
+    }
 }

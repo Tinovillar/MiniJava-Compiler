@@ -60,4 +60,11 @@ public class PrimitiveType implements Type {
             }
         }
     }
+
+    @Override
+    public boolean hasSameType(lexID type) {
+        Token normalizedToCompare = normalizeToken(new Token(type, type.toString(), -1));
+        Token normalizedThis = normalizeToken(token);
+        return normalizedToCompare.getId().equals(normalizedThis.getId());
+    }
 }
