@@ -15,7 +15,7 @@ public class ChainedVarNode extends ChainedNode {
     public ChainedVarNode(Token id) {
         this.id = id;
     }
-    public Type check(Type type) {
+    public Type check(Type type) throws SemanticException {
         return type.resolveChain(this);
     }
     public Type resolveType(PrimitiveType primitive) throws SemanticException {
