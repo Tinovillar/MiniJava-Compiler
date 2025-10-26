@@ -243,7 +243,7 @@ public class SyntacticAnalyzer {
         ST.getCurrentMethod().addParameter(new Parameter(currentToken, type));
         match(lexID.id_met_or_var);
     }
-    private BlockNode bloqueOpcional() throws SyntacticException {
+    private BlockNode bloqueOpcional() throws SyntacticException, SemanticException {
         BlockNode block;
         if(Primeros.isFirstOf(synID.bloque, currentToken.getId())) {
             block = bloque();
@@ -255,7 +255,7 @@ public class SyntacticAnalyzer {
         }
         return block;
     }
-    private BlockNode bloque() throws SyntacticException {
+    private BlockNode bloque() throws SyntacticException, SemanticException {
         match(lexID.p_o_bracket1);
         BlockNode blockNode = new BlockNode();
         ST.setCurrentBlock(blockNode);
@@ -264,13 +264,13 @@ public class SyntacticAnalyzer {
         ST.setCurrentBlock(blockNode.getParentBlock());
         return blockNode;
     }
-    private void listaSentencias() throws SyntacticException {
+    private void listaSentencias() throws SyntacticException, SemanticException {
         if(Primeros.isFirstOf(synID.listaSentencias, currentToken.getId())) {
             ST.getCurrentBlock().addSentence(sentencia());
             listaSentencias();
         }
     }
-    private SentenceNode sentencia() throws SyntacticException {
+    private SentenceNode sentencia() throws SyntacticException, SemanticException {
         SentenceNode toReturn;
         if(isFirstOf(synID.varLocal)) {
             toReturn = varLocal();
@@ -295,7 +295,7 @@ public class SyntacticAnalyzer {
         }
         return toReturn;
     }
-    private LocalVarNode varLocal() throws SyntacticException {
+    private LocalVarNode varLocal() throws SyntacticException, SemanticException {
         match(lexID.kw_var);
         LocalVarNode localVarNode = new LocalVarNode(currentToken);
         match(lexID.id_met_or_var);
@@ -315,7 +315,7 @@ public class SyntacticAnalyzer {
         }
         return expressionNode;
     }
-    private SentenceNode if_() throws SyntacticException {
+    private SentenceNode if_() throws SyntacticException, SemanticException {
         IfNode ifNode = new IfNode();
         match(lexID.kw_if);
         match(lexID.p_o_parenthesis);
@@ -325,7 +325,7 @@ public class SyntacticAnalyzer {
         ifNode.setElseBody(else_());
         return ifNode;
     }
-    private SentenceNode else_() throws SyntacticException {
+    private SentenceNode else_() throws SyntacticException, SemanticException {
         SentenceNode sentenceNode = null;
         if(lexID.kw_else.equals(currentToken.getId())) {
             match(lexID.kw_else);
@@ -333,7 +333,7 @@ public class SyntacticAnalyzer {
         }
         return sentenceNode;
     }
-    private SentenceNode while_() throws SyntacticException {
+    private SentenceNode while_() throws SyntacticException, SemanticException {
         WhileNode whileNode = new WhileNode();
         match(lexID.kw_while);
         match(lexID.p_o_parenthesis);

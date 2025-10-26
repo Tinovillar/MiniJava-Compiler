@@ -13,7 +13,7 @@ public class AssignmentCallNode extends SentenceNode {
     }
 
     public void check() throws SemanticException {
-        this.expression.check(); // TODO delega el chequeo a la expresion
+        this.expression.check(); // delega el chequeo a la expresion
     }
     public ExpressionNode getExpression() {
         return expression;

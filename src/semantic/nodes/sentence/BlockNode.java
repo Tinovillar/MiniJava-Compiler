@@ -46,15 +46,15 @@ public class BlockNode extends SentenceNode {
     public Map<String, LocalVarNode> getLocalVarMap() {
         return localVarMap;
     }
-    public void addLocalVar(LocalVarNode localVar) {
+    public void addLocalVar(LocalVarNode localVar) throws SemanticException {
         if(isLocalVar(localVar.getToken())) {
-            // TODO exception
+            throw new SemanticException(localVar.getToken(), "Variable local existente con el mismo nombre");
         }
         if(method_ != null && method_.isParameter(localVar.getToken())) {
-            // TODO exception
+            throw new SemanticException(localVar.getToken(), "El parametro del metodo ya tiene este nombre");
         }
         if(class_.isAttribute(localVar.getToken())) {
-            // TODO exception
+            throw new SemanticException(localVar.getToken(), "Hay un atributo con este nombre de variable");
         }
         localVarMap.put(localVar.getName(), localVar);
     }

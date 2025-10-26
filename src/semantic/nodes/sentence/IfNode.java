@@ -12,8 +12,9 @@ public class IfNode extends SentenceNode {
 
     public void check() throws SemanticException {
         Type conditionType = condition.check();
-        if(!conditionType.isBoolean()) {}
-            // TODO exception
+        if(!conditionType.isBoolean()) {
+            throw new SemanticException(conditionType.getToken(), "La condicion necesita ser un booleano");
+        }
         ifBody.check();
         if(elseBody != null)
             elseBody.check();

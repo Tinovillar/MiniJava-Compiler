@@ -42,4 +42,7 @@ public class ReferenceType implements Type {
     public boolean isVoid() {
         return getName().equals("void");
     }
+    public Token getToken() {
+        return token;
+    }
 }
