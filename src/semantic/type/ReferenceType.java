@@ -35,6 +35,9 @@ public class ReferenceType implements Type {
         return false;
     }
     public boolean isConformed(ReferenceType otherReference) {
+        if(areBothString(otherReference)) {
+            return true;
+        }
         return Main.ST.isSubtypeOf(otherReference.getName(), getName());
     }
     public Type resolveChain(ChainedNode chain) throws SemanticException {
@@ -46,9 +49,15 @@ public class ReferenceType implements Type {
     public Token getToken() {
         return token;
     }
-
-    @Override
     public boolean hasSameType(lexID type) {
         return token.getId().equals(type);
+    }
+    private boolean areBothString(Type otherReference) {
+        lexID idOtherReference = otherReference.getToken().getId();
+        lexID thisId = this.token.getId();
+        String nameOtherReference = otherReference.getName();
+        return (
+            idOtherReference.equals(lexID.literal_string) || nameOtherReference.equals("String")) &&
+            (thisId.equals(lexID.literal_string) || this.getName().equals("String"));
     }
 }
