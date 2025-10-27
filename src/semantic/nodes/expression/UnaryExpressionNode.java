@@ -19,7 +19,7 @@ public class UnaryExpressionNode extends ExpressionNode {
         switch (operator.getId()) {
             // Operadores aritméticos unarios
             case op_plus, op_minus, op_plus_plus, op_minus_minus -> {
-                if (!operandType.getName().equals("int")) {
+                if (!operandType.hasSameType(lexID.literal_integer)) {
                     throw new SemanticException(operator, "El operador acepta unicamente tipos int");
                 }
             }
@@ -38,9 +38,9 @@ public class UnaryExpressionNode extends ExpressionNode {
     private Type getResultType() {
         return switch (operator.getId()) {
             case op_plus, op_minus, op_minus_minus, op_plus_plus ->
-                    new PrimitiveType(new Token(lexID.kw_int, "int", -1));
+                    new PrimitiveType(new Token(lexID.kw_int, "int", operator.getLineNumber()));
             case op_not ->
-                    new PrimitiveType(new Token(lexID.kw_boolean, "boolean", -1));
+                    new PrimitiveType(new Token(lexID.kw_boolean, "boolean", operator.getLineNumber()));
             default -> null;
         };
     }

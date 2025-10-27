@@ -28,4 +28,7 @@ public class AssignmentExpressionNode extends ExpressionNode {
         }
         return leftType;
     }
+    public boolean hasSideEffect() {
+        return true;
+    }
 }

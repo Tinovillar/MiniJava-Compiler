@@ -27,7 +27,7 @@ public class MethodCallNode extends AccessNode {
             throw new SemanticException(method.getToken(), "No se puede llamar al metodo en un metodo estatico");
         }
         if(args.size() != method.getParameters().size()) {
-            throw new SemanticException(method.getToken(), "Faltan o sobran parametros");
+            throw new SemanticException(id, "Faltan o sobran parametros");
         }
         List<Parameter> params = method.getParameters().values().stream().toList();
         int index = 0;
@@ -42,5 +42,8 @@ public class MethodCallNode extends AccessNode {
         if(chained != null)
             toReturn = chained.check(toReturn);
         return toReturn;
+    }
+    public boolean hasSideEffect() {
+        return true;
     }
 }

@@ -83,10 +83,10 @@ public class BinaryExpressionNode extends ExpressionNode {
         Type toReturn;
         switch (operator.getId()) {
             case op_minus, op_plus, op_division, op_multiplication, op_mod -> {
-                toReturn = new PrimitiveType(new Token(lexID.literal_integer, "int", -1));
+                toReturn = new PrimitiveType(new Token(lexID.literal_integer, "int", operator.getLineNumber()));
             }
             case op_and, op_or,op_greater_than,op_greater_than_equal,op_less_than,op_less_than_equal,op_equal_equal,op_not_equal -> {
-                toReturn = new PrimitiveType(new Token(lexID.kw_boolean, "boolean", -1));
+                toReturn = new PrimitiveType(new Token(lexID.kw_boolean, "boolean", operator.getLineNumber()));
             }
             default -> {
                 toReturn = null;

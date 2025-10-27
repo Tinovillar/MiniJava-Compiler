@@ -305,8 +305,9 @@ public class SyntacticAnalyzer {
         return localVarNode;
     }
     private ReturnNode return_() throws SyntacticException {
+        Token returnToken = currentToken;
         match(lexID.kw_return);
-        return new ReturnNode(ST.getCurrentMethod().getReturnType(), expresionOpcional());
+        return new ReturnNode(ST.getCurrentMethod().getReturnType(), expresionOpcional(), returnToken);
     }
     private ExpressionNode expresionOpcional() throws SyntacticException {
         ExpressionNode expressionNode = new EmptyExpressionNode();
@@ -316,7 +317,7 @@ public class SyntacticAnalyzer {
         return expressionNode;
     }
     private SentenceNode if_() throws SyntacticException, SemanticException {
-        IfNode ifNode = new IfNode();
+        IfNode ifNode = new IfNode(currentToken);
         match(lexID.kw_if);
         match(lexID.p_o_parenthesis);
         ifNode.setCondition(expresion());
@@ -334,7 +335,7 @@ public class SyntacticAnalyzer {
         return sentenceNode;
     }
     private SentenceNode while_() throws SyntacticException, SemanticException {
-        WhileNode whileNode = new WhileNode();
+        WhileNode whileNode = new WhileNode(currentToken);
         match(lexID.kw_while);
         match(lexID.p_o_parenthesis);
         whileNode.setCondition(expresion());

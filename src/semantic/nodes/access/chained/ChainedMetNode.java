@@ -25,16 +25,16 @@ public class ChainedMetNode extends ChainedNode {
         return type.resolveChain(this);
     }
     public Type resolveType(PrimitiveType primitive) throws SemanticException {
-        throw new SemanticException(primitive.getToken(), "No se puede invocar un metodo de un tipo primitivo");
+        throw new SemanticException(id, "No se puede invocar un metodo de un tipo primitivo");
     }
     public Type resolveType(ReferenceType reference) throws SemanticException {
         ConcreteClass class_ = Main.ST.getClassOrNull(reference.getName());
         if(class_ == null) {
-            throw new SemanticException(class_.getToken(), "La clase no existe");
+            throw new SemanticException(reference.getToken(), "La clase no existe");
         }
         Method method = class_.getMethods().get(id.getLexeme());
         if(method == null) {
-            throw new SemanticException(method.getToken(), "No existe el metodo en la clase");
+            throw new SemanticException(this.id, "No existe el metodo en la clase");
         }
         List<Parameter> params = method.getParameters().values().stream().toList();
         if(params.size() != args.size()) {

@@ -4,6 +4,7 @@ import exceptions.SemanticException;
 import lexical.Token;
 import semantic.nodes.access.AccessNode;
 import semantic.nodes.expression.ExpressionNode;
+import semantic.type.Type;
 
 public class AssignmentCallNode extends SentenceNode {
     private ExpressionNode expression;
@@ -13,7 +14,10 @@ public class AssignmentCallNode extends SentenceNode {
     }
 
     public void check() throws SemanticException {
-        this.expression.check(); // delega el chequeo a la expresion
+        Type type = expression.check(); // delega el chequeo a la expresion
+        if(!expression.hasSideEffect()) {
+            throw new SemanticException(type.getToken(), "Expresion invalida como sentencia, no produce ningun efecto");
+        }
     }
     public ExpressionNode getExpression() {
         return expression;
