@@ -37,4 +37,8 @@ public class AccessVarNode extends AccessNode {
         }
         return type;
     }
+    public boolean isAssignable() {
+        if(chained == null) return true;
+        return chained.isAssignable();
+    }
 }

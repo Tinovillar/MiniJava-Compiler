@@ -36,4 +36,8 @@ public class ChainedVarNode extends ChainedNode {
         }
         return attributeType;
     }
+    public boolean isAssignable() {
+        if(chainedNode == null) return true;
+        return chainedNode.isAssignable();
+    }
 }
