@@ -1,12 +1,13 @@
-class Test {
-    void m() {
-        var a = 1;
-        {
-            var b = 2;
-            {
-                var c = a + b;
-                System.printIln(c);
-            }
-        }
+// Comparación entre objetos permitida con '=='.
+class C7 {
+    String s() {
+        return "ok";
+    }
+    boolean eqCheck() {
+        var a = new C7();
+        var b = new C7();
+        // equality allowed for class types (object references)
+        var eq = a == b;
+        return eq;
     }
 }

@@ -35,7 +35,7 @@ public class ReferenceType implements Type {
         return false;
     }
     public boolean isConformed(ReferenceType otherReference) {
-        return Main.ST.isSubtypeOf(getName(), otherReference.getName());
+        return Main.ST.isSubtypeOf(otherReference.getName(), getName());
     }
     public Type resolveChain(ChainedNode chain) throws SemanticException {
         return chain.resolveType(this);

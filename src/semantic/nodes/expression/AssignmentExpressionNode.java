@@ -1,11 +1,13 @@
 package semantic.nodes.expression;
 
 import exceptions.SemanticException;
+import lexical.Token;
 import semantic.type.Type;
 
 public class AssignmentExpressionNode extends ExpressionNode {
     private ExpressionNode leftExpression;
     private ExpressionNode rightExpression;
+    private Token operator;
 
     public AssignmentExpressionNode() {}
 
@@ -15,11 +17,14 @@ public class AssignmentExpressionNode extends ExpressionNode {
     public void setLeftExpression(ExpressionNode expression) {
         this.leftExpression = expression;
     }
+    public void setOperator(Token operator) {
+        this.operator = operator;
+    }
     public Type check() throws SemanticException {
         Type leftType = leftExpression.check();
         Type rightType = rightExpression.check();
-        if(!leftType.equals(rightType)) {
-            throw new SemanticException(leftType.getToken(), "El tipo de asignacion no coincide con la asignacion");
+        if(!leftType.conformsTo(rightType)) {
+            throw new SemanticException(operator, "No se puede asignar por un error de tipos, no son compatibles");
         }
         return leftType;
     }

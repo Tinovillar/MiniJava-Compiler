@@ -351,14 +351,16 @@ public class SyntacticAnalyzer {
         if(currentToken.getId().equals(lexID.op_equal)) {
             AssignmentExpressionNode assignment = new AssignmentExpressionNode();
             assignment.setLeftExpression(leftExpression);
-            operadorAsignacion();
+            assignment.setOperator(operadorAsignacion());
             assignment.setRightExpression(expresionCompuesta());
             toReturn = assignment;
         }
         return toReturn;
     }
-    private void operadorAsignacion() throws SyntacticException {
+    private Token operadorAsignacion() throws SyntacticException {
+        Token toReturn = currentToken;
         match(lexID.op_equal);
+        return toReturn;
     }
     private ExpressionNode expresionCompuesta() throws SyntacticException {
         if (isFirstOf(synID.expresionBasica)) {

@@ -1,8 +1,8 @@
-class Test {
-    void m() {
-        var i = 0;
-        while (i < 3) {
-            i = i + 1;
-        }
+// Expresiones parentizadas y booleanos simples.
+class C5 {
+    boolean b(int x) { return x < 10; }
+    boolean test() {
+        var t = ( ( (true) ) );
+        return t;
     }
 }

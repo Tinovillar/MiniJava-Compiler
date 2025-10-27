@@ -3,6 +3,7 @@ package semantic.nodes.access;
 import compiler.Main;
 import exceptions.SemanticException;
 import lexical.Token;
+import lexical.lexID;
 import semantic.model.Attribute;
 import semantic.model.Parameter;
 import semantic.nodes.sentence.LocalVarNode;
@@ -21,6 +22,8 @@ public class AccessVarNode extends AccessNode {
         Parameter parameter = Main.ST.getCurrentMethod().getParameters().get(id.getLexeme());
         LocalVarNode localVarNode = Main.ST.getCurrentBlock().getLocalVar(id.getLexeme());
         if(attribute != null) {
+            if(Main.ST.getCurrentMethod().hasModifier(lexID.kw_static))
+                throw new SemanticException(attribute.getToken(), "Se intenta usar un atributo en un metodo estatico");
             type = attribute.getType();
         } else if(parameter != null) {
             type = parameter.getType();

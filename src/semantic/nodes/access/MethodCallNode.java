@@ -23,7 +23,7 @@ public class MethodCallNode extends AccessNode {
 
     public Type check() throws SemanticException {
         Method method = Main.ST.getCurrentClass().getMethods().get(id.getLexeme());
-        if(Main.ST.getCurrentMethod().hasModifier(lexID.kw_static)) {
+        if(Main.ST.getCurrentMethod().hasModifier(lexID.kw_static) && !method.hasModifier(lexID.kw_static)) {
             throw new SemanticException(method.getToken(), "No se puede llamar al metodo en un metodo estatico");
         }
         if(args.size() != method.getParameters().size()) {
@@ -34,7 +34,7 @@ public class MethodCallNode extends AccessNode {
         for(ExpressionNode arg : args) {
             Type type = arg.check();
             if(Main.ST.isSubtypeOf(type.getName(), params.get(index).getType().getName())) {
-                throw new SemanticException(method.getToken(), "No se respeta el orden y tipos de los parametros");
+                throw new SemanticException(this.id, "No se respeta el orden y tipos de los parametros");
             }
             index++;
         }
