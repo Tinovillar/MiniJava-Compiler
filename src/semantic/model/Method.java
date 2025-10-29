@@ -128,7 +128,8 @@ public class Method {
     }
     public void check() throws SemanticException {
         Main.ST.setCurrentMethod(this);
-        block.check();
+        if(!block.isChecked())
+            block.check();
     }
     public boolean hasModifier(lexID modifier) {
         return this.modifier != null && this.modifier.getId().equals(modifier);

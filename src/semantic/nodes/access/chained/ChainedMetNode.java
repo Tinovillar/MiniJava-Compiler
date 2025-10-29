@@ -28,6 +28,8 @@ public class ChainedMetNode extends ChainedNode {
         throw new SemanticException(id, "No se puede invocar un metodo de un tipo primitivo");
     }
     public Type resolveType(ReferenceType reference) throws SemanticException {
+        if(reference.getName().equals("void"))
+            throw new SemanticException(reference.getToken(), "No se puede encadenar un metodo a un void");
         ConcreteClass class_ = Main.ST.getClassOrNull(reference.getName());
         if(class_ == null) {
             throw new SemanticException(reference.getToken(), "La clase no existe");

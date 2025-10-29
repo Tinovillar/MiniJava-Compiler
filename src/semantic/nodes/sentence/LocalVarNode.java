@@ -3,6 +3,7 @@ package semantic.nodes.sentence;
 import compiler.Main;
 import exceptions.SemanticException;
 import lexical.Token;
+import semantic.nodes.expression.AssignmentExpressionNode;
 import semantic.type.ReferenceType;
 import semantic.type.Type;
 import semantic.nodes.expression.ExpressionNode;
@@ -18,9 +19,11 @@ public class LocalVarNode extends SentenceNode {
 
     public void check() throws SemanticException {
         this.type = expression.check();
+        if(expression.isAssignment())
+            throw new SemanticException(token, "No se puede tener una asignacion del lado derecho");
         if(type == null) {
             throw new SemanticException(token, "No se puede inicializar una variable con null");
-        } else if(type.getName() == "kw_void" || type.getName() == "null") {
+        } else if(type.getName().equals("void") || type.getName() == "null") {
             throw new SemanticException(token, "El retorno de la expresion es null o void");
         }
         Main.ST.getCurrentBlock().addLocalVar(this);

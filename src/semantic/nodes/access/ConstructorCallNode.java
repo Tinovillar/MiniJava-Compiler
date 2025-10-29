@@ -25,23 +25,25 @@ public class ConstructorCallNode extends AccessNode {
     public Type check() throws SemanticException {
         ConcreteClass class_ = Main.ST.getClassOrNull(id.getLexeme());
         if(class_ == null) {
-            throw new SemanticException(class_.getToken(), "No existe la clase");
+            throw new SemanticException(id, "No existe la clase");
         }
         Constructor constructor = class_.getConstructor();
 //        if(!constructor.hasModifier(lexID.kw_public)) {
 //            throw new SemanticException(constructor.getToken(), "No existe el constructor o no es publico");
 //        }
-        if(args.size() != constructor.getParameters().size()) {
-            throw new SemanticException(constructor.getToken(), "Sobran o faltan parametros");
-        }
-        List<Parameter> params = constructor.getParameters().values().stream().toList();
-        int index = 0;
-        for(ExpressionNode arg : args) {
-            Type type = arg.check();
-            if(Main.ST.isSubtypeOf(type.getName(), params.get(index).getType().getName())) {
-                throw new SemanticException(constructor.getToken(), "No coincide ni el orden ni el tipo de los parametros");
+        if(constructor != null) {
+            if(args.size() != constructor.getParameters().size()) {
+                throw new SemanticException(id, "Sobran o faltan parametros");
             }
-            index++;
+            List<Parameter> params = constructor.getParameters().values().stream().toList();
+            int index = 0;
+            for(ExpressionNode arg : args) {
+                Type type = arg.check();
+                if(Main.ST.isSubtypeOf(type.getName(), params.get(index).getType().getName())) {
+                    throw new SemanticException(id, "No coincide ni el orden ni el tipo de los parametros");
+                }
+                index++;
+            }
         }
         Type toReturn = new ReferenceType(id);
         if(chained != null)

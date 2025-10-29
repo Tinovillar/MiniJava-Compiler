@@ -30,11 +30,10 @@ public class BlockNode extends SentenceNode {
 
     public void check() throws SemanticException {
         Main.ST.setCurrentBlock(this);
-
+        this.checked = true;
         for(SentenceNode sentence : sentences) {
             sentence.check();
         }
-
         Main.ST.setCurrentBlock(parentBlock);
     }
     public ArrayList<SentenceNode> getSentences() {

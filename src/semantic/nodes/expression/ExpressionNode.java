@@ -9,4 +9,5 @@ public abstract class ExpressionNode {
 
     public boolean hasSideEffect() {return false;}
     public boolean isAssignable() {return false;}
+    public boolean isAssignment() {return false;}
 }

@@ -23,6 +23,8 @@ public class AssignmentExpressionNode extends ExpressionNode {
     public Type check() throws SemanticException {
         Type leftType = leftExpression.check();
         Type rightType = rightExpression.check();
+        if(rightExpression.isAssignment())
+            throw new SemanticException(operator, "No se puede tener una asignacion del lado derecho");
         if(!leftType.conformsTo(rightType)) {
             throw new SemanticException(operator, "No se puede asignar por un error de tipos, no son compatibles");
         }
@@ -32,6 +34,11 @@ public class AssignmentExpressionNode extends ExpressionNode {
         return leftType;
     }
     public boolean hasSideEffect() {
+        return true;
+    }
+
+    @Override
+    public boolean isAssignment() {
         return true;
     }
 }

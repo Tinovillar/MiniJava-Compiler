@@ -31,8 +31,8 @@ public class StaticMethodCallNode extends AccessNode {
         if(method == null) {
             throw new SemanticException(idClass, "El metodo no existe");
         }
-        if(!method.getModifier().getLexeme().equals("static")) {
-            throw new SemanticException(method.getToken(), "El metodo no es estatico");
+        if(method.getModifier() == null || !method.getModifier().getLexeme().equals("static")) {
+            throw new SemanticException(idMetOrVar, "El metodo no es estatico");
         }
         List<Parameter> params = method.getParameters().values().stream().toList();
         int index = 0;

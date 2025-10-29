@@ -10,9 +10,11 @@ import semantic.type.Type;
 
 public class ThisNode extends AccessNode {
     private Token token;
+    private Token parent;
 
     public ThisNode(Token token) {
         this.token = token;
+        this.parent = Main.ST.getCurrentClass().getToken();
     }
     public Type check() throws SemanticException {
         if (Main.ST.getCurrentMethod().hasModifier(lexID.kw_static)) {

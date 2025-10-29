@@ -26,7 +26,7 @@ public class UnaryExpressionNode extends ExpressionNode {
             // Operador lógico unario
             case op_not -> {
                 if (operand != null && !operandType.isBoolean()) {
-                    throw new SemanticException(operandType.getToken(), "El operando tiene que ser de tipo boolean");
+                    throw new SemanticException(this.operator, "El operando tiene que ser de tipo boolean");
                 }
             }
             default -> {
