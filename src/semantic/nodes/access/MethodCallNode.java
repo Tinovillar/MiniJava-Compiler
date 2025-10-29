@@ -44,6 +44,7 @@ public class MethodCallNode extends AccessNode {
         return toReturn;
     }
     public boolean hasSideEffect() {
-        return true;
+        if(chained == null) return true;
+        else return chained.hasSideEffects();
     }
 }

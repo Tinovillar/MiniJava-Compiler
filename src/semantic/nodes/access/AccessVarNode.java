@@ -41,4 +41,8 @@ public class AccessVarNode extends AccessNode {
         if(chained == null) return true;
         return chained.isAssignable();
     }
+    public boolean hasSideEffect() {
+        if(chained == null) return false;
+        else return chained.hasSideEffects();
+    }
 }

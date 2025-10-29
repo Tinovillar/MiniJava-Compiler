@@ -14,4 +14,5 @@ public abstract class ChainedNode {
     public abstract Type resolveType(PrimitiveType primitive) throws SemanticException;
     public abstract Type resolveType(ReferenceType reference) throws SemanticException;
     public boolean isAssignable() {return false;}
+    public boolean hasSideEffects() {return true;}
 }

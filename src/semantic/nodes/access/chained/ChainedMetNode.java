@@ -56,4 +56,8 @@ public class ChainedMetNode extends ChainedNode {
             return toReturn.resolveChain(chainedNode);
         return toReturn;
     }
+    public boolean hasSideEffects() {
+        if(chainedNode == null) return true;
+        return chainedNode.hasSideEffects();
+    }
 }

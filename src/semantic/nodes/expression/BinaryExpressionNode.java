@@ -50,7 +50,7 @@ public class BinaryExpressionNode extends ExpressionNode {
             }
             // Operadores de igualdad: ==, !=
             case op_equal_equal, op_not_equal -> {
-                if (!leftType.conformsTo(rightType) && !rightType.conformsTo(leftType)) {
+                if (leftType != null && rightType != null && !leftType.conformsTo(rightType) && !rightType.conformsTo(leftType)) {
                     throw new SemanticException(operator, "El operador solo acepta tipos compatibles");
                 }
             }

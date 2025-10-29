@@ -25,4 +25,8 @@ public class ThisNode extends AccessNode {
         }
         return type;
     }
+    public boolean hasSideEffect() {
+        if(chained == null) return false;
+        else return chained.hasSideEffects();
+    }
 }

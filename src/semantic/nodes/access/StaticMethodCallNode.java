@@ -25,11 +25,11 @@ public class StaticMethodCallNode extends AccessNode {
     public Type check() throws SemanticException {
         ConcreteClass class_ = Main.ST.getClassOrNull(idClass.getLexeme());
         if(class_ == null) {
-            throw new SemanticException(class_.getToken(), "La clase no existe");
+            throw new SemanticException(idClass, "La clase no existe");
         }
         Method method = class_.getMethods().get(idMetOrVar.getLexeme());
         if(method == null) {
-            throw new SemanticException(method.getToken(), "El metodo no existe");
+            throw new SemanticException(idClass, "El metodo no existe");
         }
         if(!method.getModifier().getLexeme().equals("static")) {
             throw new SemanticException(method.getToken(), "El metodo no es estatico");
@@ -44,5 +44,12 @@ public class StaticMethodCallNode extends AccessNode {
             index++;
         }
         return method.getReturnType();
+    }
+    public boolean hasSideEffect() {
+        if(chained == null) {
+            if(args == null) return false;
+            return true;
+        }
+        else return chained.hasSideEffects();
     }
 }

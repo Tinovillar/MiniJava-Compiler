@@ -48,4 +48,8 @@ public class ConstructorCallNode extends AccessNode {
             toReturn = chained.check(toReturn);
         return toReturn;
     }
+    public boolean hasSideEffect() {
+        if(chained == null) return true;
+        else return chained.hasSideEffects();
+    }
 }

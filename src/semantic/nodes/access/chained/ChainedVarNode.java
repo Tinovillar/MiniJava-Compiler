@@ -40,4 +40,8 @@ public class ChainedVarNode extends ChainedNode {
         if(chainedNode == null) return true;
         return chainedNode.isAssignable();
     }
+    public boolean hasSideEffects() {
+        if(chainedNode == null) return false;
+        return chainedNode.hasSideEffects();
+    }
 }
