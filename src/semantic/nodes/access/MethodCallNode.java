@@ -47,4 +47,8 @@ public class MethodCallNode extends AccessNode {
         if(chained == null) return true;
         else return chained.hasSideEffects();
     }
+    public boolean isAssignable() {
+        if(chained == null) return false;
+        else return chained.isAssignable();
+    }
 }

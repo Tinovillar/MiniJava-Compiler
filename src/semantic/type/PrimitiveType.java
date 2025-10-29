@@ -36,6 +36,7 @@ public class PrimitiveType implements Type {
         return otherToken.getId().equals(currToken.getId());
     }
     public boolean isConformed(ReferenceType otherReference) {
+        if(this.token.getId().equals(lexID.kw_null)) return true;
         return false;
     }
     public Type resolveChain(ChainedNode chain) throws SemanticException {

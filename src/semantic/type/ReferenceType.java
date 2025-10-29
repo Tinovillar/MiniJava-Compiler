@@ -28,7 +28,7 @@ public class ReferenceType implements Type {
         return false;
     }
     public boolean conformsTo(Type type) {
-        if(type == null) return true;
+        if(type == null || type.getToken().getId().equals(lexID.kw_null)) return true;
         return type.isConformed(this);
     }
     public boolean isConformed(PrimitiveType otherPrimitive) {

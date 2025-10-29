@@ -29,4 +29,8 @@ public class ThisNode extends AccessNode {
         if(chained == null) return false;
         else return chained.hasSideEffects();
     }
+    public boolean isAssignable() {
+        if(chained == null) return false;
+        return chained.isAssignable();
+    }
 }
