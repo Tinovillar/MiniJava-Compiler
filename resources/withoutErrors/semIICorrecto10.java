@@ -1,9 +1,28 @@
-// Uso correcto de llamada estática a método que devuelve clase.
-class C10 {
-    static C10 make() { return new C10(); }
-    int useStaticCtor() {
-        var x = C10.make();
-        var y = x;
-        return 0;
+//[SinErrores]
+
+class A {
+    void m1(){
+        while (6<7) {
+            if (true);
+             else;
+
+        }
+        if(false){
+            while('a'!='b'){
+                ;;;
+            }
+        }
+
     }
+   
+    
+    
+    
 }
+
+class Init{
+    static void main()
+    { }
+}
+
+

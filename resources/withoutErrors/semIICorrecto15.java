@@ -1,6 +1,24 @@
-// Sentencia vacía válida dentro de un método.
-class C15 {
-    void m() {
-        ;
+//[SinErrores]
+//Control expresiones binarias con tipos referenciados
+
+class A {
+    A a;
+    B b;
+    void m1(){
+        if(a!=b) ;
     }
+   
+    
+    
+    
 }
+class B extends A{
+
+}
+
+class Init{
+    static void main()
+    { }
+}
+
+

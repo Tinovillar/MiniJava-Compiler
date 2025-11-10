@@ -1,9 +1,19 @@
-// Operaciones con tipos primitivos válidos (char, int).
-class C12 {
-    char ch() { return 'a'; }
-    int operations() {
-        var c = ch();
-        var d = 5 * (2 + 3);
-        return d;
+//[SinErrores]
+
+class A {
+    int a;
+    void m1(){
+        a = 1;
     }
+   
+    
+    
+    
 }
+
+class Init{
+    static void main()
+    { }
+}
+
+

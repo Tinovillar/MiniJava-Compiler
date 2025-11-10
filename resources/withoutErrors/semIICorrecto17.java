@@ -1,6 +1,20 @@
-// If válido con else.
-class C17 {
-    void m() {
-        if (true) var x = 1; else var y = 2;
+//[SinErrores]
+
+class A {
+     void prueba(){
+         B.m1();
+     }
+}
+class B {
+    static void m1() {
+
     }
 }
+
+
+class Init{
+    static void main()
+    { }
+}
+
+

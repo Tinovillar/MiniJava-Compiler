@@ -1,6 +1,16 @@
-// Return con expresión en método int.
-class C19 {
-    int m() {
-        return 5;
-    }
+//[SinErrores]
+
+class A {
+     int prueba(){
+         return 1;
+     }
 }
+
+
+
+class Init{
+    static void main()
+    { }
+}
+
+

@@ -1,0 +1,17 @@
+//[SinErrores]
+
+class A {
+     char prueba(){
+         var a = 'c';
+         return a;
+     }
+}
+
+
+
+class Init{
+    static void main()
+    { }
+}
+
+

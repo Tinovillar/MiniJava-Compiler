@@ -1,6 +1,17 @@
-// Return vacío en método void.
-class C20 {
-    void m() {
-        return;
-    }
+//[SinErrores]
+
+class A {
+     int prueba(){
+         var a = 2;
+         return a;
+     }
 }
+
+
+
+class Init{
+    static void main()
+    { }
+}
+
+

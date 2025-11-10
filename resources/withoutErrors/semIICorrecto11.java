@@ -1,7 +1,18 @@
-// Operadores lógicos compuestos correctamente tipados.
-class C11 {
-    boolean logical() {
-        var a = true || false && (false || true);
-        return a;
+//[SinErrores]
+
+class A {
+    void m1(int a){
+        a = 1;
     }
+   
+    
+    
+    
 }
+
+class Init{
+    static void main()
+    { }
+}
+
+

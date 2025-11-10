@@ -1,12 +1,16 @@
-// Combinación múltiple de if y while válidos.
-class C22 {
-    void m() {
-        if (true) {
-            while (false) {
-                var x = 1;
-            }
-        } else {
-            return;
-        }
-    }
+//[SinErrores]
+
+class A {
+     int prueba(int a){
+         return a;
+     }
 }
+
+
+
+class Init{
+    static void main()
+    { }
+}
+
+
