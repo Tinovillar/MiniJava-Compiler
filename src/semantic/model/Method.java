@@ -7,9 +7,7 @@ import lexical.lexID;
 import semantic.nodes.sentence.BlockNode;
 import semantic.type.Type;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.*;
 
 public class Method {
     protected Token token;
@@ -17,13 +15,13 @@ public class Method {
     protected String parent;
     protected Type returnType;
     protected BlockNode block;
-    protected HashMap<String, Parameter> parameters;
+    protected Map<String, Parameter> parameters;
 
     public Method(Token token, String parent, Type returnType) {
         this.token = token;
         this.parent = parent;
         this.returnType = returnType;
-        this.parameters = new HashMap<>();
+        this.parameters = new LinkedHashMap<>();
     }
 
     public void isWellDeclared() throws SemanticException {
@@ -59,7 +57,7 @@ public class Method {
     public Type getReturnType() {
         return returnType;
     }
-    public HashMap<String, Parameter> getParameters() {
+    public Map<String, Parameter> getParameters() {
         return parameters;
     }
     public String getName() {
