@@ -52,9 +52,9 @@ public class BlockNode extends SentenceNode {
         if(method_ != null && method_.isParameter(localVar.getToken())) {
             throw new SemanticException(localVar.getToken(), "El parametro del metodo ya tiene este nombre");
         }
-        if(class_.isAttribute(localVar.getToken())) {
-            throw new SemanticException(localVar.getToken(), "Hay un atributo con este nombre de variable");
-        }
+//        if(class_.isAttribute(localVar.getToken())) {
+//            throw new SemanticException(localVar.getToken(), "Hay un atributo con este nombre de variable");
+//        }
         localVarMap.put(localVar.getName(), localVar);
     }
     private boolean isLocalVar(Token toCheck) {
