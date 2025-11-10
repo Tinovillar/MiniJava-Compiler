@@ -21,14 +21,14 @@ public class AccessVarNode extends AccessNode {
         Attribute attribute = Main.ST.getCurrentClass().getAttributes().get(id.getLexeme());
         Parameter parameter = Main.ST.getCurrentMethod().getParameters().get(id.getLexeme());
         LocalVarNode localVarNode = Main.ST.getCurrentBlock().getLocalVar(id.getLexeme());
-        if(attribute != null) {
-            if(Main.ST.getCurrentMethod().hasModifier(lexID.kw_static))
-                throw new SemanticException(id, "Se intenta usar un atributo en un metodo estatico");
-            type = attribute.getType();
-        } else if(parameter != null) {
+        if(parameter != null) {
             type = parameter.getType();
         } else if(localVarNode != null) {
             type = localVarNode.getType();
+        } else if(attribute != null) {
+            if(Main.ST.getCurrentMethod().hasModifier(lexID.kw_static))
+                throw new SemanticException(id, "Se intenta usar un atributo en un metodo estatico");
+            type = attribute.getType();
         } else {
             throw new SemanticException(id, "Variable no declarada");
         }
