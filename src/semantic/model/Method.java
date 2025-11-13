@@ -138,4 +138,7 @@ public class Method {
     public String getLabel() {
         return getName() + "@" + getParent();
     }
+    public void generate() {
+        // TODO
+    }
 }

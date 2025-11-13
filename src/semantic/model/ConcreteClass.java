@@ -219,7 +219,17 @@ public class ConcreteClass {
             Main.ST.setMainMethod(method);
     }
     public void generate() {
-        // TODO
+        // TODO muy verde, hay q revisar
+        Main.ST.add(".DATA");
+        Main.ST.add("VT" + getName());
+        Main.ST.add("NOP");
+        Main.ST.add("");
+
+        Main.ST.add(".CODE");
+        for(Method m : methods.values())
+            m.generate();
+
+        constructor.generate();
     }
     public void setOffsets() {
         // TODO
