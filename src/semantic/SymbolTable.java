@@ -9,9 +9,7 @@ import semantic.nodes.sentence.EmptyBlockNode;
 import semantic.type.PrimitiveType;
 import semantic.type.ReferenceType;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 
 public class SymbolTable {
     ConcreteClass currentClass;
@@ -19,9 +17,11 @@ public class SymbolTable {
     Method currentMethod;
     BlockNode currentBlock;
     HashMap<String, ConcreteClass> classes;
+    List<String> instructions;
 
     public SymbolTable() {
         classes = new HashMap<>();
+        instructions = new LinkedList<>();
     }
 
     public void initialize() throws SemanticException {
@@ -300,5 +300,51 @@ public class SymbolTable {
                 class_ = null;
         }
         return isSubtype;
+    }
+    public void generate() {
+        setOffsets();
+
+//        instructions.add(".CODE");
+//        instructions.add("  PUSH simple_heap_init");
+//        instructions.add("  CALL");
+//        instructions.add("  PUSH "+currentMethod.getName());
+//        instructions.add("  CALL");
+//        instructions.add("  HALT");
+//        instructions.add("");
+//
+//        instructions.add("simple_heap_init:");
+//        instructions.add("  RET 0");
+//        instructions.add("");
+//        instructions.add("simple_malloc:");
+//        instructions.add("  LOADFP");
+//        instructions.add("  LOADSP");
+//        instructions.add("  STOREFP");
+//        instructions.add("  LOADHL");
+//        instructions.add("  DUP");
+//        instructions.add("  PUSH 1");
+//        instructions.add("  ADD");
+//        instructions.add("  STORE 4");
+//        instructions.add("  LOAD 3");
+//        instructions.add("  ADD");
+//        instructions.add("  STOREHL");
+//        instructions.add("  STOREFP");
+//        instructions.add("  RET 1");
+//        instructions.add("");
+
+        generateDefaultMethods();
+
+        for(ConcreteClass c : classes.values())
+            c.generate();
+    }
+    public void setOffsets() {
+        for(ConcreteClass c : classes.values())
+            c.setOffsets();
+    }
+    public void generateDefaultMethods() {
+        // TODO
+        // static void debugPrint(int)
+        // static void read()
+        // static void printB(boolean)
+        // ...
     }
 }

@@ -38,9 +38,9 @@ public class Main {
             ST.consolidate();
             ST.check();
 
-            if(!errors) {
-                System.out.println("[SinErrores]");
-            }
+            ST.generate();
+
+            System.out.println("[SinErrores]");
 
             ST.printTable();
 

@@ -213,4 +213,10 @@ public class ConcreteClass {
         }
         return false;
     }
+    public void generate() {
+        // TODO
+    }
+    public void setOffsets() {
+        // TODO
+    }
 }
