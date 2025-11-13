@@ -301,6 +301,9 @@ public class SymbolTable {
         }
         return isSubtype;
     }
+    public void add(String instruction) {
+        instructions.add(instruction);
+    }
     public void generate() {
         setOffsets();
 

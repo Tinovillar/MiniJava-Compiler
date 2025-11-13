@@ -1,5 +1,6 @@
 package semantic.nodes.literal;
 
+import compiler.Main;
 import exceptions.SemanticException;
 import lexical.Token;
 import semantic.type.PrimitiveType;
@@ -15,5 +16,9 @@ public class CharNode extends LiteralNode {
     @Override
     public Type check() throws SemanticException {
         return this.type;
+    }
+
+    public void generate() {
+        super.generate(type.getName(), "Char");
     }
 }

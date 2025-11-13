@@ -1,5 +1,6 @@
 package semantic.nodes.literal;
 
+import compiler.Main;
 import exceptions.SemanticException;
 import lexical.Token;
 import semantic.type.ReferenceType;
@@ -14,5 +15,13 @@ public class StringNode extends LiteralNode {
 
     public Type check() throws SemanticException {
         return this.type;
+    }
+
+    public void generate() {
+        Main.ST.add(".DATA");
+        Main.ST.add("Label: DW " + type.getName() + ", 0");
+        Main.ST.add(".CODE");
+        Main.ST.add("   PUSH Label; Direccion del String");
+        super.generate(type.getName(), "String");
     }
 }

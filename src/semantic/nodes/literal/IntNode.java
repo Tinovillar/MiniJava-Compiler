@@ -15,4 +15,8 @@ public class IntNode extends LiteralNode {
     public Type check() throws SemanticException {
         return this.type;
     }
+
+    public void generate() {
+        super.generate(type.getName(), "Int");
+    }
 }
