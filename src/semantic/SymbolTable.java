@@ -15,9 +15,12 @@ public class SymbolTable {
     ConcreteClass currentClass;
     Attribute currentAttribute;
     Method currentMethod;
+    Method mainMethod;
     BlockNode currentBlock;
     HashMap<String, ConcreteClass> classes;
     List<String> instructions;
+
+    protected int stringCounter = 0;
 
     public SymbolTable() {
         classes = new HashMap<>();
@@ -301,38 +304,20 @@ public class SymbolTable {
         }
         return isSubtype;
     }
+    public Method getMainMethod() {
+        return mainMethod;
+    }
+    public void setMainMethod(Method mainMethod) {
+        this.mainMethod = mainMethod;
+    }
     public void add(String instruction) {
         instructions.add(instruction);
     }
     public void generate() {
         setOffsets();
 
-//        instructions.add(".CODE");
-//        instructions.add("  PUSH simple_heap_init");
-//        instructions.add("  CALL");
-//        instructions.add("  PUSH "+currentMethod.getName());
-//        instructions.add("  CALL");
-//        instructions.add("  HALT");
-//        instructions.add("");
-//
-//        instructions.add("simple_heap_init:");
-//        instructions.add("  RET 0");
-//        instructions.add("");
-//        instructions.add("simple_malloc:");
-//        instructions.add("  LOADFP");
-//        instructions.add("  LOADSP");
-//        instructions.add("  STOREFP");
-//        instructions.add("  LOADHL");
-//        instructions.add("  DUP");
-//        instructions.add("  PUSH 1");
-//        instructions.add("  ADD");
-//        instructions.add("  STORE 4");
-//        instructions.add("  LOAD 3");
-//        instructions.add("  ADD");
-//        instructions.add("  STOREHL");
-//        instructions.add("  STOREFP");
-//        instructions.add("  RET 1");
-//        instructions.add("");
+        mainCall();
+        heapAllocate();
 
         generateDefaultMethods();
 
@@ -346,8 +331,49 @@ public class SymbolTable {
     public void generateDefaultMethods() {
         // TODO
         // static void debugPrint(int)
+        add("debugPrint@Object:");
+        add("LOADFP");
+        add("LOADSP");
+        add("STOREFP");
+        add("LOAD 3 ; Lee i");
+        add("IPRINT ; Imprime i");
+        add("STOREFP");
+        add("RET 1");
+        add("");
+
         // static void read()
         // static void printB(boolean)
         // ...
+    }
+    public int getStringCounter() {
+        return ++stringCounter;
+    }
+    private void mainCall() {
+        add(".CODE");
+        add("PUSH " + mainMethod.getLabel());
+        add("CALL");
+        add("HALT");
+        add("");
+    }
+    private void heapAllocate() {
+        add("simple_heap_init:");
+        add("RET 0 ; Retorna Inmediatamente");
+        add("");
+
+        add("simple_malloc:");
+        add("LOADFP");
+        add("LOADSP");
+        add("STOREFP");
+        add("LOADHL");
+        add("DUP");
+        add("PUSH 1");
+        add("ADD");
+        add("STORE 4");
+        add("LOAD 3");
+        add("ADD");
+        add("STOREHL");
+        add("STOREFP");
+        add("RET 1");
+        add("");
     }
 }

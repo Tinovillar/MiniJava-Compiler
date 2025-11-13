@@ -181,6 +181,7 @@ public class ConcreteClass {
         String name = method.getName();
         if (!methods.containsKey(name)) {
             methods.put(name, method);
+            checkMainMethod(method);
         } else {
             throw new SemanticException(method.getToken(), "Método duplicado '" + name + "' en clase " + getName());
         }
@@ -212,6 +213,10 @@ public class ConcreteClass {
                 return true;
         }
         return false;
+    }
+    private void checkMainMethod(Method method) {
+        if(Main.ST.getMainMethod() == null && method.isMain())
+            Main.ST.setMainMethod(method);
     }
     public void generate() {
         // TODO

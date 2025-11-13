@@ -19,9 +19,8 @@ public class StringNode extends LiteralNode {
 
     public void generate() {
         Main.ST.add(".DATA");
-        Main.ST.add("Label: DW " + type.getName() + ", 0");
+        Main.ST.add("string" + Main.ST.getStringCounter() + ": DW " + type.getName() + ", 0");
         Main.ST.add(".CODE");
-        Main.ST.add("   PUSH Label; Direccion del String");
-        super.generate(type.getName(), "String");
+        Main.ST.add("PUSH Label; Direccion del String");
     }
 }

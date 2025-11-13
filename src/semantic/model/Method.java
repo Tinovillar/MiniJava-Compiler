@@ -132,4 +132,10 @@ public class Method {
     public boolean hasModifier(lexID modifier) {
         return this.modifier != null && this.modifier.getId().equals(modifier);
     }
+    public boolean isMain() {
+        return hasModifier(lexID.kw_static) && returnType.isVoid() && getName().equals("main") && parameters.size() == 0;
+    }
+    public String getLabel() {
+        return getName() + "@" + getParent();
+    }
 }
