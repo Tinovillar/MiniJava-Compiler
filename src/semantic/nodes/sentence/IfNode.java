@@ -43,4 +43,7 @@ public class IfNode extends SentenceNode {
     public void setCondition(ExpressionNode condition) {
         this.condition = condition;
     }
+    public void generate() {
+        // TODO
+    }
 }

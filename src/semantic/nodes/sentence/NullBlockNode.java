@@ -6,4 +6,7 @@ public class NullBlockNode extends BlockNode {
     public void check() throws SemanticException {
         checked = true;
     }
+    public void generate() {
+        // TODO
+    }
 }

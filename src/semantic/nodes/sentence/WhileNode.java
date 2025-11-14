@@ -33,4 +33,7 @@ public class WhileNode extends SentenceNode {
         }
         body.check();
     }
+    public void generate() {
+        // TODO
+    }
 }

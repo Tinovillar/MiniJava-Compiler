@@ -8,7 +8,5 @@ public abstract class SentenceNode {
     public boolean isChecked() {
         return checked;
     }
-    public void setChecked(boolean checked) {
-        this.checked = checked;
-    }
+    public abstract void generate();
 }

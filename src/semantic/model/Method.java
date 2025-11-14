@@ -141,4 +141,13 @@ public class Method {
     public void generate() {
         // TODO
     }
+    public void setOffsets() {
+        // TODO revisar
+        int paramOffset = 1;
+        for(Parameter p : parameters.values()) {
+            p.setOffset(paramOffset++);
+        }
+
+        block.setOffsets();
+    }
 }

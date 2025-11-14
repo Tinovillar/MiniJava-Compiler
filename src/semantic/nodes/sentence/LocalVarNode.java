@@ -12,6 +12,7 @@ public class LocalVarNode extends SentenceNode {
     Token token;
     ExpressionNode expression;
     Type type;
+    private int offset;
 
     public LocalVarNode(Token token) {
         this.token = token;
@@ -48,5 +49,14 @@ public class LocalVarNode extends SentenceNode {
     }
     public void setType(Type type) {
         this.type = type;
+    }
+    public void generate() {
+        // TODO
+    }
+    public int getOffset() {
+        return offset;
+    }
+    public void setOffset(int i) {
+        this.offset = i;
     }
 }

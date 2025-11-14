@@ -17,13 +17,13 @@ public class SymbolTable {
     Method currentMethod;
     Method mainMethod;
     BlockNode currentBlock;
-    HashMap<String, ConcreteClass> classes;
+    Map<String, ConcreteClass> classes;
     List<String> instructions;
 
     protected int stringCounter = 0;
 
     public SymbolTable() {
-        classes = new HashMap<>();
+        classes = new LinkedHashMap<>();
         instructions = new LinkedList<>();
     }
 

@@ -2,18 +2,19 @@ package semantic.model;
 
 import lexical.Token;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Interface {
     private Token token;
     private List<String> parents;
-    private HashMap<String, Method> methods;
+    private Map<String, Method> methods;
 
     public Interface(Token token, List<String> parents) {
         this.token = token;
         this.parents = parents;
-        this.methods = new HashMap<>();
+        this.methods = new LinkedHashMap<>();
     }
 
     public String getName() {
@@ -29,7 +30,7 @@ public class Interface {
             System.out.println("Error: interfaz '" + getName() + "' ya extiende a '" + parentName + "'");
         }
     }
-    public HashMap<String, Method> getMethods() {
+    public Map<String, Method> getMethods() {
         return methods;
     }
     public void addMethod(Method method) {

@@ -5,8 +5,8 @@ import exceptions.SemanticException;
 import lexical.Token;
 import lexical.lexID;
 
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class ConcreteClass {
@@ -14,14 +14,14 @@ public class ConcreteClass {
     protected Token parent;
     protected Token modifier;
     protected Constructor constructor;
-    protected HashMap<String, Attribute> attributes;
-    protected HashMap<String, Method> methods;
+    protected Map<String, Attribute> attributes;
+    protected Map<String, Method> methods;
     boolean consolidated = false;
 
     public ConcreteClass(Token token) {
         this.token = token;
-        this.attributes = new HashMap<>();
-        this.methods = new HashMap<>();
+        this.attributes = new LinkedHashMap<>();
+        this.methods = new LinkedHashMap<>();
     }
 
     public void isWellDeclared() throws SemanticException {
@@ -108,7 +108,7 @@ public class ConcreteClass {
         }
     }
     private void consolidateAttributes(Map<String, Attribute> parentAttributes) throws SemanticException {
-        HashMap<String, Attribute> completedAttributes = new HashMap<>(parentAttributes);
+        Map<String, Attribute> completedAttributes = new LinkedHashMap<>(parentAttributes);
         for (Attribute attribute : attributes.values()) {
             if(completedAttributes.putIfAbsent(attribute.getName(), attribute) != null) // Chequear sobreescritura con el tipo del atributo
                 throw new SemanticException(attribute.getToken(), "No es posible sobreescribir un atributo del padre.");
@@ -116,7 +116,7 @@ public class ConcreteClass {
         this.attributes = completedAttributes;
     }
     private void consolidateMethods(Map<String, Method> parentMethods) throws SemanticException {
-        HashMap<String, Method> completedMethods = new HashMap<>(parentMethods);
+        Map<String, Method> completedMethods = new LinkedHashMap<>(parentMethods);
         Method parentMethod;
         for (Method ourMethod : methods.values()) {
             parentMethod = completedMethods.put(ourMethod.getName(), ourMethod);
@@ -186,10 +186,10 @@ public class ConcreteClass {
             throw new SemanticException(method.getToken(), "Método duplicado '" + name + "' en clase " + getName());
         }
     }
-    public HashMap<String, Attribute> getAttributes() {
+    public Map<String, Attribute> getAttributes() {
         return attributes;
     }
-    public HashMap<String, Method> getMethods() {
+    public Map<String, Method> getMethods() {
         return methods;
     }
     public boolean isConsolidated() {
@@ -232,6 +232,8 @@ public class ConcreteClass {
         constructor.generate();
     }
     public void setOffsets() {
-        // TODO
+        // TODO revisar
+        for(Method m : methods.values())
+            m.setOffsets();
     }
 }

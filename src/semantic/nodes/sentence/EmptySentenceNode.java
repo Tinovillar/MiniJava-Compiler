@@ -6,4 +6,7 @@ public class EmptySentenceNode extends SentenceNode {
     public void check() throws SemanticException {
         checked = true;
     }
+    public void generate() {
+        // TODO
+    }
 }

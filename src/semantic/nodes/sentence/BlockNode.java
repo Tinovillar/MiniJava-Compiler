@@ -7,12 +7,10 @@ import semantic.SymbolTable;
 import semantic.model.ConcreteClass;
 import semantic.model.Method;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class BlockNode extends SentenceNode {
-    private ArrayList<SentenceNode> sentences;
+    private List<SentenceNode> sentences;
     private Map<String, LocalVarNode> localVarMap;
     private BlockNode parentBlock;
 
@@ -20,8 +18,8 @@ public class BlockNode extends SentenceNode {
     private ConcreteClass class_;
 
     public BlockNode() {
-        sentences = new ArrayList<>();
-        localVarMap = new HashMap<>();
+        sentences = new LinkedList<>();
+        localVarMap = new LinkedHashMap<>();
 
         this.class_ = Main.ST.getCurrentClass();
         this.method_ = Main.ST.getCurrentMethod();
@@ -36,7 +34,7 @@ public class BlockNode extends SentenceNode {
         }
         Main.ST.setCurrentBlock(parentBlock);
     }
-    public ArrayList<SentenceNode> getSentences() {
+    public List<SentenceNode> getSentences() {
         return sentences;
     }
     public void addSentence(SentenceNode sentence) {
@@ -74,5 +72,15 @@ public class BlockNode extends SentenceNode {
             toReturn = parentBlock.getLocalVar(lexeme);
         }
         return toReturn;
+    }
+    public void generate() {
+        // TODO
+    }
+    public void setOffsets() {
+        // TODO revisar
+        int varOffsets = 1;
+        for(LocalVarNode var : localVarMap.values()) {
+            var.setOffset(-varOffsets++);
+        }
     }
 }

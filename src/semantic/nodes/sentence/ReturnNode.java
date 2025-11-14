@@ -39,4 +39,7 @@ public class ReturnNode extends SentenceNode {
     private boolean methodIsVoid() {
         return method.getReturnType().getName().equals("void");
     }
+    public void generate() {
+        // TODO
+    }
 }

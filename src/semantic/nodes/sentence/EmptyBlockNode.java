@@ -4,4 +4,7 @@ import exceptions.SemanticException;
 
 public class EmptyBlockNode extends BlockNode {
     public void check() throws SemanticException {}
+    public void generate() {
+        // TODO
+    }
 }

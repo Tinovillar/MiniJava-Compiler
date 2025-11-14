@@ -7,6 +7,7 @@ import semantic.type.Type;
 public class Attribute {
     Token idVar;
     Type type;
+    private int offset;
 
     public Attribute(Token token, Type type) {
         this.idVar = token;
@@ -24,5 +25,11 @@ public class Attribute {
     }
     public String getName() {
         return idVar.getLexeme();
+    }
+    public void setOffset(int o) {
+        this.offset = o;
+    }
+    public int getOffset() {
+        return offset;
     }
 }

@@ -25,4 +25,7 @@ public class AssignmentCallNode extends SentenceNode {
     public void setExpression(ExpressionNode expression) {
         this.expression = expression;
     }
+    public void generate() {
+        // TODO
+    }
 }

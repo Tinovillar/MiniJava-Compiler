@@ -7,6 +7,7 @@ import semantic.type.Type;
 public class Parameter {
     private Token token;
     private Type type;
+    private int offset;
 
     public Parameter(Token token, Type type) {
         this.token = token;
@@ -25,5 +26,11 @@ public class Parameter {
     }
     public Type getType() {
         return type;
+    }
+    public void setOffset(int o) {
+        this.offset = o;
+    }
+    public int getOffset() {
+        return offset;
     }
 }
