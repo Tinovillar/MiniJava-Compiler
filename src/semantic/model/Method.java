@@ -16,6 +16,7 @@ public class Method {
     protected Type returnType;
     protected BlockNode block;
     protected Map<String, Parameter> parameters;
+    private int vtOffset;
 
     public Method(Token token, String parent, Type returnType) {
         this.token = token;
@@ -141,13 +142,16 @@ public class Method {
     public void generate() {
         // TODO
     }
-    public void setOffsets() {
-        // TODO revisar
-        int paramOffset = 1;
-        for(Parameter p : parameters.values()) {
-            p.setOffset(paramOffset++);
-        }
-
-        block.setOffsets();
+    public int getOffset() {
+        return this.vtOffset;
+    }
+    public void setOffset(int i) {
+        this.vtOffset = i;
+    }
+    public boolean hasOffset() {
+        return this.vtOffset != -1;
+    }
+    public boolean isDynamic() {
+        return false; // TODO
     }
 }

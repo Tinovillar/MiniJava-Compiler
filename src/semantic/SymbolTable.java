@@ -315,8 +315,6 @@ public class SymbolTable {
         instructions.add(instruction);
     }
     public void generate() {
-        setOffsets();
-
         mainCall();
         heapAllocate();
 
@@ -324,10 +322,6 @@ public class SymbolTable {
 
         for(ConcreteClass c : classes.values())
             c.generate();
-    }
-    public void setOffsets() {
-        for(ConcreteClass c : classes.values())
-            c.setOffsets();
     }
     public void generateDefaultMethods() {
         //Object class
@@ -493,5 +487,8 @@ public class SymbolTable {
         for(String i : instructions )
             System.out.println(i);
         System.out.println("///--------- CODIGO GENERADO ----------///");
+    }
+    public List<String> getInstructions() {
+        return instructions;
     }
 }

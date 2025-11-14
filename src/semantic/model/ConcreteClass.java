@@ -17,11 +17,16 @@ public class ConcreteClass {
     protected Map<String, Attribute> attributes;
     protected Map<String, Method> methods;
     boolean consolidated = false;
+    Map<Integer, Method> offsetMap;
+
+    int cirOffset = -1;
+    int vtOffset = -1;
 
     public ConcreteClass(Token token) {
         this.token = token;
         this.attributes = new LinkedHashMap<>();
         this.methods = new LinkedHashMap<>();
+        this.offsetMap = new LinkedHashMap<>();
     }
 
     public void isWellDeclared() throws SemanticException {
@@ -101,6 +106,9 @@ public class ConcreteClass {
 
             consolidateAttributes(parentAttributes);
             consolidateMethods(parentMethods);
+
+            setAttributesOffsets(parentClass);
+            setMethodsOffsets(parentClass);
 
             if (constructor == null) constructor = new Constructor(new Token(lexID.id_class, getName(), -1), getName());
 
@@ -229,9 +237,17 @@ public class ConcreteClass {
 
         if(constructor != null) constructor.generate();
     }
-    public void setOffsets() {
-        // TODO revisar
-        for(Method m : methods.values())
-            m.setOffsets();
+    private void setMethodsOffsets(ConcreteClass ancestro) {
+        this.vtOffset = ancestro.vtOffset;
+        for(Method m : methods.values()) {
+            if(m.isDynamic()) {
+                if (!m.hasOffset()) {
+                    m.setOffset(vtOffset++);
+                }
+                offsetMap.put(m.getOffset(), m);
+            }
+        }
+    }
+    private void setAttributesOffsets(ConcreteClass ancestro) {
     }
 }
