@@ -329,21 +329,122 @@ public class SymbolTable {
             c.setOffsets();
     }
     public void generateDefaultMethods() {
-        // TODO
-        // static void debugPrint(int)
-        add("debugPrint@Object:");
+        //Object class
+        //static void debugPrint(int i)
+        add("");
+        add("debugPrint@Object: NOP");
         add("LOADFP");
         add("LOADSP");
         add("STOREFP");
-        add("LOAD 3 ; Lee i");
-        add("IPRINT ; Imprime i");
+        add("LOAD 3");
+        add("IPRINT");
         add("STOREFP");
         add("RET 1");
-        add("");
 
-        // static void read()
-        // static void printB(boolean)
-        // ...
+        //System class
+        //static int read()
+        add("; System");
+        add("read@System:");
+        add("LOADFP");
+        add("LOADSP");
+        add("STOREFP");
+        add("READ");
+        add("STORE 3");
+        add("STOREFP");
+        add("RET 0");
+
+        //static void printB(boolean b)
+        add("printB@System:");
+        add("LOADFP");
+        add("LOADSP");
+        add("STOREFP");
+        add("LOAD 3");
+        add("BPRINT");
+        add("STOREFP");
+        add("RET 1");
+
+        //static void printC(char c)
+        add("System_printC:");
+        add("LOADFP");
+        add("LOADSP");
+        add("STOREFP");
+        add("LOAD 3");
+        add("CPRINT");
+        add("STOREFP");
+        add("RET 1");
+
+        //static void printI(int i)
+        add("printI@System:");
+        add("LOADFP");
+        add("LOADSP");
+        add("STOREFP");
+        add("LOAD 3");
+        add("IPRINT");
+        add("STOREFP");
+        add("RET 1");
+
+        //static void printS(String s)
+        add("printS@System:");
+        add("LOADFP");
+        add("LOADSP");
+        add("STOREFP");
+        add("LOAD 3");
+        add("SPRINT");
+        add("STOREFP");
+        add("RET 1");
+
+        //static void println()
+        add("println@System:");
+        add("LOADFP");
+        add("LOADSP");
+        add("STOREFP");
+        add("PRNLN");
+        add("STOREFP");
+        add("RET 0");
+
+        //static void printBln(boolean b)
+        add("printBln@System:");
+        add("LOADFP");
+        add("LOADSP");
+        add("STOREFP");
+        add("LOAD 3");
+        add("BPRINT");
+        add("PRNLN");
+        add("STOREFP");
+        add("RET 1");
+
+        //static void printCln(char c)
+        add("printCln@System:");
+        add("LOADFP");
+        add("LOADSP");
+        add("STOREFP");
+        add("LOAD 3");
+        add("CPRINT");
+        add("PRNLN");
+        add("STOREFP");
+        add("RET 1");
+
+        //static void printIln(int i)
+        add("printIln@System:");
+        add("LOADFP");
+        add("LOADSP");
+        add("STOREFP");
+        add("LOAD 3");
+        add("IPRINT");
+        add("PRNLN");
+        add("STOREFP");
+        add("RET 1");
+
+        //static void printSln(String s)
+        add("printSln@System:");
+        add("LOADFP");
+        add("LOADSP");
+        add("STOREFP");
+        add("LOAD 3");
+        add("SPRINT");
+        add("PRNLN");
+        add("STOREFP");
+        add("RET 1");
     }
     public int getStringCounter() {
         return ++stringCounter;
