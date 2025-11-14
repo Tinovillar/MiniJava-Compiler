@@ -35,7 +35,7 @@ public class Method {
                 throw new SemanticException(token, "Un metodo abstracto no puede estar en una clase NO abstracta");
             if(hasBody())
                 throw new SemanticException(token, "Un metodo abstracto no puede tener cuerpo.");
-        } else if(!hasBody()){
+        } else if(modifier != null && !hasBody()){ // CAMBIO SIGNIFICATIVO 14112025
             throw new SemanticException(token, "El metodo debe tener cuerpo");
         }
     }

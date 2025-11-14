@@ -33,6 +33,7 @@ public class SymbolTable {
     private void createObject() throws SemanticException {
         ConcreteClass object = new ConcreteClass(new Token(lexID.id_class, "Object", -1));
         object.setParent(Token.blankToken());
+        object.setConstructor(new Constructor(object.getToken(), "Object"));
         object.setConsolidated(true);
 
         Method debugPrint = new Method(
@@ -340,10 +341,10 @@ public class SymbolTable {
         add("IPRINT");
         add("STOREFP");
         add("RET 1");
+        add("");
 
         //System class
         //static int read()
-        add("; System");
         add("read@System:");
         add("LOADFP");
         add("LOADSP");
@@ -352,6 +353,7 @@ public class SymbolTable {
         add("STORE 3");
         add("STOREFP");
         add("RET 0");
+        add("");
 
         //static void printB(boolean b)
         add("printB@System:");
@@ -362,9 +364,10 @@ public class SymbolTable {
         add("BPRINT");
         add("STOREFP");
         add("RET 1");
+        add("");
 
         //static void printC(char c)
-        add("System_printC:");
+        add("printC@System:");
         add("LOADFP");
         add("LOADSP");
         add("STOREFP");
@@ -372,6 +375,7 @@ public class SymbolTable {
         add("CPRINT");
         add("STOREFP");
         add("RET 1");
+        add("");
 
         //static void printI(int i)
         add("printI@System:");
@@ -382,6 +386,7 @@ public class SymbolTable {
         add("IPRINT");
         add("STOREFP");
         add("RET 1");
+        add("");
 
         //static void printS(String s)
         add("printS@System:");
@@ -392,6 +397,7 @@ public class SymbolTable {
         add("SPRINT");
         add("STOREFP");
         add("RET 1");
+        add("");
 
         //static void println()
         add("println@System:");
@@ -401,6 +407,7 @@ public class SymbolTable {
         add("PRNLN");
         add("STOREFP");
         add("RET 0");
+        add("");
 
         //static void printBln(boolean b)
         add("printBln@System:");
@@ -412,6 +419,7 @@ public class SymbolTable {
         add("PRNLN");
         add("STOREFP");
         add("RET 1");
+        add("");
 
         //static void printCln(char c)
         add("printCln@System:");
@@ -423,6 +431,7 @@ public class SymbolTable {
         add("PRNLN");
         add("STOREFP");
         add("RET 1");
+        add("");
 
         //static void printIln(int i)
         add("printIln@System:");
@@ -434,6 +443,7 @@ public class SymbolTable {
         add("PRNLN");
         add("STOREFP");
         add("RET 1");
+        add("");
 
         //static void printSln(String s)
         add("printSln@System:");
@@ -445,6 +455,7 @@ public class SymbolTable {
         add("PRNLN");
         add("STOREFP");
         add("RET 1");
+        add("");
     }
     public int getStringCounter() {
         return ++stringCounter;
@@ -476,5 +487,11 @@ public class SymbolTable {
         add("STOREFP");
         add("RET 1");
         add("");
+    }
+    public void printInstructions() {
+        System.out.println("///--------- GENERANDO CODIGO ----------///");
+        for(String i : instructions )
+            System.out.println(i);
+        System.out.println("///--------- CODIGO GENERADO ----------///");
     }
 }

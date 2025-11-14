@@ -1,5 +1,6 @@
 package semantic.model;
 
+import compiler.Main;
 import exceptions.SemanticException;
 import lexical.Token;
 
@@ -20,7 +21,21 @@ public class Constructor extends Method {
         this.block.check();
     }
     public void generate() {
-        // TODO
+        Main.ST.add(".CODE");
+        Main.ST.add("constructor@" + token.getLexeme() + ":");
+        Main.ST.add("LOADFP");
+        Main.ST.add("LOADSP");
+        Main.ST.add("STOREFP");
+
+        if(block != null){
+            block.generate();
+        }
+
+        int toFree = parameters.size() + 1;
+
+        Main.ST.add("STOREFP");
+        Main.ST.add("RET "+ toFree);
+        Main.ST.add("");
     }
 }
 

@@ -221,15 +221,13 @@ public class ConcreteClass {
     public void generate() {
         // TODO muy verde, hay q revisar
         Main.ST.add(".DATA");
-        Main.ST.add("VT" + getName());
-        Main.ST.add("NOP");
+        Main.ST.add("lblVT" + getName() + ": NOP");
         Main.ST.add("");
 
-        Main.ST.add(".CODE");
         for(Method m : methods.values())
             m.generate();
 
-        constructor.generate();
+        if(constructor != null) constructor.generate();
     }
     public void setOffsets() {
         // TODO revisar
