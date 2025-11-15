@@ -7,7 +7,7 @@ import semantic.type.Type;
 public class Attribute {
     Token idVar;
     Type type;
-    private int offset;
+    private int offset = -1;
 
     public Attribute(Token token, Type type) {
         this.idVar = token;
@@ -31,5 +31,8 @@ public class Attribute {
     }
     public int getOffset() {
         return offset;
+    }
+    public boolean hasOffset() {
+        return offset != -1;
     }
 }
