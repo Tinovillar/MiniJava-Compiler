@@ -1,5 +1,6 @@
 package semantic.nodes.sentence;
 
+import compiler.Main;
 import exceptions.SemanticException;
 import lexical.Token;
 import lexical.lexID;
@@ -44,6 +45,24 @@ public class IfNode extends SentenceNode {
         this.condition = condition;
     }
     public void generate() {
-        // TODO
+        int labelId = Main.ST.getNextLabelId();
+
+        String lblEndIf = "lblEndIf" + labelId;
+        String lblElse = "lblElse" + labelId;
+
+        condition.generate();
+
+        if(elseBody.isEmptySentence()) {
+            Main.ST.add("BF " + lblElse);
+            ifBody.generate();
+            Main.ST.add("JUMP " + lblEndIf);
+            Main.ST.add(lblElse + ": NOP");
+            elseBody.generate();
+            Main.ST.add(lblEndIf + ": NOP");
+        } else {
+            Main.ST.add("BF " + lblEndIf);
+            ifBody.generate();
+            Main.ST.add(lblEndIf + ": NOP");
+        }
     }
 }

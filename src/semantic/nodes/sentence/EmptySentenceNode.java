@@ -9,4 +9,7 @@ public class EmptySentenceNode extends SentenceNode {
     public void generate() {
         // TODO
     }
+    public boolean isEmptySentence() {
+        return true;
+    }
 }

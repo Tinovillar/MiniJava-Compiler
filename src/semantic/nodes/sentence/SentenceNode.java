@@ -9,4 +9,7 @@ public abstract class SentenceNode {
         return checked;
     }
     public abstract void generate();
+    public boolean isEmptySentence() {
+        return false;
+    }
 }

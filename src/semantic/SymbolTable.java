@@ -19,6 +19,7 @@ public class SymbolTable {
     BlockNode currentBlock;
     Map<String, ConcreteClass> classes;
     List<String> instructions;
+    int labelId = 0;
 
     protected int stringCounter = 0;
 
@@ -490,5 +491,8 @@ public class SymbolTable {
     }
     public List<String> getInstructions() {
         return instructions;
+    }
+    public int getNextLabelId() {
+        return labelId;
     }
 }
