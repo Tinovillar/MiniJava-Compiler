@@ -134,7 +134,7 @@ public class Method {
         return this.modifier != null && this.modifier.getId().equals(modifier);
     }
     public boolean isMain() {
-        return hasModifier(lexID.kw_static) && returnType.isVoid() && getName().equals("main") && parameters.size() == 0;
+        return hasModifier(lexID.kw_static) && returnType.isVoid() && getName().equals("main") && parameters.isEmpty();
     }
     public String getLabel() {
         return getName() + "@" + getParent();
@@ -150,8 +150,5 @@ public class Method {
     }
     public boolean hasOffset() {
         return this.vtOffset != -1;
-    }
-    public boolean isDynamic() {
-        return false; // TODO
     }
 }
