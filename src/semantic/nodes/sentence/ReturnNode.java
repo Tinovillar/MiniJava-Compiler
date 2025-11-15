@@ -40,6 +40,16 @@ public class ReturnNode extends SentenceNode {
         return method.getReturnType().getName().equals("void");
     }
     public void generate() {
-        // TODO
+        boolean isVoid = methodIsVoid();
+
+        if(!isVoid) {
+            return_.generate();
+            int paramsSize = method.getParameters().size();
+            int returnOffset = paramsSize + 3;
+            Main.ST.add("STORE " + returnOffset + "; Guardo valor de retorno en M[fp" + returnOffset + "]");
+        }
+
+        String methodEnd = "lblend" + method.getLabel();
+        Main.ST.add("JUMP " + methodEnd + "; Salto al final del metodo");
     }
 }

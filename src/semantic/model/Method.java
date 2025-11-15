@@ -149,14 +149,20 @@ public class Method {
     public void generate() {
         Main.ST.setCurrentMethod(this);
 
-        Main.ST.add(getLabel() + ":");
+        Main.ST.add("lbl" + getLabel() + ":");
         Main.ST.add("LOADFP");
         Main.ST.add("LOADSP");
         Main.ST.add("STOREFP");
 
+        // TODO reservar memoria (constructor)
+
         if(block != null){
             block.generate();
         }
+
+        // TODO liberar memoria (constructor)
+
+        Main.ST.add("endlbl" + getLabel() + ": NOP");
 
         int toFree = parameters.size() + 1;
 

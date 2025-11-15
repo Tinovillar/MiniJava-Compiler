@@ -3,6 +3,9 @@ package semantic.model;
 import compiler.Main;
 import exceptions.SemanticException;
 import lexical.Token;
+import semantic.nodes.sentence.LocalVarNode;
+
+import java.util.List;
 
 public class Constructor extends Method {
     public Constructor(Token token, String parent) {
@@ -29,9 +32,16 @@ public class Constructor extends Method {
         Main.ST.add("LOADSP");
         Main.ST.add("STOREFP");
 
+        int localVars = block.getLocalVarMap().size();
+        if(localVars > 0)
+            Main.ST.add("RMEM " + localVars);
+
         if(block != null){
             block.generate();
         }
+
+        if(localVars > 0)
+            Main.ST.add("FMEM " + localVars);
 
         int toFree = parameters.size() + 1;
 
