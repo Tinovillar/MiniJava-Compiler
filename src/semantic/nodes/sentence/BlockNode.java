@@ -16,6 +16,7 @@ public class BlockNode extends SentenceNode {
 
     private Method method_;
     private ConcreteClass class_;
+    private int localVarOffset;
 
     public BlockNode() {
         sentences = new LinkedList<>();
@@ -27,6 +28,8 @@ public class BlockNode extends SentenceNode {
     }
 
     public void check() throws SemanticException {
+        this.setLocalVarOffset();
+
         Main.ST.setCurrentBlock(this);
         this.checked = true;
         for(SentenceNode sentence : sentences) {
@@ -53,6 +56,7 @@ public class BlockNode extends SentenceNode {
 //        if(class_.isAttribute(localVar.getToken())) {
 //            throw new SemanticException(localVar.getToken(), "Hay un atributo con este nombre de variable");
 //        }
+        localVar.setOffset(localVarOffset--);
         localVarMap.put(localVar.getName(), localVar);
     }
     private boolean isLocalVar(Token toCheck) {
@@ -74,7 +78,13 @@ public class BlockNode extends SentenceNode {
         return toReturn;
     }
     public void generate() {
-        // TODO
+        Main.ST.setCurrentBlock(this);
+
+        for(SentenceNode s : sentences) {
+            s.generate();
+        }
+
+        freeLocalVars();
     }
     public void setOffsets() {
         // TODO revisar
@@ -82,5 +92,17 @@ public class BlockNode extends SentenceNode {
         for(LocalVarNode var : localVarMap.values()) {
             var.setOffset(-varOffsets++);
         }
+    }
+    public void freeLocalVars() {
+        Main.ST.add("FMEM " + this.localVarMap.size() + "; Free local vars");
+    }
+    public void setLocalVarOffset() {
+        if(Main.ST.getCurrentBlock() != null)
+            localVarOffset = Main.ST.getCurrentBlock().getLocalVarOffset();
+        else
+            localVarOffset = 0;
+    }
+    private int getLocalVarOffset() {
+        return localVarOffset;
     }
 }

@@ -17,6 +17,7 @@ public class Method {
     protected BlockNode block;
     protected Map<String, Parameter> parameters;
     private int vtOffset;
+    private int paramsOffset;
 
     public Method(Token token, String parent, Type returnType) {
         this.token = token;
@@ -28,7 +29,13 @@ public class Method {
     public void isWellDeclared() throws SemanticException {
         checkAbstractMethod();
         if(returnType != null) returnType.checkType();
-        for (Parameter parameter : parameters.values()) parameter.isWellDeclared();
+
+        initializeParamsOffset();
+
+        for (Parameter parameter : parameters.values()) {
+            parameter.isWellDeclared();
+            parameter.setOffset(paramsOffset++);
+        }
     }
     private void checkAbstractMethod() throws SemanticException {
         if(modifier != null && modifier.getId().equals(lexID.kw_abstract)) {
@@ -140,6 +147,8 @@ public class Method {
         return getName() + "@" + getParent();
     }
     public void generate() {
+        Main.ST.setCurrentMethod(this);
+
         Main.ST.add(".CODE");
         Main.ST.add(getLabel() + ":");
         Main.ST.add("LOADFP");
@@ -164,5 +173,12 @@ public class Method {
     }
     public boolean hasOffset() {
         return this.vtOffset != -1;
+    }
+    public void initializeParamsOffset() {
+        if(hasModifier(lexID.kw_static)) {
+            paramsOffset = 3; // No tiene this
+        } else {
+            paramsOffset = 4; // FP apunta a la primer var local, 1 ED, 2 PR, 3 this.
+        }
     }
 }
