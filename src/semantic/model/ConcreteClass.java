@@ -17,16 +17,16 @@ public class ConcreteClass {
     protected Map<String, Attribute> attributes;
     protected Map<String, Method> methods;
     boolean consolidated = false;
-    Map<Integer, Method> offsetMap;
+    Map<Integer, Method> methodsOffsetMap;
 
-    int cirOffset = -1;
-    int vtOffset = -1;
+    int cirOffset = 1; // REFERENCIA A VT
+    int vtOffset = 0;
 
     public ConcreteClass(Token token) {
         this.token = token;
         this.attributes = new LinkedHashMap<>();
         this.methods = new LinkedHashMap<>();
-        this.offsetMap = new LinkedHashMap<>();
+        this.methodsOffsetMap = new LinkedHashMap<>();
     }
 
     public void isWellDeclared() throws SemanticException {
@@ -226,28 +226,78 @@ public class ConcreteClass {
         if(Main.ST.getMainMethod() == null && method.isMain())
             Main.ST.setMainMethod(method);
     }
+    public int getCirOffset() {
+        return this.cirOffset;
+    }
+    public int getVtOffset() {
+        return this.vtOffset;
+    }
+    public String getVtLabel() {
+        return "VT@" + getName();
+    }
     public void generate() {
-        // TODO muy verde, hay q revisar
-        Main.ST.add(".DATA");
-        Main.ST.add("lblVT" + getName() + ": NOP");
+        // TODO promete...
+        Main.ST.setCurrentClass(this);
+
+        generateVT();
+        generateMethodsCode();
+        generateConstructor();
+
         Main.ST.add("");
+    }
 
-        for(Method m : methods.values())
-            m.generate();
-
-        if(constructor != null) constructor.generate();
+    private void generateVT() {
+        Main.ST.add(".DATA");
+        String vtInstructions = getVtLabel();
+        if(!methodsOffsetMap.isEmpty()) {
+            vtInstructions += ": DW ";
+            Method m;
+            for(int offset = 0; offset < methodsOffsetMap.size(); offset++) {
+                vtInstructions += methodsOffsetMap.get(offset).getLabel() + ", ";
+            }
+            vtInstructions.substring(0, vtInstructions.length() - 2);
+        } else {
+            vtInstructions += ": NOP";
+        }
+        Main.ST.add(vtInstructions);
+        Main.ST.add("");
+    }
+    private void generateMethodsCode() {
+        Main.ST.add(".CODE");
+        for(Method m : methods.values()) {
+            if(m.getParent().equals(this.getName())) { // Si el metodo pertenece a esta clase, se genera
+                Main.ST.add(m.getLabel() + ":");
+                m.generate();
+//                Main.ST.add("");
+            }
+        }
+        Main.ST.add("");
+    }
+    private void generateConstructor() {
+        if(constructor != null) {
+            Main.ST.add(constructor.getLabel() + ":");
+            constructor.generate();
+//            Main.ST.add("");
+        }
+        Main.ST.add("");
     }
     private void setMethodsOffsets(ConcreteClass ancestro) {
-        this.vtOffset = ancestro.vtOffset;
+        this.vtOffset = ancestro.getVtOffset();
         for(Method m : methods.values()) {
-            if(m.isDynamic()) {
+            if(!m.hasModifier(lexID.kw_static)) {
                 if (!m.hasOffset()) {
                     m.setOffset(vtOffset++);
                 }
-                offsetMap.put(m.getOffset(), m);
+                methodsOffsetMap.put(m.getOffset(), m);
             }
         }
     }
     private void setAttributesOffsets(ConcreteClass ancestro) {
+        this.cirOffset = ancestro.getCirOffset();
+        for(Attribute a : attributes.values()) {
+            if(!a.hasOffset()) {
+                a.setOffset(cirOffset++);
+            }
+        }
     }
 }
