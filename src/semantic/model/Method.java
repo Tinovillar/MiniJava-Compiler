@@ -149,7 +149,6 @@ public class Method {
     public void generate() {
         Main.ST.setCurrentMethod(this);
 
-        Main.ST.add(".CODE");
         Main.ST.add(getLabel() + ":");
         Main.ST.add("LOADFP");
         Main.ST.add("LOADSP");

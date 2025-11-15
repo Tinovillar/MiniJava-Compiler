@@ -244,8 +244,6 @@ public class ConcreteClass {
         Main.ST.add(".CODE");
         generateMethodsCode();
         generateConstructor();
-
-        Main.ST.add("");
     }
 
     private void generateVT() {
@@ -269,13 +267,11 @@ public class ConcreteClass {
                 m.generate();
             }
         }
-        Main.ST.add("");
     }
     private void generateConstructor() {
         if(constructor != null) {
             constructor.generate();
         }
-        Main.ST.add("");
     }
     private void setMethodsOffsets(ConcreteClass ancestro) {
         this.vtOffset = ancestro.getVtOffset();

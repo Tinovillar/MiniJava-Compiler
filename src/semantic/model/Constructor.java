@@ -21,7 +21,7 @@ public class Constructor extends Method {
         this.block.check();
     }
     public String getLabel() {
-        return "constructor@" + super.getLabel();
+        return "constructor@" + getName();
     }
     public void generate() {
         Main.ST.add(getLabel() + ":");
