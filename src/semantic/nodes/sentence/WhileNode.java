@@ -1,5 +1,6 @@
 package semantic.nodes.sentence;
 
+import compiler.Main;
 import exceptions.SemanticException;
 import lexical.Token;
 import semantic.nodes.expression.ExpressionNode;
@@ -34,6 +35,16 @@ public class WhileNode extends SentenceNode {
         body.check();
     }
     public void generate() {
-        // TODO
+        int lblId = Main.ST.getNextLabelId();
+
+        String lblWhile = "lblWhile" + lblId;
+        String lblEndWhile = "lblEndWhile" + lblId;
+
+        Main.ST.add(lblWhile + ": NOP");
+        condition.generate();
+        Main.ST.add("BF " + lblEndWhile);
+        body.generate();
+        Main.ST.add("JUMP " + lblWhile);
+        Main.ST.add(lblEndWhile + ": NOP");
     }
 }

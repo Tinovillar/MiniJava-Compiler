@@ -493,6 +493,6 @@ public class SymbolTable {
         return instructions;
     }
     public int getNextLabelId() {
-        return labelId;
+        return labelId++;
     }
 }
