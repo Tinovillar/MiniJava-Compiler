@@ -20,9 +20,11 @@ public class Constructor extends Method {
     public void check() throws SemanticException {
         this.block.check();
     }
+    public String getLabel() {
+        return "constructor@" + super.getLabel();
+    }
     public void generate() {
-        Main.ST.add(".CODE");
-        Main.ST.add("constructor@" + token.getLexeme() + ":");
+        Main.ST.add(getLabel() + ":");
         Main.ST.add("LOADFP");
         Main.ST.add("LOADSP");
         Main.ST.add("STOREFP");

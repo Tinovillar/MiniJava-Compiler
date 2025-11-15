@@ -140,7 +140,21 @@ public class Method {
         return getName() + "@" + getParent();
     }
     public void generate() {
-        // TODO
+        Main.ST.add(".CODE");
+        Main.ST.add(getLabel() + ":");
+        Main.ST.add("LOADFP");
+        Main.ST.add("LOADSP");
+        Main.ST.add("STOREFP");
+
+        if(block != null){
+            block.generate();
+        }
+
+        int toFree = parameters.size() + 1;
+
+        Main.ST.add("STOREFP");
+        Main.ST.add("RET "+ toFree);
+        Main.ST.add("");
     }
     public int getOffset() {
         return this.vtOffset;

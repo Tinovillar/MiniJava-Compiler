@@ -239,7 +239,9 @@ public class ConcreteClass {
         // TODO promete...
         Main.ST.setCurrentClass(this);
 
+        Main.ST.add(".DATA");
         generateVT();
+        Main.ST.add(".CODE");
         generateMethodsCode();
         generateConstructor();
 
@@ -247,7 +249,6 @@ public class ConcreteClass {
     }
 
     private void generateVT() {
-        Main.ST.add(".DATA");
         String vtInstructions = getVtLabel();
         if(!methodsOffsetMap.isEmpty()) {
             vtInstructions += ": DW ";
@@ -263,21 +264,16 @@ public class ConcreteClass {
         Main.ST.add("");
     }
     private void generateMethodsCode() {
-        Main.ST.add(".CODE");
         for(Method m : methods.values()) {
             if(m.getParent().equals(this.getName())) { // Si el metodo pertenece a esta clase, se genera
-                Main.ST.add(m.getLabel() + ":");
                 m.generate();
-//                Main.ST.add("");
             }
         }
         Main.ST.add("");
     }
     private void generateConstructor() {
         if(constructor != null) {
-            Main.ST.add(constructor.getLabel() + ":");
             constructor.generate();
-//            Main.ST.add("");
         }
         Main.ST.add("");
     }
