@@ -52,4 +52,5 @@ public class StaticMethodCallNode extends AccessNode {
         }
         else return chained.hasSideEffects();
     }
+    public void generate() {}
 }

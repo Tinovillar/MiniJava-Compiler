@@ -94,4 +94,5 @@ public class BinaryExpressionNode extends ExpressionNode {
         }
         return toReturn;
     }
+    public void generate() {}
 }

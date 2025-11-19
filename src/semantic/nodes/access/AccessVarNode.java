@@ -45,4 +45,5 @@ public class AccessVarNode extends AccessNode {
         if(chained == null) return false;
         else return chained.hasSideEffects();
     }
+    public void generate() {}
 }

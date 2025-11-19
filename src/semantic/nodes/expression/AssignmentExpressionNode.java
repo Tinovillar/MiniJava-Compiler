@@ -36,9 +36,8 @@ public class AssignmentExpressionNode extends ExpressionNode {
     public boolean hasSideEffect() {
         return true;
     }
-
-    @Override
     public boolean isAssignment() {
         return true;
     }
+    public void generate() {}
 }

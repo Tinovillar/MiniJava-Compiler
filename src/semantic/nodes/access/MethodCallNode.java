@@ -53,4 +53,5 @@ public class MethodCallNode extends AccessNode {
         if(chained == null) return false;
         else return chained.isAssignable();
     }
+    public void generate() {}
 }

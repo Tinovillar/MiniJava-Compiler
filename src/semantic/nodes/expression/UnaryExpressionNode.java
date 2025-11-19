@@ -35,6 +35,8 @@ public class UnaryExpressionNode extends ExpressionNode {
         }
         return resultType;
     }
+    public void generate() {}
+
     private Type getResultType() {
         return switch (operator.getId()) {
             case op_plus, op_minus, op_minus_minus, op_plus_plus ->

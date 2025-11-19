@@ -21,9 +21,8 @@ public class ParenthesizedExpressionNode extends AccessNode{
         if(chained == null) return false;
         else return chained.hasSideEffects();
     }
-
-    @Override
     public boolean isAssignment() {
         return expression.isAssignment();
     }
+    public void generate() {}
 }

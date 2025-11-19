@@ -54,4 +54,5 @@ public class ConstructorCallNode extends AccessNode {
         if(chained == null) return true;
         else return chained.hasSideEffects();
     }
+    public void generate() {}
 }

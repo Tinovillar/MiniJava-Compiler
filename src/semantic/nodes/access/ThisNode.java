@@ -35,4 +35,5 @@ public class ThisNode extends AccessNode {
         if(chained == null) return false;
         return chained.isAssignable();
     }
+    public void generate() {}
 }
