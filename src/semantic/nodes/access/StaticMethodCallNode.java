@@ -15,6 +15,7 @@ public class StaticMethodCallNode extends AccessNode {
     private Token idClass;
     private Token idMetOrVar;
     private List<ExpressionNode> args;
+    private Method methodCalled;
 
     public StaticMethodCallNode(Token idClass, Token idMetOrVar, List<ExpressionNode> args) {
         this.idClass = idClass;
@@ -27,23 +28,23 @@ public class StaticMethodCallNode extends AccessNode {
         if(class_ == null) {
             throw new SemanticException(idClass, "La clase no existe");
         }
-        Method method = class_.getMethods().get(idMetOrVar.getLexeme());
-        if(method == null) {
+        methodCalled = class_.getMethods().get(idMetOrVar.getLexeme());
+        if(methodCalled == null) {
             throw new SemanticException(idMetOrVar, "El metodo no existe");
         }
-        if(method.getModifier() == null || !method.getModifier().getLexeme().equals("static")) {
+        if(methodCalled.getModifier() == null || !methodCalled.getModifier().getLexeme().equals("static")) {
             throw new SemanticException(idMetOrVar, "El metodo no es estatico");
         }
-        List<Parameter> params = method.getParameters().values().stream().toList();
+        List<Parameter> params = methodCalled.getParameters().values().stream().toList();
         int index = 0;
         for(ExpressionNode arg : args) {
             Type type = arg.check();
             if(type != null && !type.conformsTo(params.get(index).getType())) {
-                throw new SemanticException(method.getToken(), "No coinciden los tipos y el orden de los parametros");
+                throw new SemanticException(methodCalled.getToken(), "No coinciden los tipos y el orden de los parametros");
             }
             index++;
         }
-        return method.getReturnType();
+        return methodCalled.getReturnType();
     }
     public boolean hasSideEffect() {
         if(chained == null) {
@@ -52,5 +53,18 @@ public class StaticMethodCallNode extends AccessNode {
         }
         else return chained.hasSideEffects();
     }
-    public void generate() {}
+    public void generate() {
+        if(!methodCalled.getReturnType().isVoid()) {
+            Main.ST.add("RMEM 1; Lugarcito para el retorno");
+        }
+        for(ExpressionNode arg : args) {
+            arg.generate();
+        }
+        Main.ST.add("PUSH " + methodCalled.getLabel() + "; Direccion estaticaaa");
+        Main.ST.add("CALL; llamo al metodo");
+
+        if(chained != null) {
+//            chained.generate(); TODO
+        }
+    }
 }
