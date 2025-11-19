@@ -66,4 +66,7 @@ public class ChainedMetNode extends ChainedNode {
         if(chainedNode == null) return true;
         return chainedNode.hasSideEffects();
     }
+    public void generate() {
+
+    }
 }

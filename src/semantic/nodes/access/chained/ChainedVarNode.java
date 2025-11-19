@@ -44,4 +44,7 @@ public class ChainedVarNode extends ChainedNode {
         if(chainedNode == null) return false;
         return chainedNode.hasSideEffects();
     }
+    public void generate() {
+
+    }
 }

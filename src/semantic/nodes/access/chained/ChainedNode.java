@@ -7,6 +7,8 @@ import semantic.type.Type;
 
 public abstract class ChainedNode {
     protected ChainedNode chainedNode;
+    protected boolean isLeftSide = false;
+
     public void setChained(ChainedNode chained) {
         this.chainedNode = chained;
     }
@@ -15,4 +17,13 @@ public abstract class ChainedNode {
     public abstract Type resolveType(ReferenceType reference) throws SemanticException;
     public boolean isAssignable() {return false;}
     public boolean hasSideEffects() {return true;}
+    public boolean isLeftSide() {
+        return isLeftSide;
+    }
+    public void setIsLeftSide(){
+        isLeftSide = true;
+        if (chainedNode != null)
+            chainedNode.setIsLeftSide();
+    }
+    public abstract void generate();
 }
