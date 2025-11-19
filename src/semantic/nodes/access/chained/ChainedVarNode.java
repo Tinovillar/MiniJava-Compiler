@@ -11,6 +11,7 @@ import semantic.type.Type;
 
 public class ChainedVarNode extends ChainedNode {
     private Token id;
+    private Attribute attribute;
 
     public ChainedVarNode(Token id) {
         this.id = id;
@@ -26,7 +27,7 @@ public class ChainedVarNode extends ChainedNode {
         if(class_ == null) {
             throw new SemanticException(id, "la clase no existe");
         }
-        Attribute attribute = class_.getAttributes().get(id.getLexeme());
+        attribute = class_.getAttributes().get(id.getLexeme());
         if(attribute == null) {
             throw new SemanticException(id, "El atributo no existe en la clase " + class_.getToken());
         }
@@ -45,6 +46,14 @@ public class ChainedVarNode extends ChainedNode {
         return chainedNode.hasSideEffects();
     }
     public void generate() {
+        if (!isLeftSide || chainedNode != null){
+            Main.ST.add("LOADREF " + attribute.getOffset());
+        } else {
+            Main.ST.add("SWAP ; Pongo this en SP - 1");
+            Main.ST.add("STOREREF " + attribute.getOffset());
+        }
 
+        if (chainedNode != null)
+            chainedNode.generate();
     }
 }

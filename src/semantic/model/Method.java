@@ -165,9 +165,10 @@ public class Method {
         if(localVars > 0)
             Main.ST.add("FMEM " + localVars);
 
-        Main.ST.add("endlbl" + getLabel() + ": NOP");
-
         int toFree = parameters.size();
+
+        if(!hasModifier(lexID.kw_static))
+            toFree++;
 
         Main.ST.add("STOREFP");
         Main.ST.add("RET "+ toFree);

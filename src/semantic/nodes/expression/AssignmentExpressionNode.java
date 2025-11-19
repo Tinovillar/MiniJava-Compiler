@@ -41,7 +41,7 @@ public class AssignmentExpressionNode extends ExpressionNode {
     }
     public void generate() {
         leftExpression.setIsLeftSide();
-        leftExpression.generate();
         rightExpression.generate();
+        leftExpression.generate();
     }
 }

@@ -3,6 +3,7 @@ package semantic.nodes.sentence;
 import compiler.Main;
 import exceptions.SemanticException;
 import lexical.Token;
+import lexical.lexID;
 import semantic.model.Method;
 import semantic.nodes.expression.ExpressionNode;
 import semantic.type.Type;
@@ -46,10 +47,18 @@ public class ReturnNode extends SentenceNode {
             return_.generate();
             int paramsSize = method.getParameters().size();
             int returnOffset = paramsSize + 3;
+            if(!method.hasModifier(lexID.kw_static)) {
+                returnOffset++;
+            }
             Main.ST.add("STORE " + returnOffset + "; Guardo valor de retorno en M[fp" + returnOffset + "]");
         }
 
-        String methodEnd = "endlbl" + method.getLabel();
-        Main.ST.add("JUMP " + methodEnd + "; Salto al final del metodo");
+        int params = method.getParameters().size();
+        if(!method.hasModifier(lexID.kw_static)) {
+            params++;
+        }
+        Main.ST.add("FMEM " + method.getOffset());
+        Main.ST.add("STOREFP");
+        Main.ST.add("RET " + params);
     }
 }

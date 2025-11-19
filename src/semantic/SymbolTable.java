@@ -457,6 +457,8 @@ public class SymbolTable {
     }
     private void mainCall() {
         add(".CODE");
+        add("PUSH simple_heap_init");
+        add("CALL");
         add("PUSH " + mainMethod.getLabel());
         add("CALL");
         add("HALT");

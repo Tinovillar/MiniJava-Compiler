@@ -84,7 +84,7 @@ public class BlockNode extends SentenceNode {
             s.generate();
         }
 
-        freeLocalVars();
+//        freeLocalVars();
     }
     public void freeLocalVars() {
         Main.ST.add("FMEM " + this.localVarMap.size() + "; Free local vars");
