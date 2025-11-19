@@ -242,8 +242,8 @@ public class ConcreteClass {
         Main.ST.add(".DATA");
         generateVT();
         Main.ST.add(".CODE");
-        generateMethodsCode();
         generateConstructor();
+        generateMethodsCode();
     }
 
     private void generateVT() {

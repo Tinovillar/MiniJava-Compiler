@@ -16,7 +16,7 @@ public class Method {
     protected Type returnType;
     protected BlockNode block;
     protected Map<String, Parameter> parameters;
-    private int vtOffset;
+    private int vtOffset = -1;
     private int paramsOffset;
 
     public Method(Token token, String parent, Type returnType) {
@@ -154,17 +154,20 @@ public class Method {
         Main.ST.add("LOADSP");
         Main.ST.add("STOREFP");
 
-        // TODO reservar memoria (constructor)
+        int localVars = block != null ? block.getLocalVarMap().size() : 0;
+        if(localVars > 0)
+            Main.ST.add("RMEM " + localVars);
 
         if(block != null){
             block.generate();
         }
 
-        // TODO liberar memoria (constructor)
+        if(localVars > 0)
+            Main.ST.add("FMEM " + localVars);
 
         Main.ST.add("endlbl" + getLabel() + ": NOP");
 
-        int toFree = parameters.size() + 1;
+        int toFree = parameters.size();
 
         Main.ST.add("STOREFP");
         Main.ST.add("RET "+ toFree);

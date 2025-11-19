@@ -32,16 +32,16 @@ public class Constructor extends Method {
         Main.ST.add("LOADSP");
         Main.ST.add("STOREFP");
 
-//        int localVars = block.getLocalVarMap().size();
-//        if(localVars > 0)
-//            Main.ST.add("RMEM " + localVars);
-//
+        int localVars = block != null ? block.getLocalVarMap().size() : 0;
+        if(localVars > 0)
+            Main.ST.add("RMEM " + localVars);
+
         if(block != null){
             block.generate();
         }
-//
-//        if(localVars > 0)
-//            Main.ST.add("FMEM " + localVars);
+
+        if(localVars > 0)
+            Main.ST.add("FMEM " + localVars);
 
         int toFree = parameters.size() + 1;
 
