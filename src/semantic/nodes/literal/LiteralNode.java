@@ -12,6 +12,6 @@ public abstract class LiteralNode extends OperandNode {
     }
     abstract public void generate();
     public void generate(String lexeme, String type) {
-        Main.ST.add("   PUSH " + lexeme + "; " + type);
+        Main.ST.add("PUSH " + lexeme + "; " + type);
     }
 }
