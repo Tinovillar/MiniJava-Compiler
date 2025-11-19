@@ -39,5 +39,8 @@ public class AssignmentExpressionNode extends ExpressionNode {
     public boolean isAssignment() {
         return true;
     }
-    public void generate() {}
+    public void generate() {
+        leftExpression.generate();
+        rightExpression.generate();
+    }
 }
