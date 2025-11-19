@@ -254,7 +254,7 @@ public class ConcreteClass {
             for(int offset = 0; offset < methodsOffsetMap.size(); offset++) {
                 vtInstructions += methodsOffsetMap.get(offset).getLabel() + ", ";
             }
-            vtInstructions.substring(0, vtInstructions.length() - 2);
+            vtInstructions = vtInstructions.substring(0, vtInstructions.length() - 2);
         } else {
             vtInstructions += ": NOP";
         }

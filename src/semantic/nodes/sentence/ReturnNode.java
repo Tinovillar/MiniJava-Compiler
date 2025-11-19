@@ -49,7 +49,7 @@ public class ReturnNode extends SentenceNode {
             Main.ST.add("STORE " + returnOffset + "; Guardo valor de retorno en M[fp" + returnOffset + "]");
         }
 
-        String methodEnd = "lblend" + method.getLabel();
+        String methodEnd = "endlbl" + method.getLabel();
         Main.ST.add("JUMP " + methodEnd + "; Salto al final del metodo");
     }
 }

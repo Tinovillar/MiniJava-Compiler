@@ -144,12 +144,12 @@ public class Method {
         return hasModifier(lexID.kw_static) && returnType.isVoid() && getName().equals("main") && parameters.isEmpty();
     }
     public String getLabel() {
-        return getName() + "@" + getParent();
+        return "lblMet" + getName() + "@" + getParent();
     }
     public void generate() {
         Main.ST.setCurrentMethod(this);
 
-        Main.ST.add("lbl" + getLabel() + ":");
+        Main.ST.add(getLabel() + ":");
         Main.ST.add("LOADFP");
         Main.ST.add("LOADSP");
         Main.ST.add("STOREFP");

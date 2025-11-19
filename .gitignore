@@ -34,3 +34,6 @@ bin/
 
 ### Project ###
 /resources/otherTests/
+
+### Others ###
+*.out

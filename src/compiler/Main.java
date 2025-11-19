@@ -15,15 +15,17 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.PathMatcher;
+import java.util.Arrays;
 
 public class Main {
     public static SymbolTable ST;
     public static void main(String[] args) {
         try {
-            if(args.length != 1) {
-                System.out.println("ERROR: Need ONE and only ONE argument");
-                return;
-            }
+//            if(args.length != 1) {
+//                System.out.println("ERROR: Need ONE and only ONE argument");
+//                return;
+//            }
+            System.out.println(Arrays.toString(args));
 
             SourceManager sourceManager = new BetterSourceManagerImpl();
             sourceManager.open(args[0]);
@@ -44,7 +46,7 @@ public class Main {
 
             String outputName = getFileName(args[0]);
 
-            OutputWriter.createFile("["+ outputName +"]", ST.getInstructions());
+            OutputWriter.createFile("["+ outputName +"].out", ST.getInstructions());
 
             System.out.println("[SinErrores]");
 

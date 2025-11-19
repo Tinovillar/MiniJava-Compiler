@@ -97,8 +97,8 @@ public class BlockNode extends SentenceNode {
         Main.ST.add("FMEM " + this.localVarMap.size() + "; Free local vars");
     }
     public void setLocalVarOffset() {
-        if(Main.ST.getCurrentBlock() != null)
-            localVarOffset = Main.ST.getCurrentBlock().getLocalVarOffset();
+        if(parentBlock != null)
+            localVarOffset = parentBlock.getLocalVarOffset();
         else
             localVarOffset = 0;
     }
