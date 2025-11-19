@@ -39,7 +39,7 @@ public class SymbolTable {
 
         Method debugPrint = new Method(
                 new Token(lexID.id_met_or_var, "debugPrint", -1),
-                "",
+                "Object",
                 new ReferenceType(new Token(lexID.kw_void, "void", -1)));
         debugPrint.setModifier(new Token(lexID.kw_static, "static", -1));
         debugPrint.addParameter(
@@ -319,10 +319,16 @@ public class SymbolTable {
         mainCall();
         heapAllocate();
 
-        generateDefaultMethods();
+        for(ConcreteClass c : classes.values()) {
+            if(!isPredefined(c)) {
+                c.generate();
+            }
+        }
 
-        for(ConcreteClass c : classes.values())
-            c.generate();
+        generateDefaultMethods();
+    }
+    private boolean isPredefined(ConcreteClass c) {
+        return c.getName().equals("Object") || c.getName().equals("System") || c.getName().equals("String");
     }
     public void generateDefaultMethods() {
         //Object class
