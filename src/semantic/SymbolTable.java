@@ -328,7 +328,7 @@ public class SymbolTable {
         //Object class
         //static void debugPrint(int i)
         add("");
-        add("debugPrint@Object: NOP");
+        add("lblMetdebugPrint@Object: NOP");
         add("LOADFP");
         add("LOADSP");
         add("STOREFP");
@@ -336,77 +336,73 @@ public class SymbolTable {
         add("IPRINT");
         add("STOREFP");
         add("RET 1");
-        add("");
 
         //System class
         //static int read()
-        add("read@System:");
-        add("LOADFP");
+        add("");
+        add("lblMetread@System: LOADFP");
         add("LOADSP");
         add("STOREFP");
         add("READ");
+        add("PUSH 48");
+        add("SUB");
         add("STORE 3");
         add("STOREFP");
         add("RET 0");
-        add("");
+
 
         //static void printB(boolean b)
-        add("printB@System:");
-        add("LOADFP");
+        add("");
+        add("lblMetprintB@System: LOADFP");
         add("LOADSP");
         add("STOREFP");
         add("LOAD 3");
         add("BPRINT");
         add("STOREFP");
         add("RET 1");
-        add("");
 
         //static void printC(char c)
-        add("printC@System:");
-        add("LOADFP");
+        add("");
+        add("lblMetprintC@System: LOADFP");
         add("LOADSP");
         add("STOREFP");
         add("LOAD 3");
         add("CPRINT");
         add("STOREFP");
         add("RET 1");
-        add("");
 
         //static void printI(int i)
-        add("printI@System:");
-        add("LOADFP");
+        add("");
+        add("lblMetprintI@System: LOADFP");
         add("LOADSP");
         add("STOREFP");
         add("LOAD 3");
         add("IPRINT");
         add("STOREFP");
         add("RET 1");
-        add("");
 
         //static void printS(String s)
-        add("printS@System:");
-        add("LOADFP");
+        add("");
+        add("lblMetprintS@System: LOADFP");
         add("LOADSP");
         add("STOREFP");
         add("LOAD 3");
         add("SPRINT");
         add("STOREFP");
         add("RET 1");
-        add("");
 
         //static void println()
-        add("println@System:");
-        add("LOADFP");
+        add("");
+        add("lblMetprintln@System: LOADFP");
         add("LOADSP");
         add("STOREFP");
         add("PRNLN");
         add("STOREFP");
         add("RET 0");
-        add("");
 
         //static void printBln(boolean b)
-        add("printBln@System:");
-        add("LOADFP");
+        add("");
+        add("lblMetprintBln@System: LOADFP");
         add("LOADSP");
         add("STOREFP");
         add("LOAD 3");
@@ -414,11 +410,10 @@ public class SymbolTable {
         add("PRNLN");
         add("STOREFP");
         add("RET 1");
-        add("");
 
         //static void printCln(char c)
-        add("printCln@System:");
-        add("LOADFP");
+        add("");
+        add("lblMetprintCln@System: LOADFP");
         add("LOADSP");
         add("STOREFP");
         add("LOAD 3");
@@ -426,11 +421,11 @@ public class SymbolTable {
         add("PRNLN");
         add("STOREFP");
         add("RET 1");
-        add("");
+
 
         //static void printIln(int i)
-        add("printIln@System:");
-        add("LOADFP");
+        add("");
+        add("lblMetprintIln@System: LOADFP");
         add("LOADSP");
         add("STOREFP");
         add("LOAD 3");
@@ -438,11 +433,10 @@ public class SymbolTable {
         add("PRNLN");
         add("STOREFP");
         add("RET 1");
-        add("");
 
         //static void printSln(String s)
-        add("printSln@System:");
-        add("LOADFP");
+        add("");
+        add("lblMetprintSln@System: LOADFP");
         add("LOADSP");
         add("STOREFP");
         add("LOAD 3");
@@ -450,7 +444,7 @@ public class SymbolTable {
         add("PRNLN");
         add("STOREFP");
         add("RET 1");
-        add("");
+
     }
     public int getStringCounter() {
         return ++stringCounter;
