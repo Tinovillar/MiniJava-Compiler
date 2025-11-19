@@ -11,6 +11,9 @@ import semantic.type.Type;
 
 public class AccessVarNode extends AccessNode {
     private Token id;
+    private LocalVarNode localVar;
+    private Parameter param;
+    private Attribute attr;
 
     public AccessVarNode(Token id) {
         this.id = id;
@@ -18,17 +21,17 @@ public class AccessVarNode extends AccessNode {
 
     public Type check() throws SemanticException {
         Type type;
-        Attribute attribute = Main.ST.getCurrentClass().getAttributes().get(id.getLexeme());
-        Parameter parameter = Main.ST.getCurrentMethod().getParameters().get(id.getLexeme());
-        LocalVarNode localVarNode = Main.ST.getCurrentBlock().getLocalVar(id.getLexeme());
-        if(parameter != null) {
-            type = parameter.getType();
-        } else if(localVarNode != null) {
-            type = localVarNode.getType();
-        } else if(attribute != null) {
+        attr = Main.ST.getCurrentClass().getAttributes().get(id.getLexeme());
+        param = Main.ST.getCurrentMethod().getParameters().get(id.getLexeme());
+        localVar = Main.ST.getCurrentBlock().getLocalVar(id.getLexeme());
+        if(param != null) {
+            type = param.getType();
+        } else if(localVar != null) {
+            type = localVar.getType();
+        } else if(attr != null) {
             if(Main.ST.getCurrentMethod().hasModifier(lexID.kw_static))
                 throw new SemanticException(id, "Se intenta usar un atributo en un metodo estatico");
-            type = attribute.getType();
+            type = attr.getType();
         } else {
             throw new SemanticException(id, "Variable no declarada");
         }
@@ -45,5 +48,33 @@ public class AccessVarNode extends AccessNode {
         if(chained == null) return false;
         else return chained.hasSideEffects();
     }
-    public void generate() {}
+    public void generate() {
+        if(attr != null) {
+            Main.ST.add("LOAD 3; Apila this");
+            if (!isLeftSide || chained != null) {
+                Main.ST.add("LOADREF " + attr.getOffset() + " ; Apila el valor de la variable local en el tope de la pila");
+            } else {// Si es lado izquierdo o si tiene un encadenado tengo que poner la expresion en el tope de la pila
+                Main.ST.add("SWAP ; Pone el valor de la expresion en el tope de la pila");
+                Main.ST.add("STOREREF " + attr.getOffset() + " ; Guarda el valor de la expresion en el atributo " + attr.getName());
+            }
+        }else if(param != null){
+            if(!isLeftSide || chained != null){
+                Main.ST.add("LOAD " + param.getOffset() + " ; Apila al valor del parametro ");
+            }else{
+                Main.ST.add("STORE " + param.getOffset() + " ; Guardo el valor de la expresion en el parametro");
+            }
+        }else{ // Si es una variable local
+            if(!isLeftSide || chained != null){
+                Main.ST.add("LOAD " + localVar.getOffset() + " ; Apila al valor de la variable local " + localVar.getName());
+            }else{
+                Main.ST.add("STORE " + localVar.getOffset() + " ; Guardo el valor de la expresion en la variable local " + localVar.getName());
+            }
+        }
+
+        if(chained != null){
+            if(isLeftSide)
+                chained.setIsLeftSide();
+            chained.generate();
+        }
+    }
 }

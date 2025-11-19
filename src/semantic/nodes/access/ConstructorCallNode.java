@@ -16,6 +16,8 @@ import java.util.List;
 public class ConstructorCallNode extends AccessNode {
     private Token id;
     private List<ExpressionNode> args;
+    private ConcreteClass owner;
+    private Constructor constructor;
 
     public ConstructorCallNode(Token id, List<ExpressionNode> args) {
         this.id = id;
@@ -23,11 +25,11 @@ public class ConstructorCallNode extends AccessNode {
     }
 
     public Type check() throws SemanticException {
-        ConcreteClass class_ = Main.ST.getClassOrNull(id.getLexeme());
-        if(class_ == null) {
+        owner = Main.ST.getClassOrNull(id.getLexeme());
+        if(owner == null) {
             throw new SemanticException(id, "No existe la clase");
         }
-        Constructor constructor = class_.getConstructor();
+        constructor = owner.getConstructor();
 //        if(!constructor.hasModifier(lexID.kw_public)) {
 //            throw new SemanticException(constructor.getToken(), "No existe el constructor o no es publico");
 //        }
@@ -54,5 +56,25 @@ public class ConstructorCallNode extends AccessNode {
         if(chained == null) return true;
         else return chained.hasSideEffects();
     }
-    public void generate() {}
+    public void generate() {
+        Main.ST.add("RMEM 1 ; Reservo puntero malloc");
+        Main.ST.add("PUSH "+ owner.getCirOffset() +" ; Cantidad de atributos + VT Ref");
+        Main.ST.add("PUSH simple_malloc ; Push direccion de metodo para reservar heap");
+        Main.ST.add("CALL ; Me retorna una referencia del CIR");
+        Main.ST.add("DUP ; Duplico la referencia al objeto");
+        Main.ST.add("PUSH "+ owner.getVtLabel() +" ; Etiqueta de la VT");
+        Main.ST.add("STOREREF 0 ; Guardo VT en CIR, consumiendo una de las referencias");
+        Main.ST.add("DUP ; Duplico this, para metodo de constructor");
+        // Ejecuta metodo de constructor (ya esta la referencia al CIR en el retorno)
+        for (ExpressionNode arg : args) {
+            arg.generate();
+            Main.ST.add("SWAP ; Muevo this"); // Tiene this
+        }
+        Main.ST.add("PUSH " + constructor.getLabel() + " ; Direccion del constructor");
+        Main.ST.add("CALL ; Llama al metodo");
+
+        if (chained != null) {
+            chained.generate();
+        }
+    }
 }
