@@ -31,4 +31,10 @@ public class ParenthesizedExpressionNode extends AccessNode{
             chained.generate();
         }
     }
+    public boolean isAssignable() {
+        if(chained != null) {
+            return chained.isAssignable();
+        }
+        return expression.isAssignable();
+    }
 }
