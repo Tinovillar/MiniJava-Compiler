@@ -21,7 +21,9 @@ public class Constructor extends Method {
         }
     }
     public void check() throws SemanticException {
-        this.block.check();
+        Main.ST.setCurrentMethod(this);
+        if(block != null)
+            block.check();
     }
     public String getLabel() {
         return "constructor@" + getName();
