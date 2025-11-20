@@ -41,7 +41,7 @@ public class ConstructorCallNode extends AccessNode {
             int index = 0;
             for(ExpressionNode arg : args) {
                 Type type = arg.check();
-                if(Main.ST.isSubtypeOf(type.getName(), params.get(index).getType().getName())) {
+                if(!params.get(index).getType().conformsTo(type)) {
                     throw new SemanticException(id, "No coincide ni el orden ni el tipo de los parametros");
                 }
                 index++;
