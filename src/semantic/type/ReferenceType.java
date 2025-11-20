@@ -32,7 +32,7 @@ public class ReferenceType implements Type {
         return type.isConformed(this);
     }
     public boolean isConformed(PrimitiveType otherPrimitive) {
-        return false;
+        return otherPrimitive.getToken().getId().equals(lexID.kw_null);
     }
     public boolean isConformed(ReferenceType otherReference) {
         if(areBothString(otherReference)) {
