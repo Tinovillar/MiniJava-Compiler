@@ -33,7 +33,10 @@ public class Method {
 
         initializeParamsOffset();
 
-        for (Parameter parameter : parameters.values()) {
+        List<Parameter> reversedParams = new ArrayList<>(parameters.values().stream().toList());
+        Collections.reverse(reversedParams);
+
+        for (Parameter parameter : reversedParams) {
             parameter.isWellDeclared();
             parameter.setOffset(paramsOffset++);
         }
