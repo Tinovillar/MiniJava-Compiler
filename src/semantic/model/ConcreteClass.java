@@ -211,6 +211,7 @@ public class ConcreteClass {
     }
     public void check() throws SemanticException {
         Main.ST.setCurrentClass(this);
+        constructor.check();
         for(Map.Entry<String, Method> method : methods.entrySet()) {
             method.getValue().check();
         }
@@ -251,7 +252,7 @@ public class ConcreteClass {
         if(!methodsOffsetMap.isEmpty()) {
             vtInstructions += ": DW ";
             Method m;
-            for(int offset = 0; offset < methodsOffsetMap.size(); offset++) {
+            for(int offset = vtOffset - methodsOffsetMap.size(); offset < methodsOffsetMap.size(); offset++) {
                 vtInstructions += methodsOffsetMap.get(offset).getLabel() + ", ";
             }
             vtInstructions = vtInstructions.substring(0, vtInstructions.length() - 2);
