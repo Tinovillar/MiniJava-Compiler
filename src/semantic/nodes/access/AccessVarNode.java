@@ -49,7 +49,7 @@ public class AccessVarNode extends AccessNode {
         else return chained.hasSideEffects();
     }
     public void generate() {
-        if(attr != null) {
+        if(attr != null && param == null && localVar == null) {
             Main.ST.add("LOAD 3; Apila this");
             if (!isLeftSide || chained != null) {
                 Main.ST.add("LOADREF " + attr.getOffset() + " ; Apila el valor de la variable local en el tope de la pila");
@@ -57,21 +57,21 @@ public class AccessVarNode extends AccessNode {
                 Main.ST.add("SWAP ; Pone el valor de la expresion en el tope de la pila");
                 Main.ST.add("STOREREF " + attr.getOffset() + " ; Guarda el valor de la expresion en el atributo " + attr.getName());
             }
-        }else if(param != null){
+        } else if(param != null) {
             if(!isLeftSide || chained != null){
                 Main.ST.add("LOAD " + param.getOffset() + " ; Apila al valor del parametro ");
             }else{
                 Main.ST.add("STORE " + param.getOffset() + " ; Guardo el valor de la expresion en el parametro");
             }
-        }else{ // Si es una variable local
-            if(!isLeftSide || chained != null){
+        } else { // Si es una variable local
+            if(!isLeftSide || chained != null) {
                 Main.ST.add("LOAD " + localVar.getOffset() + " ; Apila al valor de la variable local " + localVar.getName());
-            }else{
+            } else {
                 Main.ST.add("STORE " + localVar.getOffset() + " ; Guardo el valor de la expresion en la variable local " + localVar.getName());
             }
         }
 
-        if(chained != null){
+        if(chained != null) {
             if(isLeftSide)
                 chained.setIsLeftSide();
             chained.generate();
