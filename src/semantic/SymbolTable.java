@@ -62,14 +62,14 @@ public class SymbolTable {
         // static int read ()
         Method read = new Method(
                 new Token(lexID.id_met_or_var, "read", -1), // read
-                "",
+                "System",
                 new PrimitiveType(new Token(lexID.kw_int, "int", -1))); // int
         read.setModifier(new Token(lexID.kw_static, "static", -1)); // static
         read.setBlock(new EmptyBlockNode());
         // static void printB (boolean b)
         Method printB = new Method(
                 new Token(lexID.id_met_or_var, "printB", -1), // printB
-                "",
+                "System",
                 new ReferenceType(new Token(lexID.kw_void, "void", -1))); // void
         printB.setModifier(new Token(lexID.kw_static, "static", -1)); // static
         printB.addParameter(new Parameter(
@@ -79,7 +79,7 @@ public class SymbolTable {
         // static void printC (char c)
         Method printC = new Method(
                 new Token(lexID.id_met_or_var, "printC", -1), // printC
-                "",
+                "System",
                 new ReferenceType(new Token(lexID.kw_void, "void", -1))); // void
         printC.setModifier(new Token(lexID.kw_static, "static", -1)); // static
         printC.addParameter(new Parameter(
@@ -89,7 +89,7 @@ public class SymbolTable {
         // static void printI(int i)
         Method printI = new Method(
                 new Token(lexID.id_met_or_var, "printI", -1), // printI
-                "",
+                "System",
                 new ReferenceType(new Token(lexID.kw_void, "void", -1))); // void
         printI.setModifier(new Token(lexID.kw_static, "static", -1)); // static
         printI.addParameter(new Parameter(
@@ -99,7 +99,7 @@ public class SymbolTable {
         // static void printS(String s)
         Method printS = new Method(
                 new Token(lexID.id_met_or_var, "printS", -1), // printS
-                "",
+                "System",
                 new ReferenceType(new Token(lexID.kw_void, "void", -1))); // void
         printS.setModifier(new Token(lexID.kw_static, "static", -1)); // static
         printS.addParameter(new Parameter(
@@ -109,14 +109,14 @@ public class SymbolTable {
         // static void printLn()
         Method printLn = new Method(
                 new Token(lexID.id_met_or_var, "printLn", -1), // printLn
-                "",
+                "System",
                 new ReferenceType(new Token(lexID.kw_void, "void", -1))); // void
         printLn.setModifier(new Token(lexID.kw_static, "static", -1)); // static
         printLn.setBlock(new EmptyBlockNode());
         // static void printBln(boolean b)
         Method printBln = new Method(
                 new Token(lexID.id_met_or_var, "printBln", -1), // printBln
-                "",
+                "System",
                 new ReferenceType(new Token(lexID.kw_void, "void", -1))); // void
         printBln.setModifier(new Token(lexID.kw_static, "static", -1)); // static
         printBln.addParameter(new Parameter(
@@ -126,7 +126,7 @@ public class SymbolTable {
         // static void printCln(char c)
         Method printCln = new Method(
                 new Token(lexID.id_met_or_var, "printCln", -1), // printCln
-                "",
+                "System",
                 new ReferenceType(new Token(lexID.kw_void, "void", -1))); // void
         printCln.setModifier(new Token(lexID.kw_static, "static", -1)); // static
         printCln.addParameter(new Parameter(
@@ -136,7 +136,7 @@ public class SymbolTable {
         // static void printIln(int i)
         Method printIln = new Method(
                 new Token(lexID.id_met_or_var, "printIln", -1), // printIln
-                "",
+                "System",
                 new ReferenceType(new Token(lexID.kw_void, "void", -1))); // void
         printIln.setModifier(new Token(lexID.kw_static, "static", -1)); // static
         printIln.addParameter(new Parameter(
@@ -146,7 +146,7 @@ public class SymbolTable {
         // static void printSln(String s)
         Method printSln = new Method(
                 new Token(lexID.id_met_or_var, "printSln", -1), // printSln
-                "",
+                "System",
                 new ReferenceType(new Token(lexID.kw_void, "void", -1))); // void
         printSln.setModifier(new Token(lexID.kw_static, "static", -1)); // static
         printSln.addParameter(new Parameter(
