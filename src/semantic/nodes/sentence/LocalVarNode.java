@@ -52,7 +52,7 @@ public class LocalVarNode extends SentenceNode {
     }
     public void generate() {
         expression.generate();
-        Main.ST.add("STORE " + offset + "; Guardar variable local");
+        Main.ST.add("STORE " + offset + "; Guardar variable local " + this.getName());
         // TODO incompleto, ver que pasaria si la expresion es una llamada a un constructor
     }
     public int getOffset() {
