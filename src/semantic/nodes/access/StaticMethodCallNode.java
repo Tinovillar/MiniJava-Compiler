@@ -7,6 +7,7 @@ import semantic.model.ConcreteClass;
 import semantic.model.Method;
 import semantic.model.Parameter;
 import semantic.nodes.expression.ExpressionNode;
+import semantic.type.ReferenceType;
 import semantic.type.Type;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public class StaticMethodCallNode extends AccessNode {
         }
         methodCalled = class_.getMethods().get(idMetOrVar.getLexeme());
         if(methodCalled == null) {
-            throw new SemanticException(idMetOrVar, "El metodo no existe");
+            throw new SemanticException(idMetOrVar, "El metodo no existe [StaticMethodCallNode]");
         }
         if(methodCalled.getModifier() == null || !methodCalled.getModifier().getLexeme().equals("static")) {
             throw new SemanticException(idMetOrVar, "El metodo no es estatico");
@@ -44,7 +45,16 @@ public class StaticMethodCallNode extends AccessNode {
             }
             index++;
         }
-        return methodCalled.getReturnType();
+
+        if(chained != null) {
+
+        }
+
+        Type toReturn = methodCalled.getReturnType();
+        if(chained != null)
+            toReturn = chained.check(toReturn);
+
+        return toReturn;
     }
     public boolean hasSideEffect() {
         if(chained == null) {
@@ -53,6 +63,15 @@ public class StaticMethodCallNode extends AccessNode {
         }
         else return chained.hasSideEffects();
     }
+
+    @Override
+    public boolean isAssignable() {
+        if(chained != null) {
+            return chained.isAssignable();
+        }
+        return false;
+    }
+
     public void generate() {
         if(!methodCalled.getReturnType().isVoid()) {
             Main.ST.add("RMEM 1; Lugarcito para el retorno");
