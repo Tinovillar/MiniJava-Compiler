@@ -8,6 +8,8 @@ import semantic.model.Method;
 import semantic.nodes.expression.ExpressionNode;
 import semantic.type.Type;
 
+import java.util.List;
+
 public class ReturnNode extends SentenceNode {
     private ExpressionNode return_;
     private Token returnToken;
@@ -53,11 +55,15 @@ public class ReturnNode extends SentenceNode {
             Main.ST.add("STORE " + returnOffset + "; Guardo valor de retorno en M[fp" + returnOffset + "]");
         }
 
+        List<LocalVarNode> localVars = method.getLocalVars();
+        if(!localVars.isEmpty()) {
+            Main.ST.add("FMEM " + localVars.size());
+        }
+
         int params = method.getParameters().size();
         if(!method.hasModifier(lexID.kw_static)) {
             params++;
         }
-        Main.ST.add("FMEM " + method.getOffset());
         Main.ST.add("STOREFP");
         Main.ST.add("RET " + params);
     }

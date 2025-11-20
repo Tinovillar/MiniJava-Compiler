@@ -5,6 +5,7 @@ import exceptions.SemanticException;
 import lexical.Token;
 import lexical.lexID;
 import semantic.nodes.sentence.BlockNode;
+import semantic.nodes.sentence.LocalVarNode;
 import semantic.type.Type;
 
 import java.util.*;
@@ -189,5 +190,9 @@ public class Method {
         } else {
             paramsOffset = 4; // FP apunta a la primer var local, 1 ED, 2 PR, 3 this.
         }
+    }
+
+    public List<LocalVarNode> getLocalVars() {
+        return block.getLocalVarMap().values().stream().toList();
     }
 }
