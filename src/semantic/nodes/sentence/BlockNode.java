@@ -83,7 +83,6 @@ public class BlockNode extends SentenceNode {
         for(SentenceNode s : sentences) {
             s.generate();
         }
-
 //        freeLocalVars();
     }
     public void freeLocalVars() {
@@ -93,7 +92,7 @@ public class BlockNode extends SentenceNode {
         if(parentBlock != null)
             localVarOffset = parentBlock.getLocalVarOffset();
         else
-            localVarOffset = -1;
+            localVarOffset = 0;
     }
     private int getLocalVarOffset() {
         return localVarOffset;
