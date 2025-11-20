@@ -52,7 +52,7 @@ public class IfNode extends SentenceNode {
 
         condition.generate();
 
-        if(elseBody != null && elseBody.isEmptySentence()) {
+        if(elseBody != null && !elseBody.isEmptySentence()) {
             Main.ST.add("BF " + lblElse);
             ifBody.generate();
             Main.ST.add("JUMP " + lblEndIf);
