@@ -77,4 +77,7 @@ public class AccessVarNode extends AccessNode {
             chained.generate();
         }
     }
+    public LocalVarNode getLocalVar() {
+        return localVar;
+    }
 }
