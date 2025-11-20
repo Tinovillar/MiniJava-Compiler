@@ -81,7 +81,7 @@ public class MethodCallNode extends AccessNode {
         }
 
         if(chained != null) {
-//            chained.generate(); TODO
+            chained.generate();
         }
     }
 }

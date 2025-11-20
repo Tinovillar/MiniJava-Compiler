@@ -64,7 +64,7 @@ public class StaticMethodCallNode extends AccessNode {
         Main.ST.add("CALL; llamo al metodo");
 
         if(chained != null) {
-//            chained.generate(); TODO
+            chained.generate();
         }
     }
 }
