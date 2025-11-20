@@ -131,6 +131,7 @@ public class ConcreteClass {
             if (parentMethod != null) {
                 checkModifiers(ourMethod, parentMethod);
                 ourMethod.checkSignatureMatch(parentMethod);
+                ourMethod.setOffset(parentMethod.getOffset());
             }
         }
         if (modifier == null || modifier.getId() == null) {
