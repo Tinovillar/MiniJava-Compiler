@@ -1,5 +1,6 @@
 package semantic.nodes.expression;
 
+import compiler.Main;
 import exceptions.SemanticException;
 import lexical.Token;
 import lexical.lexID;
@@ -94,5 +95,23 @@ public class BinaryExpressionNode extends ExpressionNode {
         }
         return toReturn;
     }
-    public void generate() {}
+    public void generate() {
+        leftExpression.generate();
+        rightExpression.generate();
+        switch (operator.getId()){
+            case op_plus -> Main.ST.add("ADD");
+            case op_minus -> Main.ST.add("SUB");
+            case op_multiplication -> Main.ST.add("MUL");
+            case op_division -> Main.ST.add("DIV");
+            case op_mod -> Main.ST.add("MOD");
+            case op_and -> Main.ST.add("AND");
+            case op_or -> Main.ST.add("OR");
+            case op_greater_than -> Main.ST.add("GT");
+            case op_greater_than_equal -> Main.ST.add("GE");
+            case op_less_than -> Main.ST.add("LT");
+            case op_less_than_equal -> Main.ST.add("LE");
+            case op_equal_equal -> Main.ST.add("EQ");
+            case op_not_equal -> Main.ST.add("NE");
+        }
+    }
 }
