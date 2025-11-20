@@ -251,9 +251,12 @@ public class ConcreteClass {
         String vtInstructions = getVtLabel();
         if(!methodsOffsetMap.isEmpty()) {
             vtInstructions += ": DW ";
-            Method m;
-            for(int offset = vtOffset - methodsOffsetMap.size(); offset < methodsOffsetMap.size(); offset++) {
-                vtInstructions += methodsOffsetMap.get(offset).getLabel() + ", ";
+//            Method m;
+//            for(int offset = vtOffset - methodsOffsetMap.size(); offset < methodsOffsetMap.size(); offset++) {
+//                vtInstructions += methodsOffsetMap.get(offset).getLabel() + ", ";
+//            }
+            for(Method m : methodsOffsetMap.values()) {
+                vtInstructions += m.getLabel() + ", ";
             }
             vtInstructions = vtInstructions.substring(0, vtInstructions.length() - 2);
         } else {
