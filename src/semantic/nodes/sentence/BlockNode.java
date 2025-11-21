@@ -83,10 +83,13 @@ public class BlockNode extends SentenceNode {
         for(SentenceNode s : sentences) {
             s.generate();
         }
-//        freeLocalVars();
+
+        if(parentBlock != null) {
+            freeLocalVars();
+        }
     }
     public void freeLocalVars() {
-        Main.ST.add("FMEM " + this.localVarMap.size() + "; Free local vars");
+        Main.ST.add("FMEM " + this.localVarMap.size() + "; Free local vars inner block");
     }
     public void setLocalVarOffset() {
         if(parentBlock != null)
