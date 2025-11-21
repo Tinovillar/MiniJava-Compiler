@@ -51,9 +51,9 @@ public class LocalVarNode extends SentenceNode {
         this.type = type;
     }
     public void generate() {
+        Main.ST.add("RMEM 1; lugarcito pa la local var");
         expression.generate();
         Main.ST.add("STORE " + offset + "; Guardar variable local " + this.getName());
-        // TODO incompleto, ver que pasaria si la expresion es una llamada a un constructor
     }
     public int getOffset() {
         return offset;
