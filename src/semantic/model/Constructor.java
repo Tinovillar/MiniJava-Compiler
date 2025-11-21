@@ -34,7 +34,7 @@ public class Constructor extends Method {
         Main.ST.add("LOADSP");
         Main.ST.add("STOREFP");
 
-        int localVars = block != null ? block.getLocalVarMap().size() : 0;
+        int localVars = parameters.size(); // son los params
         if(localVars > 0)
             Main.ST.add("RMEM " + localVars);
 
@@ -47,6 +47,7 @@ public class Constructor extends Method {
 
         int toFree = parameters.size() + 1;
 
+        Main.ST.add("FMEM " + (block != null ? block.getLocalVarMap().size() : 0) + "; Free local vars of main block in constructor");
         Main.ST.add("STOREFP");
         Main.ST.add("RET "+ toFree);
         Main.ST.add("");
