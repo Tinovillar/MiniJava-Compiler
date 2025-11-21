@@ -52,19 +52,9 @@ public class ReturnNode extends SentenceNode {
             if(!method.hasModifier(lexID.kw_static)) {
                 returnOffset++;
             }
-            Main.ST.add("STORE " + returnOffset + "; Guardo valor de retorno en M[fp" + returnOffset + "]");
+            Main.ST.add("STORE " + returnOffset + "; Guardo valor de retorno en M[fp" + returnOffset + "] - " + this.method.getLabel());
         }
 
-        List<LocalVarNode> localVars = method.getLocalVars();
-        if(!localVars.isEmpty()) {
-            Main.ST.add("FMEM " + localVars.size());
-        }
-
-        int params = method.getParameters().size();
-        if(!method.hasModifier(lexID.kw_static)) {
-            params++;
-        }
-        Main.ST.add("STOREFP");
-        Main.ST.add("RET " + params);
+        Main.ST.add("JUMP end$" + method.getLabel() + "; Salto al final del metodo");
     }
 }
