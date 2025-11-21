@@ -158,7 +158,7 @@ public class Method {
         Main.ST.add("LOADSP");
         Main.ST.add("STOREFP");
 
-        int localVars = block != null ? block.getLocalVarMap().size() : 0;
+        int localVars = parameters.size();
         if(localVars > 0)
             Main.ST.add("RMEM " + localVars);
 
@@ -166,14 +166,16 @@ public class Method {
             block.generate();
         }
 
+        Main.ST.add("end$" + getLabel() + ": NOP; referencia al final del metodo si hay return");
+
         if(localVars > 0)
             Main.ST.add("FMEM " + localVars);
 
         int toFree = parameters.size();
-
         if(!hasModifier(lexID.kw_static))
             toFree++;
 
+        Main.ST.add("FMEM " + (block != null ? block.getLocalVarMap().size() : 0) + "; Free local vars of main block");
         Main.ST.add("STOREFP");
         Main.ST.add("RET "+ toFree);
         Main.ST.add("");
